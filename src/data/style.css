@@ -1,0 +1,103 @@
+QWidget{
+background-color: #a5a4a4;
+}
+
+QTabWidget {
+    background-color: #a5a4a4;
+    border: 0px, solid
+}
+
+QTabBar::tab {
+    background-color: #424242;
+    border-bottom: 2px solid #050505;;
+    height: 35px;
+    color: antiquewhite;
+    font-size: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* width: 100px; */
+}
+
+QTabBar::tab:first {
+    border-left: 2px solid #050505;
+    border-bottom-left-radius: 3px;
+    margin-left: 5px;
+}
+
+QTabBar::tab:last {
+    border-right: 2px solid #050505;
+    border-bottom-right-radius: 3px;
+    margin-right: 5px;
+}
+
+QTabBar::tab:selected {
+    background-color: rgb(161, 40, 40);
+    border-bottom: 2px solid rgb(99, 37, 22);
+    border-right: 2px solid rgb(99, 37, 22);
+    border-left: 2px solid rgb(99, 37, 22);
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+QTabBar::tab:hover {
+    background-color: rgb(161, 40, 40);
+    border-bottom: 2px solid rgb(99, 37, 22);
+}
+
+QTabBar::tab:hover:last {
+    border-right: 2px solid rgb(99, 37, 22);
+}
+
+QTabBar::tab:hover:first {
+    border-left: 2px solid rgb(99, 37, 22);
+}
+
+QTabBar::tab:hover:selected {
+    border-bottom: 2px solid rgb(99, 37, 22);
+    border-right: 2px solid rgb(99, 37, 22);
+    border-left: 2px solid rgb(99, 37, 22);
+}
+
+QLineEdit#entryline {
+    background-color:rgb(18, 48, 22);
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+}
+
+QLineEdit:hover#entryline{
+    background-color:rgb(41, 105, 49);
+}
+
+QLineEdit:focus#entryline{
+    background-color:rgb(41, 105, 49);
+}
+
+QLabel#textlabel{
+    background-color: rgb(32, 37, 87);
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+}
+
+QLabel#imagelabel{
+    background-color: #a5a4a4;
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+}
+
+QPushButton#textbutton{
+    background-color: #804502;
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+}
+
+
+QPushButton:hover#textbutton{
+    background-color: #b86405;
+}
+
+QPushButton#textbutton:pressed{
+    background-color: rgb(161, 40, 40);
+}
