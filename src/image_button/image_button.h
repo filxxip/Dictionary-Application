@@ -1,26 +1,11 @@
 #pragma once
 
+#include "../image_label/image_label.h"
+
 #include <QPushButton>
 
 class ImageButton : public QPushButton {
 public:
-  /** enum which represents possibilities of positioning button on screen */
-  enum class DisplayStyle {
-    SCALED_WIDTH,  ///< represent positioning with constant height and with the
-                   ///< adjusted width
-    SCALED_HEIGHT, ///< represent positioning with constant width and with the
-                   ///< adjusted height
-    CHANGED_WIDTH, ///< represent positioning with constant height and with the
-                   ///< maximum width
-    CHANGED_HEIGHT ///< represent positioning with constant widht and with the
-                   ///< maximum height
-  };
-
-  /** enum which represents two measures of button placed on widget */
-  enum class ScaledPossibilities {
-    WIDTH, ///< represent widht measure of object
-    HEIGHT ///< represent height measure of object
-  };
   /**
    * @brief ImageButton constructor method which creates class instance, use
    * width to specife size of item
@@ -31,7 +16,7 @@ public:
    * @param size new value size of image, its meaning depends on style parameter
    */
   ImageButton(QWidget *widget_, const QString &source_to_image,
-              DisplayStyle style, int size);
+              Displays::DisplayStyle style, int size);
   /**
    * @brief get_image method which provides path to image
    * @return QString class instance determines path to image
@@ -52,6 +37,13 @@ public:
    */
   void set_position(int position_x, int position_y);
 
+  /**
+   * @brief change_image method which changes image to another one ( with same
+   * width and height)
+   * @param new_path new qstring instance with path to image from main file
+   */
+  void change_image(const QString &new_path);
+
 private:
   QString image_source; ///< source to image file from main
 
@@ -62,7 +54,7 @@ private:
    * @param scaled_parameter param from with depends if width is auto scaled or
    * height
    */
-  void scaled_to(int size, ScaledPossibilities scaled_parameter);
+  void scaled_to(int size, Displays::ScaledPossibilities scaled_parameter);
 
   /**
    * @brief set_changable_measure method which sets constant one measere, second
@@ -71,5 +63,6 @@ private:
    * @param changed_parameter enum parameter which will be auto adjust to
    * window
    */
-  void set_changable_measure(int size, ScaledPossibilities changed_parameter);
+  void set_changable_measure(int size,
+                             Displays::ScaledPossibilities changed_parameter);
 };

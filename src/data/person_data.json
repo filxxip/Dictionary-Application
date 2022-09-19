@@ -56,12 +56,12 @@
         "surname": "Aaaa"
     },
     "f.pol@gmail.com": {
-        "age": 555,
-        "country": "Aaaa",
-        "name": "Aaaa",
-        "password": "Aaaa",
-        "school": "Aaaa",
-        "surname": "Aaaa"
+        "age": 19,
+        "country": "Poland",
+        "name": "Filip",
+        "password": "Makadi2003",
+        "school": "PWR",
+        "surname": "Poltoraczyk"
     },
     "f.polt2oraczyk@gmail.com": {
         "age": 19,
@@ -182,13 +182,5 @@
         "password": "Aaaa",
         "school": "Aaaa",
         "surname": "Aaaa"
-    },
-    "zuzher@onet.pl": {
-        "age": 22,
-        "country": "Polska",
-        "name": "Zuzia",
-        "password": "ZUzz",
-        "school": "aa",
-        "surname": "Her"
     }
 }

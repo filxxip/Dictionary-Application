@@ -23,14 +23,10 @@ void Word::basic_translation() {
   }
 }
 
-Word::Word() : prioritity(Prioritity::UNDEFINED) {
-  //  qDebug() << "constructor";
-  basic_translation();
-}
+Word::Word() : prioritity(Prioritity::UNDEFINED) { basic_translation(); }
 
 Word::Word(Language language, const QString &word_base, Prioritity prioritity_)
     : prioritity(prioritity_) {
-  //  qDebug() << "hello word default constructor\n";
   basic_translation();
   Date date_now = get_current_date();
   translations.at(language) = word_base;
@@ -40,7 +36,6 @@ Word::Word(Language language, const QString &word_base, Prioritity prioritity_)
 Word::Word(const std::map<Language, QString> &translations_,
            Prioritity prioritity_)
     : prioritity(prioritity_) { // wywolac kopiujacy dla mapy
-  //  qDebug() << "hello word default constructor\n";
   basic_translation();
   auto date_now = get_current_date();
   for (const auto &[language, translation] : translations_) {

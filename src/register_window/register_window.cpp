@@ -1,8 +1,8 @@
 #include "register_window.h"
+#include "../change_color/change_color.h"
 #include "../custom_entry_line/entry_line.h"
 #include "../data/config_file.h"
 #include "../delay/delay.h"
-#include "../password_entry_line/password_entry_line.h"
 #include "../person/person.h"
 #include "../person/person_errors.h"
 #include "../regex_check/regex_check.h"
@@ -14,6 +14,7 @@
 #include <vector>
 
 namespace {
+
 const std::map<RegisterWindow::Entries, std::pair<QString, QString>>
     entries_boxes_values = {
         {RegisterWindow::Entries::NAME, {Json::NAME, Placeholders::NAME}},
@@ -30,11 +31,11 @@ const std::map<RegisterWindow::Entries, std::pair<QString, QString>>
          {Json::REPEAT_PASSWORD, Placeholders::REPEAT_PASSWORD}},
 }; ///< map with entries sign as key and its components
    ///< as value (pair)
-}
+} // namespace
 
 RegisterWindow::RegisterWindow(CustomList &main_list)
     : QObject(), title_label(ImageLabel(&main_widget, "images/dict.png",
-                                        ImageLabel::DisplayStyle::CHANGED_WIDTH,
+                                        Displays::DisplayStyle::CHANGED_WIDTH,
                                         WidgetData::IMAGE_HEIGHT)),
       clear_button(TextButton(&main_widget, WidgetData::CLEAR_BUTTON_TEXT)),
       register_button(
@@ -67,49 +68,38 @@ QVBoxLayout *RegisterWindow::creating_entries_layout() {
   auto layout = new QVBoxLayout;
   QHBoxLayout *h_lay;
   for (int i = 0; i <= 5; i++) {
-    h_lay = create_entry_box(static_cast<Entries>(i));
+    auto entry_name = static_cast<Entries>(i);
+    h_lay = create_custom_entry_box(entry_name);
     layout->addLayout(h_lay);
   }
   for (int i = 6; i <= 7; i++) {
-    h_lay = create_entry_box(static_cast<Entries>(i),
-                             RegisterWindow::Entry_Style::PASSWORD);
+    auto entry_name = static_cast<Entries>(i);
+    h_lay = create_custom_entry_box(entry_name, EntryLine::Status::PASSWORD);
     layout->addLayout(h_lay);
   }
-  return layout;
-}
-
-QHBoxLayout *
-RegisterWindow::create_entry_box(Entries entry_name,
-                                 RegisterWindow::Entry_Style type) {
-
-  auto layout = new QHBoxLayout;
-  auto &[label_text, placeholder] = entries_boxes_values.at(entry_name);
-  auto label = new TextLabel(&main_widget, label_text);
-  label->setFixedWidth(WidgetData::DEFAULT_WIDTH);
-  EntryLine *entry;
-  switch (type) {
-  case RegisterWindow::Entry_Style::NORMAL: {
-    entry = new EntryLine(&main_widget);
-    break;
-  }
-  case RegisterWindow::Entry_Style::PASSWORD: {
-    entry = new PasswordEntryLine(&main_widget);
-    break;
-  }
-  }
-  entry->setPlaceholderText(placeholder);
-  entry->setText("Aaaa");
-  items_map.insert({entry_name, {label, entry}});
-  layout->addWidget(label);
-  layout->addWidget(entry);
   layout->setContentsMargins(WidgetData::REGISTER_BOX_MARGINS);
   return layout;
 }
 
+QHBoxLayout *RegisterWindow::create_custom_entry_box(Entries entry_name,
+                                                     EntryLine::Status style) {
+  QHBoxLayout *h_lay;
+  auto &[label_text, placeholder] = entries_boxes_values.at(entry_name);
+  auto ptr = std::make_unique<LabelEntryBox>(&main_widget, label_text,
+                                             placeholder, style);
+  ptr->set_label_width(WidgetData::LOGIN_LABEL_WIDTH);
+
+  items.insert({entry_name, std::move(ptr)});
+  h_lay = items.at(entry_name)
+              ->create_layout(WidgetData::LOGIN_BOX_HEIGHT,
+                              WidgetData::REGISTER_SPACING,
+                              WidgetData::DEFAULT_MARGINS);
+  return h_lay;
+}
+
 void RegisterWindow::clear_method() {
-  for (auto &[sign, box] : items_map) {
-    auto &[label, entry] = box;
-    entry->clear();
+  for (auto &box : items) {
+    box.second->clear();
   }
 }
 
@@ -156,33 +146,27 @@ void RegisterWindow::user_register() {
   }
   if (potential_errors.empty()) {
     list.add_person(person);
-    change_color({Entries::NAME, Entries::AGE, Entries::EMAIL, Entries::SCHOOL,
-                  Entries::COUNTRY, Entries::SURNAME, Entries::PASSWORD},
-                 1000, Colors::GREEN);
+    auto v = make_vector<Entries>(
+        {Entries::NAME, Entries::SCHOOL, Entries::SURNAME, Entries::EMAIL,
+         Entries::REPEAT_PASSWORD, Entries::REPEAT_PASSWORD, Entries::AGE});
+    change_color(v, Colors::GREEN, 100);
     clear_method();
   }
-  change_color(potential_errors, 1000, Colors::RED);
+  change_color(make_vector<Entries>(potential_errors), Colors::RED, 1000);
 }
 
 EntryLine *RegisterWindow::get_line_edit(Entries entry_enum) {
 
-  auto entry = items_map.at(entry_enum).second;
+  auto entry = items.at(entry_enum)->get_entryline();
   return entry;
 }
 
-void RegisterWindow::change_color(std::vector<Entries> il,
-                                  int miliseconds_sleep,
-                                  const QString &change_color) {
-  std::map<Entries, QString> previous_styles;
-  for (auto entry_sign : il) {
-    auto entry = get_line_edit(entry_sign);
-    auto style = entry->styleSheet();
-    previous_styles.insert({entry_sign, style});
-    entry->setStyleSheet("background-color: " + change_color);
+template <typename T>
+std::vector<EntryLine *> RegisterWindow::make_vector(std::vector<T> list) {
+  std::vector<EntryLine *> entrylines;
+  for (auto i : list) {
+    auto lineedt = get_line_edit(i);
+    entrylines.push_back(lineedt);
   }
-  delay(miliseconds_sleep);
-  for (auto entry_sign : il) {
-    auto entry = items_map.at(entry_sign).second;
-    entry->setStyleSheet(previous_styles.at(entry_sign));
-  }
+  return entrylines;
 }

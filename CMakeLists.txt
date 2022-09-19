@@ -17,8 +17,6 @@ add_executable(${PROJECT_NAME}
     src/date/current_date.cpp
 #    src/data/searched_regex.cpp
     src/custom_entry_line/entry_line.cpp
-    src/password_entry_line/password_entry_line.cpp
-    src/login_entry_line/login_entry_line.cpp
     src/custom_widget/custom_widget.cpp
     src/text_label/text_label.cpp
     src/image_label/image_label.cpp
@@ -28,6 +26,9 @@ add_executable(${PROJECT_NAME}
     src/register_window/register_window.cpp
     src/person/person_errors.cpp
     src/image_button/image_button.cpp
+    src/person_data_window/person_data_window.cpp
+    src/custom_label_entry_box/custom_label_entry_box.cpp
+    src/change_color/change_color.cpp
     main.cpp
 )
 

@@ -13,6 +13,15 @@ class Person {
   QString password; ///< password of person
 
 public:
+  enum class Data {
+    NAME,
+    SURNAME,
+    AGE,
+    COUNTRY,
+    SCHOOL,
+    EMAIL,
+    PASSWORD,
+  }; ///< Enumerate class which specifies data of person
   /**
    * @brief Person default constructor
    */
@@ -30,6 +39,20 @@ public:
    */
   Person(QString name_, QString surname_, int age_, QString school_,
          QString country_, QString email_, QString password_);
+
+  /**
+   * @brief get_data method which provides data of person
+   * @param data_name enum sign of needed data
+   * @return reference to QString instance
+   */
+  const QString get_data(Data data_name) const;
+
+  /**
+   * @brief set_data method which sets new data of person
+   * @param data new data of given atrribute
+   * @param data_name sign of attribute which should be changed
+   */
+  void set_data(const QString &data, Data data_name);
 
   /**
    * @brief get_password method which provides the password of person
@@ -142,4 +165,12 @@ public:
    * otherwise false
    */
   bool operator==(const Person &person);
+
+  /**
+   * @brief is_valid_data method which checks if some data is correct
+   * @param data new data of given atrribute
+   * @param data_name sign of attribute which should be changed
+   * @return true if data is valid, otherwise false
+   */
+  bool is_valid_data(const QString &data, Person::Data data_name) const;
 };

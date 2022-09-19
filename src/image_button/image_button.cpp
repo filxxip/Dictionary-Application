@@ -5,69 +5,72 @@
 #include <QPixmap>
 
 ImageButton ::ImageButton(QWidget *widget_, const QString &source_to_image,
-                          DisplayStyle style, int size)
+                          Displays::DisplayStyle style, int size)
     : QPushButton(widget_), image_source(source_to_image) {
-  qDebug() << "constructor";
-  setObjectName("ImageButton");
-  auto icon = QIcon("../" + image_source);
+  setObjectName("imagebutton");
   switch (style) {
-  case ImageButton::DisplayStyle::SCALED_WIDTH: {
-    scaled_to(size, ScaledPossibilities::HEIGHT);
+  case Displays::DisplayStyle::SCALED_WIDTH: {
+    scaled_to(size, Displays::ScaledPossibilities::HEIGHT);
     break;
   }
-  case ImageButton::DisplayStyle::SCALED_HEIGHT: {
-    scaled_to(size, ScaledPossibilities::WIDTH);
+  case Displays::DisplayStyle::SCALED_HEIGHT: {
+    scaled_to(size, Displays::ScaledPossibilities::WIDTH);
     break;
   }
-  case ImageButton::DisplayStyle::CHANGED_WIDTH: {
-    set_changable_measure(size, ScaledPossibilities::WIDTH);
+  case Displays::DisplayStyle::CHANGED_WIDTH: {
+    set_changable_measure(size, Displays::ScaledPossibilities::WIDTH);
     break;
   }
-  case ImageButton::DisplayStyle::CHANGED_HEIGHT: {
-    set_changable_measure(size, ScaledPossibilities::HEIGHT);
+  case Displays::DisplayStyle::CHANGED_HEIGHT: {
+    set_changable_measure(size, Displays::ScaledPossibilities::HEIGHT);
     break;
   }
   }
-  setIcon(icon);
 }
 
 void ImageButton::scaled_to(int size,
-                            ImageButton::ScaledPossibilities scaled_parameter) {
+                            Displays::ScaledPossibilities scaled_parameter) {
   auto pixmap = QPixmap("../" + image_source);
+  auto icon = QIcon(pixmap);
   switch (scaled_parameter) {
-  case ImageButton::ScaledPossibilities::WIDTH: {
+  case Displays::ScaledPossibilities::WIDTH: {
     pixmap = pixmap.scaledToWidth(size);
     break;
   }
-  case ImageButton::ScaledPossibilities::HEIGHT: {
+  case Displays::ScaledPossibilities::HEIGHT: {
     pixmap = pixmap.scaledToHeight(size);
     break;
   }
   }
   const auto &geo = geometry();
   setGeometry(geo.x(), geo.y(), pixmap.width(), pixmap.height());
+  setIcon(icon);
+
+  setIconSize(pixmap.size());
 }
 
-void ImageButton::set_changable_measure(int size,
-                                        ScaledPossibilities changed_parameter) {
-  qDebug() << "hello" << width();
-  double ratio = width() / height();
-  qDebug() << ratio;
+void ImageButton::set_changable_measure(
+    int size, Displays::ScaledPossibilities changed_parameter) {
+  auto pixmap = QPixmap("../" + image_source);
+  auto psize = pixmap.size();
+  double ratio = static_cast<double>(psize.width()) / psize.height();
   switch (changed_parameter) {
-  case ImageButton::ScaledPossibilities::WIDTH: {
+  case Displays::ScaledPossibilities::WIDTH: {
     setFixedHeight(size);
-    setFixedWidth(height() * ratio);
+    setFixedWidth(size * ratio);
 
     break;
   }
-  case ImageButton::ScaledPossibilities::HEIGHT: {
+  case Displays::ScaledPossibilities::HEIGHT: {
 
     setFixedWidth(size);
-    setFixedHeight(width() / ratio);
+    setFixedHeight(size / ratio);
     break;
   }
   }
-  //  setScaledContents(true);
+  QIcon icon(pixmap);
+  setIcon(icon);
+  setIconSize(QSize(width(), height()));
 }
 
 void ImageButton::set_position(int position_x, int position_y) {
@@ -75,3 +78,10 @@ void ImageButton::set_position(int position_x, int position_y) {
 }
 
 const QString &ImageButton::get_image() { return image_source; }
+
+void ImageButton::change_image(const QString &new_path) {
+  auto current_size = size();
+  auto new_pixmap = QPixmap("../" + new_path);
+  auto new_icon = QIcon(new_pixmap);
+  setIcon(new_icon);
+}

@@ -1,4 +1,5 @@
 #include "login_view.h"
+#include "../change_color/change_color.h"
 #include "../data/config_file.h"
 #include "../delay/delay.h"
 #include "../image_button/image_button.h"
@@ -12,49 +13,25 @@
 LoginView::LoginView(const std::map<QString, QString> &logs_map)
     : QObject(),
       main_image_label(ImageLabel(&main_widget, "images/dict.png",
-                                  ImageLabel::DisplayStyle::CHANGED_WIDTH,
+                                  Displays::DisplayStyle::CHANGED_WIDTH,
                                   WidgetData::IMAGE_HEIGHT)),
-      login_label(TextLabel(&main_widget, WidgetData::LOGIN_LABEL_TEXT)),
-      password_label(TextLabel(&main_widget, WidgetData::PASSWORD_LABEL_TEXT)),
-      login_entry(LoginLineEntry(&main_widget)),
-      password_entry(PasswordEntryLine(&main_widget)),
-      image_label(&main_widget, "images/dict.png",
-                  ImageButton::DisplayStyle::CHANGED_HEIGHT, 50),
+      entry_line_box_login(&main_widget, WidgetData::LOGIN_LABEL_TEXT,
+                           Placeholders::LOGIN_PLACEHOLDER,
+                           EntryLine::Status::NORMAL),
+      entry_line_box_password(&main_widget, WidgetData::PASSWORD_LABEL_TEXT,
+                              Placeholders::PASSWORD_PLAHOLDER,
+                              EntryLine::Status::PASSWORD),
+      image_button(&main_widget, "images/eye.png",
+                   Displays::DisplayStyle::CHANGED_WIDTH,
+                   WidgetData::SEE_BUTTON_HEIGHT),
       submit_button(&main_widget, WidgetData::SUBMIT_BUTTON_TEXT),
       clear_button(&main_widget, WidgetData::CLEAR_BUTTON_TEXT) {
-  login_label.setFixedWidth(WidgetData::LOGIN_LABEL_WIDTH);
-  password_label.setFixedWidth(WidgetData::PASSWORD_LABEL_WIDTH);
-  main_layout.addWidget(&main_image_label);
-  auto login_box = creating_log_layout(EntryLine::Status::NORMAL);
-  main_layout.addLayout(login_box);
-  auto password_box = creating_log_layout(EntryLine::Status::PASSWORD);
-  main_layout.addLayout(password_box);
+  create_main_vboxlayout();
   auto buttons_layout =
       creating_buttons_layout(logs_map, WidgetData::BUTTONS_MARGINS);
   main_layout.addLayout(buttons_layout);
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
   main_widget.setLayout(&main_layout);
-}
-
-QHBoxLayout *LoginView::creating_log_layout(EntryLine::Status login_status,
-                                            const QMargins &margin) {
-  QHBoxLayout *layout(new QHBoxLayout);
-  switch (login_status) {
-  case EntryLine::Status::NORMAL: {
-    layout->addWidget(&login_label);
-    layout->addWidget(&login_entry);
-    break;
-  }
-  case EntryLine::Status::PASSWORD: {
-    layout->addWidget(&password_label);
-    layout->addWidget(&password_entry);
-    layout->addWidget(&image_label);
-    break;
-  }
-  }
-  layout->setSpacing(WidgetData::LOGS_SPACING);
-  layout->setContentsMargins(margin);
-  return layout;
 }
 
 QWidget *LoginView::get_widget() { return &main_widget; }
@@ -72,7 +49,8 @@ LoginView::creating_buttons_layout(const std::map<QString, QString> &logs_map,
       });
   QObject::connect(&clear_button, &QPushButton::pressed, this,
                    &LoginView::clear_function);
-  QObject::connect(&password_entry, &QLineEdit::returnPressed, this,
+  QObject::connect(entry_line_box_password.get_entryline(),
+                   &QLineEdit::returnPressed, this,
                    [this]() { submit_button.pressed(); });
   layout->setSpacing(WidgetData::BUTTONS_SPACING);
   layout->setContentsMargins(margin);
@@ -80,20 +58,24 @@ LoginView::creating_buttons_layout(const std::map<QString, QString> &logs_map,
 }
 
 void LoginView::clear_function() {
-  password_entry.clear();
-  login_entry.clear();
+  entry_line_box_login.clear();
+  entry_line_box_password.clear();
 }
 
 void LoginView::submit_function(const std::map<QString, QString> &logs_map) {
-  auto email = login_entry.text();
-  auto password = password_entry.text();
+  auto email = entry_line_box_login.get_text();
+  auto password = entry_line_box_password.get_text();
   auto index = std::find_if(
       logs_map.begin(), logs_map.end(),
       [&email](const auto &pair) { // nie dziala mi structure bindings
         return pair.first == email;
       });
   if (index == logs_map.end()) {
-    change_color(LoginView::ENTRIES_SIGNS::BOTH, 1500, Colors::RED);
+
+    change_color({entry_line_box_login.get_entryline(),
+                  entry_line_box_password.get_entryline()},
+                 Colors::RED, 1500);
+
   } else {
     auto index_pass = std::find_if(
         logs_map.begin(), logs_map.end(),
@@ -101,46 +83,39 @@ void LoginView::submit_function(const std::map<QString, QString> &logs_map) {
           return pair.second == password;
         });
     if (index_pass == logs_map.end()) {
-      change_color(LoginView::ENTRIES_SIGNS::PASSWORD, 1500, Colors::RED);
+      change_color({entry_line_box_password.get_entryline()}, Colors::RED,
+                   1500);
     } else {
-      change_color(LoginView::ENTRIES_SIGNS::BOTH, 1500, Colors::GREEN);
+      change_color({entry_line_box_login.get_entryline(),
+                    entry_line_box_password.get_entryline()},
+                   Colors::GREEN, 1500);
     }
   }
 }
 
-void LoginView::change_color(LoginView::ENTRIES_SIGNS lineedit,
-                             int miliseconds_sleep,
-                             const QString &change_color) {
-  auto style_log = login_entry.styleSheet();
-  auto style_pass = password_entry.styleSheet();
-  switch (lineedit) {
-  case LoginView::ENTRIES_SIGNS::LOGIN: {
-    login_entry.setStyleSheet("background-color: " + change_color);
-    break;
-  }
-  case LoginView::ENTRIES_SIGNS::PASSWORD: {
-    password_entry.setStyleSheet("background-color: " + change_color);
-    break;
-  }
-  case LoginView::ENTRIES_SIGNS::BOTH: {
-    password_entry.setStyleSheet("background-color: " + change_color);
-    login_entry.setStyleSheet("background-color: " + change_color);
-  }
-  }
-  delay(miliseconds_sleep);
-  switch (lineedit) {
-  case LoginView::ENTRIES_SIGNS::LOGIN: {
-    login_entry.setStyleSheet(style_log);
-    break;
-  }
-  case LoginView::ENTRIES_SIGNS::PASSWORD: {
-    password_entry.setStyleSheet(style_pass);
-    break;
-  }
-  case LoginView::ENTRIES_SIGNS::BOTH: {
-    login_entry.setStyleSheet(style_log);
-    password_entry.setStyleSheet(style_pass);
-  }
-  }
-  //  lineedit->setStyleSheet(style);
+void LoginView::set_to_visible() {
+  entry_line_box_password.get_entryline()->set_text_status(
+      EntryLine::Status::NORMAL);
+  image_button.change_image("images/eye2.png");
+}
+void LoginView::set_to_hidden() {
+  entry_line_box_password.get_entryline()->set_text_status(
+      EntryLine::Status::PASSWORD);
+  image_button.change_image("images/eye.png");
+}
+void LoginView::create_main_vboxlayout() {
+  entry_line_box_login.set_label_width(WidgetData::LOGIN_LABEL_WIDTH);
+  entry_line_box_password.set_label_width(WidgetData::PASSWORD_LABEL_WIDTH);
+  main_layout.addWidget(&main_image_label);
+  auto login_box =
+      entry_line_box_login.create_layout(WidgetData::LOGIN_BOX_HEIGHT);
+  main_layout.addLayout(login_box);
+  auto password_box =
+      entry_line_box_password.create_layout(WidgetData::LOGIN_BOX_HEIGHT);
+  password_box->addWidget(&image_button);
+  QObject::connect(&image_button, &QPushButton::pressed, this,
+                   &LoginView::set_to_visible);
+  QObject::connect(&image_button, &QPushButton::released, this,
+                   &LoginView::set_to_hidden); // wpieprzyc w jedna fcje
+  main_layout.addLayout(password_box);
 }

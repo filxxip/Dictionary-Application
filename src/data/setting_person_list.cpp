@@ -75,7 +75,6 @@ void create_dictionary_list(CustomList &list) {
   auto json_object = create_json_response(fin);
   Word word;
   for (const auto &email : json_object.keys()) {
-    qDebug() << email;
     auto &owner = list.get_person(email);
     auto email_dictionaries_data = json_object.take(email).toArray();
     for (const auto &dictionary : email_dictionaries_data) {

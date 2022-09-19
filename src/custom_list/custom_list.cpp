@@ -62,8 +62,6 @@ void CustomList::add_dictionary(const Dictionary &dictionary) {
 
 void CustomList::update_json() {
   updating_person_json_file(*this);
-  qDebug() << "hej";
-  qDebug() << dictionary_list.size();
   update_json_dictionary_file(dictionary_list);
 }
 

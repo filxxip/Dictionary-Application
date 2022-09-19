@@ -101,3 +101,68 @@ bool Person::set_password(const QString &new_password) {
 }
 
 bool Person::operator==(const Person &person) { return email == person.email; }
+
+const QString Person::get_data(Person::Data data_name) const {
+  switch (data_name) {
+  case Person::Data::NAME: {
+    return get_name();
+  }
+  case Person::Data::SURNAME: {
+    return get_surname();
+  }
+  case Person::Data::AGE: {
+    return QString::number(get_age());
+  }
+  case Person::Data::EMAIL: {
+    return get_email();
+  }
+  case Person::Data::PASSWORD: {
+    return get_password();
+  }
+  case Person::Data::COUNTRY: {
+    return get_country();
+  }
+  case Person::Data::SCHOOL: {
+    return get_school();
+  }
+  default:
+    return "";
+  }
+}
+
+void Person::set_data(const QString &data, Person::Data data_name) {
+  switch (data_name) {
+  case Person::Data::NAME: {
+    set_name(data);
+    return;
+  }
+  case Person::Data::SURNAME: {
+    set_surname(data);
+    return;
+  }
+  case Person::Data::AGE: {
+    set_age(data);
+    return;
+  }
+  case Person::Data::EMAIL: {
+    set_email(data);
+    return;
+  }
+  case Person::Data::PASSWORD: {
+    set_password(data);
+    return;
+  }
+  case Person::Data::COUNTRY: {
+    set_country(data);
+    return;
+  }
+  case Person::Data::SCHOOL: {
+    set_school(data);
+    return;
+  }
+  }
+}
+
+bool Person::is_valid_data(const QString &data, Person::Data data_name) const {
+  return FunctionCheck::items.at(data_name)(data);
+}

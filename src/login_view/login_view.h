@@ -1,12 +1,11 @@
 #pragma once
 
 #include "../custom_entry_line/entry_line.h"
+#include "../custom_label_entry_box/custom_label_entry_box.h"
 #include "../custom_list/custom_list.h"
 #include "../data/config_file.h"
 #include "../image_button/image_button.h"
 #include "../image_label/image_label.h"
-#include "../login_entry_line/login_entry_line.h"
-#include "../password_entry_line/password_entry_line.h"
 #include "../text_button/text_button.h"
 #include "../text_label/text_label.h"
 
@@ -31,27 +30,19 @@ class LoginView : public QObject {
       };
   QWidget main_widget;     ///< main widget on which everything will be placed
   QVBoxLayout main_layout; ///< main layout of main_widget
-  ImageLabel main_image_label; ///< label with app sign
-  TextLabel login_label;       ///< label with some text - LOGIN
-  TextLabel password_label;    ///< label with some text - PASSWORD
-  LoginLineEntry login_entry;  ///< entryline where user will write their login
-  ImageButton image_label;
-  PasswordEntryLine
-      password_entry; ///< entryline where user will write their password
+  ImageLabel main_image_label;        ///< label with app sign
+  LabelEntryBox entry_line_box_login; ///< entryline with label box for login
+  LabelEntryBox
+      entry_line_box_password; ///< entryline with label box for password
+  ImageButton image_button;
   TextButton
       submit_button; ///< button which checks correctness of email and password
   TextButton clear_button; ///< button with clicked signal which clear lineedits
-  /**
-   * @brief creating_log_layout private method which create horizontal layout
-   * for password and login
-   * @param login_status enum status which defines password or login
-   * @param margin margins of qhboxlayout, defaulty set to {60,0,60,0}
-   * @return instance of QHBoxLayout
-   */
-  QHBoxLayout *
-  creating_log_layout(EntryLine::Status login_status,
-                      const QMargins &margin = WidgetData::DEFAULT_MARGINS);
 
+  /**
+   * @brief create_main_vboxlayout method which create login and password boxes
+   */
+  void create_main_vboxlayout();
   /**
    * @brief creating_buttons_layout private method which create horizontal
    * layout clear and submit button
@@ -62,15 +53,6 @@ class LoginView : public QObject {
   QHBoxLayout *
   creating_buttons_layout(const std::map<QString, QString> &logs_map,
                           const QMargins &margin = WidgetData::DEFAULT_MARGINS);
-
-  /**
-   * @brief change_color method which changes color of item on the gived period
-   * @param lineedit sign of widget/widgets which will be changed
-   * @param miliseconds_sleep time on which item will change its color
-   * @param change_color color which will replace current one
-   */
-  void change_color(ENTRIES_SIGNS lineedit, int miliseconds_sleep,
-                    const QString &change_color);
 
 public:
   /**
@@ -97,4 +79,14 @@ public slots:
    * password
    */
   void submit_function(const std::map<QString, QString> &logs_map);
+
+  /**
+   * @brief set_to_visible method which sets password to normal mode
+   */
+  void set_to_visible();
+
+  /**
+   * @brief set_to_hidden method which sets password to password mode
+   */
+  void set_to_hidden();
 };
