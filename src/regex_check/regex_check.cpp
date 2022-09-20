@@ -1,10 +1,12 @@
 #include "regex_check.h"
 #include "../data/config_file.h"
+#include "../person/person.h"
 
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
 #include <algorithm>
+#include <map>
 #include <regex>
 
 bool is_email_valid(const QString &email) {

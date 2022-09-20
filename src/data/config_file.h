@@ -44,9 +44,13 @@ constexpr int MAX_PERSON_NUM = 100;
 namespace Colors {
 constexpr char RED[] = "red";
 constexpr char GREEN[] = "green";
+constexpr char DEFAULT[] = "";
+constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr int LOGIN_BOX_HEIGHT = 40;
+constexpr int SEE_BUTTON_HEIGHT = 50;
 constexpr QRect TAB_WIDGET_POSITION = {100, 100, 700, 700};
 constexpr QMargins DEFAULT_TEXT_MARGINS = {10, 5, 5, 5};
 constexpr int LOGIN_LABEL_WIDTH =
@@ -58,6 +62,8 @@ constexpr int BUTTONS_SPACING =
     100; ///< spacing beetween clear and submit button
 constexpr int LOGS_SPACING =
     20; ///< spacing beetween entry and label in logs panel
+constexpr int REGISTER_SPACING =
+    10; ///< spacing beetween entry and label in register panel
 constexpr QMargins REGISTER_BOX_MARGINS = {30, 0, 30, 0};
 constexpr QMargins BUTTONS_MARGINS = {100, 0, 100,
                                       0}; ///< margins of buttons layout
@@ -76,8 +82,11 @@ constexpr QMargins DEFAULT_MARGINS = {
     60, 0, 60, 0}; ///< Default values of margins of main layout
 constexpr int DEFAULT_FONT_SIZE = 14;
 constexpr int DEFAULT_WIDTH = 150;
+constexpr char DISCARD_NAME[] = "DISCARD";
+constexpr char SAVE_NAME[] = "SAVE";
+constexpr char CHANGE_NAME[] = "CHANGE";
 } // namespace WidgetData
 
 namespace Regex {
 constexpr char EMAIL_CHECK[] = ".*@.*\\.(com|pl|eu)";
-}
+} // namespace Regex

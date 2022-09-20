@@ -82,8 +82,13 @@ QLabel#textlabel{
 
 QLabel#imagelabel{
     background-color: #a5a4a4;
-    border-radius: 3px;
-    border: 2px solid rgb(161, 40, 40);
+    /*border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);*/
+}
+QPushButton#imagebutton{
+    background-color: #a5a4a4;
+    /*border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);*/
 }
 
 QPushButton#textbutton{

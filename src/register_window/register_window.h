@@ -1,22 +1,24 @@
 #pragma once
 
 #include "../custom_entry_line/entry_line.h"
+#include "../custom_label_entry_box/custom_label_entry_box.h"
 #include "../custom_list/custom_list.h"
 #include "../data/config_file.h"
 #include "../image_label/image_label.h"
 #include "../text_button/text_button.h"
 #include "../text_label/text_label.h"
-
 #include <QObject>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <map>
+#include <memory>
+#include <vector>
 
 class RegisterWindow : public QObject {
 public:
   enum class Entries {
-    NAME,
+    NAME = 0,
     SURNAME,
     AGE,
     COUNTRY,
@@ -33,9 +35,7 @@ private:
   };                       ///< enum class which defines type of entry
   QWidget main_widget;     ///< main widget on which everything will be placed
   QVBoxLayout main_layout; ///< main layout of main_widget
-  std::map<Entries, std::pair<TextLabel *, EntryLine *>>
-      items_map; ///< cpp map with every box in which user will fill data about
-                 ///< yourself
+  std::map<Entries, std::unique_ptr<LabelEntryBox>> items;
   ImageLabel title_label;     ///< title label with app main image
   TextButton clear_button;    ///< button which clears every entryline
   TextButton register_button; ///< register button which saves the entered data
@@ -48,6 +48,7 @@ private:
    */
   QHBoxLayout *
   creating_buttons_layout(const QMargins &margin = WidgetData::DEFAULT_MARGINS);
+
   /**
    * @brief creating_entries_layout method which create layout with entries
    * @return pointer to layout
@@ -55,13 +56,23 @@ private:
   QVBoxLayout *creating_entries_layout();
 
   /**
-   * @brief create_entry_box method which creats entry with label
-   * @param entry_name name of entry
-   * @param type type of entry, normal or password
-   * @return instance of layout which contain label and entry
+   * @brief create_custom_entry_box
+   * @param entry_name Entries sign specified to type of entry
+   * @param style status of entry, normal or password
+   * @return
    */
-  QHBoxLayout *create_entry_box(Entries entry_name,
-                                Entry_Style type = Entry_Style::NORMAL);
+  QHBoxLayout *
+  create_custom_entry_box(Entries entry_name,
+                          EntryLine::Status style = EntryLine::Status::NORMAL);
+
+  /**
+   * @brief make_vector method which creates vector of entries from entry sign
+   * vector
+   * @param list vector of entry type signs
+   * @return vector with pointers to Entrylines
+   */
+  template <typename T>
+  std::vector<EntryLine *> make_vector(std::vector<T> list);
 
 public:
   /**
@@ -89,8 +100,6 @@ public:
    * @param miliseconds_sleep period on which new color will be applied
    * @param change_color new color of widget
    */
-  void change_color(std::vector<Entries> il, int miliseconds_sleep,
-                    const QString &change_color);
 
 public slots:
 

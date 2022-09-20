@@ -69,9 +69,7 @@ public:
     translations = word.translations;
     translations_dates = word.translations_dates;
   }
-  ~Word() {
-    //      qDebug() << "destructor";
-  } // cel edukacyjny
+
   /**
    * @brief Word contructor
    * @param language language in which word_base is given
