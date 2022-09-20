@@ -82,6 +82,16 @@ QLabel#textlabel{
 
 QLabel#imagelabel{
     background-color: #a5a4a4;
+
+    /*border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);*/
+}
+QMessageBox#messagebox QLabel#qt_msgbox_label{
+    background-color: rgb(32, 37, 87);
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+    padding: 5px;
     /*border-radius: 3px;
     border: 2px solid rgb(161, 40, 40);*/
 }
@@ -104,5 +114,22 @@ QPushButton:hover#textbutton{
 }
 
 QPushButton#textbutton:pressed{
+    background-color: rgb(161, 40, 40);
+}
+
+QMessageBox#messagebox QPushButton{
+    background-color: #804502;
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+    padding: 3px;
+}
+
+
+QMessageBox#messagebox QPushButton:hover{
+    background-color: #b86405;
+}
+
+QMessageBox#messagebox QPushButton:pressed{
     background-color: rgb(161, 40, 40);
 }

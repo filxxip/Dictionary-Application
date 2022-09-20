@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME}
     src/custom_list/custom_list.cpp
     src/data/setting_person_list.cpp
     src/date/current_date.cpp
-#    src/data/searched_regex.cpp
+    src/main_class/main_class.cpp
     src/custom_entry_line/entry_line.cpp
     src/custom_widget/custom_widget.cpp
     src/text_label/text_label.cpp
@@ -29,6 +29,7 @@ add_executable(${PROJECT_NAME}
     src/person_data_window/person_data_window.cpp
     src/custom_label_entry_box/custom_label_entry_box.cpp
     src/change_color/change_color.cpp
+    src/custom_message_box/custom_message_box.cpp
     main.cpp
 )
 

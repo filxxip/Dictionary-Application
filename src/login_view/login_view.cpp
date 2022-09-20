@@ -3,6 +3,7 @@
 #include "../data/config_file.h"
 #include "../delay/delay.h"
 #include "../image_button/image_button.h"
+#include "../person_data_window/person_data_window.h"
 
 #include <QDebug>
 #include <QObject>
@@ -16,8 +17,8 @@ constexpr char VISIBLE_PASS_ICON[] = "images/eye2.png";
 constexpr char MAIN_IMAGE[] = "images/dict.png";
 } // namespace
 
-LoginView::LoginView(const std::map<QString, QString> &logs_map)
-    : QObject(),
+LoginView::LoginView(const CustomList &list)
+    : QObject(), user_list(list),
       main_image_label(ImageLabel(&main_widget, MAIN_IMAGE,
                                   Displays::DisplayStyle::CHANGED_WIDTH,
                                   WidgetData::IMAGE_HEIGHT)),
@@ -34,7 +35,7 @@ LoginView::LoginView(const std::map<QString, QString> &logs_map)
       clear_button(&main_widget, WidgetData::CLEAR_BUTTON_TEXT) {
   create_main_vboxlayout();
   auto buttons_layout =
-      creating_buttons_layout(logs_map, WidgetData::BUTTONS_MARGINS);
+      creating_buttons_layout(user_list, WidgetData::BUTTONS_MARGINS);
   main_layout.addLayout(buttons_layout);
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
   main_widget.setLayout(&main_layout);
@@ -42,16 +43,17 @@ LoginView::LoginView(const std::map<QString, QString> &logs_map)
 
 QWidget *LoginView::get_widget() { return &main_widget; }
 
-QHBoxLayout *
-LoginView::creating_buttons_layout(const std::map<QString, QString> &logs_map,
-                                   const QMargins &margin) {
+QHBoxLayout *LoginView::creating_buttons_layout(const CustomList &list,
+                                                const QMargins &margin) {
   auto layout = new QHBoxLayout;
   layout->addWidget(&submit_button);
   layout->addWidget(&clear_button);
+  //  auto email = list.get_logs_data();
   QObject::connect(
       &submit_button, &QPushButton::pressed, this,
-      [logs_map, this]() { // dlaczego dziala przez kopie a przez referencje nie
-        this->submit_function(logs_map);
+      [&list, this]() { // dlaczego dziala przez kopie a przez referencje nie,
+                        // poniewaz byl to obiekt tymczasowy i zapomnial o nim
+        this->submit_function(list.get_logs_data());
       });
   QObject::connect(&clear_button, &QPushButton::pressed, this,
                    &LoginView::clear_function);
@@ -95,6 +97,7 @@ void LoginView::submit_function(const std::map<QString, QString> &logs_map) {
       change_color({entry_line_box_login.get_entryline(),
                     entry_line_box_password.get_entryline()},
                    Colors::GREEN, 1500);
+      emit data_window_create(entry_line_box_login.get_text());
     }
   }
 }

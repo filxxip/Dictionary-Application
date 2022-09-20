@@ -28,6 +28,7 @@ class LoginView : public QObject {
         LOGIN,    ///< login entry
         BOTH      ///< password and login entries
       };
+  const CustomList &user_list; ///< list with all data about each person
   QWidget main_widget;     ///< main widget on which everything will be placed
   QVBoxLayout main_layout; ///< main layout of main_widget
   ImageLabel main_image_label;        ///< label with app sign
@@ -51,7 +52,7 @@ class LoginView : public QObject {
    * @return instance of QHBoxLayout
    */
   QHBoxLayout *
-  creating_buttons_layout(const std::map<QString, QString> &logs_map,
+  creating_buttons_layout(const CustomList &list,
                           const QMargins &margin = WidgetData::DEFAULT_MARGINS);
 
 public:
@@ -59,7 +60,7 @@ public:
    * @brief LoginView constructor method
    * @param logs_map map with email as key, password as value
    */
-  LoginView(const std::map<QString, QString> &logs_map);
+  LoginView(const CustomList &list);
 
   /**
    * @brief get_widget method which returns pointer to main_widget
@@ -89,4 +90,6 @@ public slots:
    * @brief set_to_hidden method which sets password to password mode
    */
   void set_to_hidden();
+signals:
+  void data_window_create(const QString &text);
 };

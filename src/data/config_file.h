@@ -49,6 +49,7 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr int MSGBOX_IMAGE_SIZE = 50;
 constexpr int LOGIN_BOX_HEIGHT = 40;
 constexpr int SEE_BUTTON_HEIGHT = 50;
 constexpr QRect TAB_WIDGET_POSITION = {100, 100, 700, 700};
@@ -90,3 +91,10 @@ constexpr char CHANGE_NAME[] = "CHANGE";
 namespace Regex {
 constexpr char EMAIL_CHECK[] = ".*@.*\\.(com|pl|eu)";
 } // namespace Regex
+
+namespace Titles {
+constexpr char LOGIN[] = "log in";
+constexpr char REGISTER[] = "register";
+constexpr char DATA[] = "data";
+
+} // namespace Titles

@@ -2,6 +2,7 @@
 
 #include "../custom_label_entry_box/custom_label_entry_box.h"
 #include "../dictionary/dictionary.h"
+#include "../image_button/image_button.h"
 #include "../register_window/register_window.h"
 
 #include <memory>
@@ -15,10 +16,11 @@ private:
       items_map; ///< cpp map with every box in which user will fill data about
                  ///< yourself
   ImageLabel title_label;    ///< title label with app main image
-  Person &person;            ///< custom person instance with data of user
+  Person *person;            ///< custom person instance with data of user
   TextButton changes_button; ///< button which is responsible for possibility of
                              ///< doing changes in data
   TextButton savebutton;     ///< button which is responsible for saving changes
+  ImageButton exit_button;   ///< button which is responsible for logging out
 
   /**
    * @brief creating_buttons_layout private method which create horizontal
@@ -56,15 +58,26 @@ private:
 public:
   /**
    * @brief PersonDataWindow constructor method
-   * @param user user which data will be placed on window
    */
-  PersonDataWindow(Person &user);
+  PersonDataWindow();
 
   /**
    * @brief get_widget method which provides main widget
    * @return pointer to QWidget class instance
    */
   QWidget *get_widget();
+
+  /**
+   * @brief set_person method which sets new person
+   * @param person_pointer pointer to person whose data should be set
+   */
+  void set_person(Person *person_pointer);
+
+  /**
+   * @brief get_exit_button method which provides button
+   * @return reference to exit button
+   */
+  ImageButton &get_exit_button();
 
 public slots:
 

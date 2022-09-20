@@ -6,7 +6,10 @@
 #include <algorithm>
 #include <exception>
 #include <map>
-CustomList::CustomList() { person_list_reserve(MaxValues::MAX_PERSON_NUM); }
+CustomList::CustomList() {
+  person_list_reserve(MaxValues::MAX_PERSON_NUM);
+  create_from_json();
+}
 
 void CustomList::add_person(const Person &new_person) {
   auto index = std::find(person_list.begin(), person_list.end(), new_person);
