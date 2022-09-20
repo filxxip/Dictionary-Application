@@ -10,9 +10,15 @@
 #include <QTime>
 #include <QTimer>
 
+namespace {
+constexpr char HIDDEN_PASS_ICON[] = "images/eye.png";
+constexpr char VISIBLE_PASS_ICON[] = "images/eye2.png";
+constexpr char MAIN_IMAGE[] = "images/dict.png";
+} // namespace
+
 LoginView::LoginView(const std::map<QString, QString> &logs_map)
     : QObject(),
-      main_image_label(ImageLabel(&main_widget, "images/dict.png",
+      main_image_label(ImageLabel(&main_widget, MAIN_IMAGE,
                                   Displays::DisplayStyle::CHANGED_WIDTH,
                                   WidgetData::IMAGE_HEIGHT)),
       entry_line_box_login(&main_widget, WidgetData::LOGIN_LABEL_TEXT,
@@ -21,7 +27,7 @@ LoginView::LoginView(const std::map<QString, QString> &logs_map)
       entry_line_box_password(&main_widget, WidgetData::PASSWORD_LABEL_TEXT,
                               Placeholders::PASSWORD_PLAHOLDER,
                               EntryLine::Status::PASSWORD),
-      image_button(&main_widget, "images/eye.png",
+      image_button(&main_widget, HIDDEN_PASS_ICON,
                    Displays::DisplayStyle::CHANGED_WIDTH,
                    WidgetData::SEE_BUTTON_HEIGHT),
       submit_button(&main_widget, WidgetData::SUBMIT_BUTTON_TEXT),
@@ -96,12 +102,12 @@ void LoginView::submit_function(const std::map<QString, QString> &logs_map) {
 void LoginView::set_to_visible() {
   entry_line_box_password.get_entryline()->set_text_status(
       EntryLine::Status::NORMAL);
-  image_button.change_image("images/eye2.png");
+  image_button.change_image(VISIBLE_PASS_ICON);
 }
 void LoginView::set_to_hidden() {
   entry_line_box_password.get_entryline()->set_text_status(
       EntryLine::Status::PASSWORD);
-  image_button.change_image("images/eye.png");
+  image_button.change_image(HIDDEN_PASS_ICON);
 }
 void LoginView::create_main_vboxlayout() {
   entry_line_box_login.set_label_width(WidgetData::LOGIN_LABEL_WIDTH);

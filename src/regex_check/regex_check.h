@@ -6,6 +6,7 @@
 
 #include <QString>
 
+#include <functional>
 #include <map>
 
 /**
@@ -65,12 +66,24 @@ bool is_country_valid(const QString &country);
 bool is_school_valid(const QString &name);
 
 namespace FunctionCheck {
-const std::map<Person::Data, bool (*)(const QString &)> items = {
+// const std::map<Person::Data, bool (*)(const QString &)> items = {
+//    {Person::Data::NAME, is_name_valid},
+//    {Person::Data::SURNAME, is_surname_valid},
+//    {Person::Data::AGE, is_age_valid},
+//    {Person::Data::COUNTRY, is_country_valid},
+//    {Person::Data::PASSWORD, is_password_valid},
+//    {Person::Data::SCHOOL, is_school_valid},
+//    {Person::Data::EMAIL, is_email_valid}};
+// using func = std::function<bool(const QString &)>;
+// std::function<bool(const QString &)> age_valid =
+//    static_cast<bool (*)(const QString &)>(is_age_valid);
+typedef std::function<bool(const QString &)> func;
+const std::map<Person::Data, func> items{
     {Person::Data::NAME, is_name_valid},
     {Person::Data::SURNAME, is_surname_valid},
-    {Person::Data::AGE, is_age_valid},
     {Person::Data::COUNTRY, is_country_valid},
     {Person::Data::PASSWORD, is_password_valid},
     {Person::Data::SCHOOL, is_school_valid},
-    {Person::Data::EMAIL, is_email_valid}};
-}
+    {Person::Data::EMAIL, is_email_valid},
+    {Person::Data::AGE, static_cast<bool (*)(const QString &)>(is_age_valid)}};
+} // namespace FunctionCheck

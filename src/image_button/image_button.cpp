@@ -80,6 +80,7 @@ void ImageButton::set_position(int position_x, int position_y) {
 const QString &ImageButton::get_image() { return image_source; }
 
 void ImageButton::change_image(const QString &new_path) {
+  image_source = new_path;
   auto current_size = size();
   auto new_pixmap = QPixmap("../" + new_path);
   auto new_icon = QIcon(new_pixmap);

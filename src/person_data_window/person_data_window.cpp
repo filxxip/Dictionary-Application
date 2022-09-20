@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QStyle>
 namespace {
+constexpr char MAIN_IMAGE[] = "images/dict.png";
+
 const std::map<Person::Data, QString> entries_boxes_values = {
     {Person::Data::NAME, Json::NAME},
     {Person::Data::SURNAME, Json::SURNAME},
@@ -15,9 +17,9 @@ const std::map<Person::Data, QString> entries_boxes_values = {
     {Person::Data::PASSWORD, Json::PASSWORD}}; ///< map with entries sign as key
                                                ///< and its components as value
                                                ///< (pair)
-}
+} // namespace
 PersonDataWindow::PersonDataWindow(Person &user)
-    : QObject(), title_label(ImageLabel(&main_widget, "images/dict.png",
+    : QObject(), title_label(ImageLabel(&main_widget, MAIN_IMAGE,
                                         Displays::DisplayStyle::CHANGED_WIDTH,
                                         WidgetData::IMAGE_HEIGHT)),
       person(user), changes_button(&main_widget, WidgetData::CHANGE_NAME),
@@ -142,11 +144,9 @@ void PersonDataWindow::every_change_event(Person::Data entry_enum) {
   auto entry = items_map.at(entry_enum)->get_entryline();
   auto text = entry->text();
   if (text != person.get_data(entry_enum)) {
-    if (person.is_valid_data(text, entry_enum)) {
-      change_color({entry}, Colors::GREEN);
-    } else {
-      change_color({entry}, Colors::RED);
-    }
+    auto color =
+        person.is_valid_data(text, entry_enum) ? Colors::GREEN : Colors::RED;
+    change_color({entry}, color);
   } else {
     change_color({entry}, Colors::DEFAULT);
   }

@@ -14,6 +14,7 @@
 #include <vector>
 
 namespace {
+constexpr char MAIN_IMAGE[] = "images/dict.png";
 
 const std::map<RegisterWindow::Entries, std::pair<QString, QString>>
     entries_boxes_values = {
@@ -34,7 +35,7 @@ const std::map<RegisterWindow::Entries, std::pair<QString, QString>>
 } // namespace
 
 RegisterWindow::RegisterWindow(CustomList &main_list)
-    : QObject(), title_label(ImageLabel(&main_widget, "images/dict.png",
+    : QObject(), title_label(ImageLabel(&main_widget, MAIN_IMAGE,
                                         Displays::DisplayStyle::CHANGED_WIDTH,
                                         WidgetData::IMAGE_HEIGHT)),
       clear_button(TextButton(&main_widget, WidgetData::CLEAR_BUTTON_TEXT)),

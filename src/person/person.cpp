@@ -134,31 +134,31 @@ void Person::set_data(const QString &data, Person::Data data_name) {
   switch (data_name) {
   case Person::Data::NAME: {
     set_name(data);
-    return;
+    break;
   }
   case Person::Data::SURNAME: {
     set_surname(data);
-    return;
+    break;
   }
   case Person::Data::AGE: {
     set_age(data);
-    return;
+    break;
   }
   case Person::Data::EMAIL: {
     set_email(data);
-    return;
+    break;
   }
   case Person::Data::PASSWORD: {
     set_password(data);
-    return;
+    break;
   }
   case Person::Data::COUNTRY: {
     set_country(data);
-    return;
+    break;
   }
   case Person::Data::SCHOOL: {
     set_school(data);
-    return;
+    break;
   }
   }
 }
