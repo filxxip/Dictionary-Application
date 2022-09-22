@@ -30,6 +30,8 @@ add_executable(${PROJECT_NAME}
     src/custom_label_entry_box/custom_label_entry_box.cpp
     src/change_color/change_color.cpp
     src/custom_message_box/custom_message_box.cpp
+    src/custom_completer/custom_completer.cpp
+    src/wordlist_widget/wordlist_widget.cpp
     main.cpp
 )
 

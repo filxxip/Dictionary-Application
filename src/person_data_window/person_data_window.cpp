@@ -26,7 +26,8 @@ PersonDataWindow::PersonDataWindow()
       person(nullptr), changes_button(&main_widget, WidgetData::CHANGE_NAME),
       savebutton(&main_widget, WidgetData::SAVE_NAME),
       exit_button(&main_widget, EXIT_IMAGE,
-                  Displays::DisplayStyle::SCALED_WIDTH, 45) {
+                  Displays::DisplayStyle::SCALED_WIDTH,
+                  WidgetData::EXIT_HEIGHT) {
   main_layout.addWidget(&title_label);
   QHBoxLayout *buttons_lay = creating_buttons_layout();
   QVBoxLayout *entries_lay = creating_entries_layout();
@@ -34,7 +35,8 @@ PersonDataWindow::PersonDataWindow()
   main_layout.addLayout(buttons_lay);
   main_widget.setLayout(&main_layout);
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
-  exit_button.set_position(630, 600);
+  exit_button.set_position(WidgetData::EXIT_POSITION_X,
+                           WidgetData::EXIT_POSITION_Y);
 }
 
 QWidget *PersonDataWindow::get_widget() { return &main_widget; }

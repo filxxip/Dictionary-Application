@@ -8,7 +8,9 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   MainClass main(app);
   auto list = main.get_list();
+  qDebug() << "hello";
   const int retval = app.exec();
+
   list.update_json();
   return retval;
 }

@@ -1,12 +1,17 @@
 #include "login_view.h"
 #include "../change_color/change_color.h"
+#include "../custom_completer/custom_completer.h"
 #include "../data/config_file.h"
 #include "../delay/delay.h"
 #include "../image_button/image_button.h"
 #include "../person_data_window/person_data_window.h"
 
+#include <QAbstractItemView>
+#include <QCompleter>
 #include <QDebug>
 #include <QObject>
+#include <QStringList>
+#include <QStringListModel>
 #include <QStyle>
 #include <QTime>
 #include <QTimer>
@@ -32,13 +37,26 @@ LoginView::LoginView(const CustomList &list)
                    Displays::DisplayStyle::CHANGED_WIDTH,
                    WidgetData::SEE_BUTTON_HEIGHT),
       submit_button(&main_widget, WidgetData::SUBMIT_BUTTON_TEXT),
-      clear_button(&main_widget, WidgetData::CLEAR_BUTTON_TEXT) {
+      clear_button(&main_widget, WidgetData::CLEAR_BUTTON_TEXT),
+      completer(&main_widget, list.get_emails_list()) {
+  entry_line_box_login.get_entryline()->setCompleter(&completer);
+  QObject::connect(entry_line_box_login.get_entryline(),
+                   &QLineEdit::textChanged, this, &LoginView::entry_changed);
   create_main_vboxlayout();
   auto buttons_layout =
       creating_buttons_layout(user_list, WidgetData::BUTTONS_MARGINS);
   main_layout.addLayout(buttons_layout);
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
   main_widget.setLayout(&main_layout);
+}
+
+void LoginView::entry_changed() {
+  if (completer.get_status() == CustomCompleter::Status::NO_RESULTS) {
+    std::vector<EntryLine *> entries = {
+        entry_line_box_login.get_entryline(),
+        entry_line_box_password.get_entryline()};
+    change_color(entries, Colors::RED, 1500);
+  }
 }
 
 QWidget *LoginView::get_widget() { return &main_widget; }
@@ -85,11 +103,12 @@ void LoginView::submit_function(const std::map<QString, QString> &logs_map) {
                  Colors::RED, 1500);
 
   } else {
-    auto index_pass = std::find_if(
-        logs_map.begin(), logs_map.end(),
-        [&password](const auto &pair) { // nie dziala mi structure bindings
-          return pair.second == password;
-        });
+    auto index_pass =
+        std::find_if(logs_map.begin(), logs_map.end(),
+                     [&password, &email](
+                         const auto &pair) { // nie dziala mi structure bindings
+                       return email == pair.first && pair.second == password;
+                     });
     if (index_pass == logs_map.end()) {
       change_color({entry_line_box_password.get_entryline()}, Colors::RED,
                    1500);
@@ -107,11 +126,13 @@ void LoginView::set_to_visible() {
       EntryLine::Status::NORMAL);
   image_button.change_image(VISIBLE_PASS_ICON);
 }
+
 void LoginView::set_to_hidden() {
   entry_line_box_password.get_entryline()->set_text_status(
       EntryLine::Status::PASSWORD);
   image_button.change_image(HIDDEN_PASS_ICON);
 }
+
 void LoginView::create_main_vboxlayout() {
   entry_line_box_login.set_label_width(WidgetData::LOGIN_LABEL_WIDTH);
   entry_line_box_password.set_label_width(WidgetData::PASSWORD_LABEL_WIDTH);
@@ -128,3 +149,5 @@ void LoginView::create_main_vboxlayout() {
                    &LoginView::set_to_hidden); // wpieprzyc w jedna fcje
   main_layout.addLayout(password_box);
 }
+
+const CustomCompleter &LoginView::get_completer() const { return completer; }

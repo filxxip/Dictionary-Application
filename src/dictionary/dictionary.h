@@ -11,6 +11,7 @@ class Dictionary {
 private:
   std::vector<Word> wordlist; ///< vector with Word class instances
   Person *owner;              ///< pointer to owner of this dictionary
+  QString name;               ///< unique name of dictionary
 public:
   /**
    * @brief Dictionary copy constructor
@@ -23,14 +24,15 @@ public:
    * @brief Dictionary constructor
    * @param owner_ instance of Person class
    */
-  Dictionary(Person *owner_);
+  Dictionary(Person *owner_, QString name_ = "");
 
   /**
    * @brief Dictionary constructor
    * @param owner_ instance of Person class
    * @param wordlist_ptr vector with unique pointers to instance of Word class
    */
-  Dictionary(Person *owner_, const std::vector<Word> &wordlist_ptr);
+  Dictionary(Person *owner_, const std::vector<Word> &wordlist_ptr,
+             QString name_ = "");
 
   /**
    * @brief get_number_of_words method which returns number of words in
@@ -38,6 +40,14 @@ public:
    * @return number of words in dictionary
    */
   int get_number_of_words();
+
+  /**
+   * @brief get_number_of_words method which returns number of words in
+   * dictionary in given language
+   * @param language specific language
+   * @return number of words in specific language
+   */
+  int get_number_of_words(Word::Language language);
 
   /**
    * @brief get_person method which provides the owner of dictionary
@@ -121,4 +131,9 @@ public:
    */
   const std::vector<Word> regex_search(const QString &regex,
                                        Word::Language language1);
+  /**
+   * @brief get_name method which provides name of dictionary
+   * @return qstring instance with name of dictionary
+   */
+  QString get_name() { return name; }
 };

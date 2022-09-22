@@ -78,15 +78,18 @@ void create_dictionary_list(CustomList &list) {
     auto &owner = list.get_person(email);
     auto email_dictionaries_data = json_object.take(email).toArray();
     for (const auto &dictionary : email_dictionaries_data) {
-      Dictionary dict(&owner);
-      for (const auto &word_data : dictionary.toArray()) {
+      auto dict_list = dictionary.toObject();
+      auto name = dict_list.take(Json::NAME_JSON).toString();
+      auto wordlista = dict_list.take(Json::WORDLIST_JSON).toArray();
+      Dictionary dict(&owner, name);
+      for (const auto &word_data : wordlista) {
         auto word_data_object = word_data.toObject();
         for (int value = static_cast<int>(Word::Language::ENGLISH);
              value <= static_cast<int>(Word::Language::GERMAN); value++) {
           auto language = static_cast<Word::Language>(value);
           auto language_string = Word::Language_names.at(language);
           auto word_trans_date =
-              word_data_object.take(language_string).toArray();
+              word_data_object.find(language_string)->toArray();
           auto word_translation = word_trans_date.at(0).toString();
           auto word_date = word_trans_date.at(1).toString();
           auto word_prioritity = word_trans_date.at(2).toString();
@@ -99,7 +102,6 @@ void create_dictionary_list(CustomList &list) {
         }
         dict.add_word(word);
       }
-
       dictionaries.push_back(dict);
     }
   }
@@ -115,6 +117,7 @@ void update_json_dictionary_file(std::vector<Dictionary> &dictionaries) {
   QJsonObject main_object;
   for (auto &dictionary : dictionaries) {
     auto &user_mail = dictionary.get_person()->get_email();
+    auto name = dictionary.get_name();
     QJsonObject::iterator mail_exists;
     if (main_object.isEmpty()) {
       mail_exists = main_object.end();
@@ -122,11 +125,13 @@ void update_json_dictionary_file(std::vector<Dictionary> &dictionaries) {
       mail_exists = main_object.find(user_mail);
     }
     if (mail_exists == main_object.end()) {
-      QJsonArray main_array;
-      main_object.insert(user_mail, main_array);
+      QJsonArray main_dictionary_list;                     // r
+      main_object.insert(user_mail, main_dictionary_list); // r
     }
-    QJsonArray dictionary_array;
+    QJsonObject dictionary_array;
+    dictionary_array.insert(Json::NAME_JSON, name);
     auto &wordlist = dictionary.get_full_wordlist();
+    QJsonArray full_wordlist;
     for (const auto &word : wordlist) {
       QJsonObject word_data;
       for (int value = static_cast<int>(Word::Language::ENGLISH);
@@ -142,8 +147,9 @@ void update_json_dictionary_file(std::vector<Dictionary> &dictionaries) {
         result_word_array.append(prioritity_as_string);
         word_data.insert(language_string, result_word_array);
       }
-      dictionary_array.append(word_data);
+      full_wordlist.append(word_data);
     }
+    dictionary_array.insert(Json::WORDLIST_JSON, full_wordlist);
     auto value = main_object.take(user_mail).toArray();
     value.append(dictionary_array);
     main_object.insert(user_mail, value);

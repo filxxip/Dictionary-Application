@@ -86,3 +86,24 @@ const std::map<QString, QString> CustomList::get_logs_data() const {
   }
   return logs;
 }
+
+const std::vector<QString> CustomList::get_emails_list() const {
+  std::vector<QString> list;
+  for (auto &person : person_list) {
+    list.push_back(person.get_email());
+  }
+  return list;
+}
+
+std::vector<Dictionary *>
+CustomList::get_dictionary_list(const QString &email) {
+  std::vector<Dictionary *> dictionary_list_result;
+  qDebug() << (dictionary_list.size());
+  for (auto &dict : dictionary_list) {
+    auto dict_email = dict.get_person()->get_email();
+    if (dict_email == email) {
+      dictionary_list_result.push_back(&dict);
+    }
+  }
+  return dictionary_list_result;
+}

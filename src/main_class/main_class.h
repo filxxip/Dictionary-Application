@@ -6,6 +6,7 @@
 #include "../login_view/login_view.h"
 #include "../person_data_window/person_data_window.h"
 #include "../register_window/register_window.h"
+#include "../wordlist_widget/wordlist_widget.h"
 
 /** Main Class which controls each part of app*/
 class MainClass : public QObject {
@@ -17,6 +18,7 @@ private:
   LoginView login_window;         ///< Personalize Login Window
   RegisterWindow register_window; ///< Personalize Register Window
   PersonDataWindow data_window;   ///< Personalize window about data of user
+  WordlistWindow wordlist_window; ///< Personalize window with wordlist
 
 public:
   /**
