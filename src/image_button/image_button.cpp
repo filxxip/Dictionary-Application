@@ -43,7 +43,7 @@ void ImageButton::scaled_to(int size,
   }
   }
   const auto &geo = geometry();
-  setGeometry(geo.x(), geo.y(), pixmap.width(), pixmap.height());
+  setGeometry(geo.x(), geo.y(), pixmap.width() - 1, pixmap.height() - 1);
   setIcon(icon);
 
   setIconSize(pixmap.size());

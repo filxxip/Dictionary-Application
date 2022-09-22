@@ -40,6 +40,14 @@ private:
   TextButton clear_button;    ///< button which clears every entryline
   TextButton register_button; ///< register button which saves the entered data
   CustomList &list; ///< custom list instance with data with every user
+
+  /**
+   * @brief create_error_msg method which create string with some error messages
+   * @param entries_vector vector with entries
+   * @return QString instance with some text
+   */
+  QString create_error_msg(std::vector<Entries> entries_vector);
+
   /**
    * @brief creating_buttons_layout private method which create horizontal
    * layout clear and submit button

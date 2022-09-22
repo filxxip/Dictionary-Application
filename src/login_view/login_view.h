@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../custom_completer/custom_completer.h"
 #include "../custom_entry_line/entry_line.h"
 #include "../custom_label_entry_box/custom_label_entry_box.h"
 #include "../custom_list/custom_list.h"
@@ -28,6 +29,7 @@ class LoginView : public QObject {
         LOGIN,    ///< login entry
         BOTH      ///< password and login entries
       };
+  const CustomList &user_list; ///< list with all data about each person
   QWidget main_widget;     ///< main widget on which everything will be placed
   QVBoxLayout main_layout; ///< main layout of main_widget
   ImageLabel main_image_label;        ///< label with app sign
@@ -38,6 +40,7 @@ class LoginView : public QObject {
   TextButton
       submit_button; ///< button which checks correctness of email and password
   TextButton clear_button; ///< button with clicked signal which clear lineedits
+  CustomCompleter completer; ///< completer with every email
 
   /**
    * @brief create_main_vboxlayout method which create login and password boxes
@@ -51,7 +54,7 @@ class LoginView : public QObject {
    * @return instance of QHBoxLayout
    */
   QHBoxLayout *
-  creating_buttons_layout(const std::map<QString, QString> &logs_map,
+  creating_buttons_layout(const CustomList &list,
                           const QMargins &margin = WidgetData::DEFAULT_MARGINS);
 
 public:
@@ -59,13 +62,19 @@ public:
    * @brief LoginView constructor method
    * @param logs_map map with email as key, password as value
    */
-  LoginView(const std::map<QString, QString> &logs_map);
+  LoginView(const CustomList &list);
 
   /**
    * @brief get_widget method which returns pointer to main_widget
    * @return pointer to QWidget class instance - main widget
    */
   QWidget *get_widget();
+
+  /**
+   * @brief get_completer method which provides completer
+   * @return CustomCompleter reference instance
+   */
+  const CustomCompleter &get_completer() const;
 
 public slots:
 
@@ -89,4 +98,9 @@ public slots:
    * @brief set_to_hidden method which sets password to password mode
    */
   void set_to_hidden();
+
+  void entry_changed();
+signals:
+
+  void data_window_create(const QString &text);
 };

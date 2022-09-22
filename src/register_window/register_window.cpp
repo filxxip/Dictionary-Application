@@ -1,6 +1,7 @@
 #include "register_window.h"
 #include "../change_color/change_color.h"
 #include "../custom_entry_line/entry_line.h"
+#include "../custom_message_box/custom_message_box.h"
 #include "../data/config_file.h"
 #include "../delay/delay.h"
 #include "../person/person.h"
@@ -15,6 +16,23 @@
 
 namespace {
 constexpr char MAIN_IMAGE[] = "images/dict.png";
+constexpr char MSG_TITLE[] = "NEW USER";
+constexpr char MSG_INFO[] = "Congratulation! you have created new user!";
+constexpr char MSG_TITLE_ERROR[] = "NEW USER";
+constexpr char MSG_INFO_ERROR[] = "You have written some incorrect data!";
+
+const std::map<RegisterWindow::Entries, QString> errors_text = {
+    {RegisterWindow::Entries::NAME, "Name cannot be empty."},
+    {RegisterWindow::Entries::SURNAME, "Surname cannot be empty."},
+    {RegisterWindow::Entries::AGE,
+     "Age cannot be lower than 0 or unconvertable to string."},
+    {RegisterWindow::Entries::COUNTRY, "Country cannot be empty."},
+    {RegisterWindow::Entries::EMAIL, "Email has to be in ***@***.com or "
+                                     "***@***.pl format, email must be unique"},
+    {RegisterWindow::Entries::SCHOOL, "School cannot be empty."},
+    {RegisterWindow::Entries::PASSWORD,
+     "Password has to contain minimum one capital letter."},
+    {RegisterWindow::Entries::REPEAT_PASSWORD, "Passwords aren't equal"}};
 
 const std::map<RegisterWindow::Entries, std::pair<QString, QString>>
     entries_boxes_values = {
@@ -149,11 +167,20 @@ void RegisterWindow::user_register() {
     list.add_person(person);
     auto v = make_vector<Entries>(
         {Entries::NAME, Entries::SCHOOL, Entries::SURNAME, Entries::EMAIL,
-         Entries::REPEAT_PASSWORD, Entries::REPEAT_PASSWORD, Entries::AGE});
-    change_color(v, Colors::GREEN, 100);
+         Entries::REPEAT_PASSWORD, Entries::PASSWORD, Entries::AGE,
+         Entries::COUNTRY, Entries::AGE});
+    change_color(v, Colors::GREEN, 1000);
+    CustomMessageBox msg(&main_widget, MSG_TITLE, MSG_INFO);
+    msg.run(CustomMessageBox::Type::Great);
+
     clear_method();
+  } else {
+    change_color(make_vector<Entries>(potential_errors), Colors::RED, 1000);
+    CustomMessageBox msg(&main_widget, MSG_TITLE_ERROR, MSG_INFO_ERROR);
+    auto error_msg = create_error_msg(potential_errors);
+    msg.create_detail_text(error_msg);
+    msg.run(CustomMessageBox::Type::Ok);
   }
-  change_color(make_vector<Entries>(potential_errors), Colors::RED, 1000);
 }
 
 EntryLine *RegisterWindow::get_line_edit(Entries entry_enum) {
@@ -170,4 +197,12 @@ std::vector<EntryLine *> RegisterWindow::make_vector(std::vector<T> list) {
     entrylines.push_back(lineedt);
   }
   return entrylines;
+}
+
+QString RegisterWindow::create_error_msg(std::vector<Entries> entries_vector) {
+  QString text;
+  for (auto entry : entries_vector) {
+    text += errors_text.at(entry) + "\n\n";
+  }
+  return text;
 }
