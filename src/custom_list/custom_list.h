@@ -87,5 +87,24 @@ public:
    */
   void dictionary_list_reserve(int value);
 
+  /**
+   * @brief get_logs_data method which provides map with emails as values and
+   * passwords as keys
+   * @return std::map instance with some data
+   */
   const std::map<QString, QString> get_logs_data() const;
+
+  /**
+   * @brief get_emails_list method which provides list with email of each user
+   * @return std::vector instance with emails of each user
+   */
+  const std::vector<QString> get_emails_list() const;
+
+  /**
+   * @brief get_dictionary_list method which returns list of dictionaries of
+   * person
+   * @param email unique email of person
+   * @return vector instance with pointers to dicts
+   */
+  std::vector<Dictionary *> get_dictionary_list(const QString &email);
 };

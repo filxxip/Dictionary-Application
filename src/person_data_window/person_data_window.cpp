@@ -6,6 +6,7 @@
 #include <QStyle>
 namespace {
 constexpr char MAIN_IMAGE[] = "images/dict.png";
+constexpr char EXIT_IMAGE[] = "images/exit.png";
 
 const std::map<Person::Data, QString> entries_boxes_values = {
     {Person::Data::NAME, Json::NAME},
@@ -18,12 +19,15 @@ const std::map<Person::Data, QString> entries_boxes_values = {
                                                ///< and its components as value
                                                ///< (pair)
 } // namespace
-PersonDataWindow::PersonDataWindow(Person &user)
+PersonDataWindow::PersonDataWindow()
     : QObject(), title_label(ImageLabel(&main_widget, MAIN_IMAGE,
                                         Displays::DisplayStyle::CHANGED_WIDTH,
                                         WidgetData::IMAGE_HEIGHT)),
-      person(user), changes_button(&main_widget, WidgetData::CHANGE_NAME),
-      savebutton(&main_widget, WidgetData::SAVE_NAME) {
+      person(nullptr), changes_button(&main_widget, WidgetData::CHANGE_NAME),
+      savebutton(&main_widget, WidgetData::SAVE_NAME),
+      exit_button(&main_widget, EXIT_IMAGE,
+                  Displays::DisplayStyle::SCALED_WIDTH,
+                  WidgetData::EXIT_HEIGHT) {
   main_layout.addWidget(&title_label);
   QHBoxLayout *buttons_lay = creating_buttons_layout();
   QVBoxLayout *entries_lay = creating_entries_layout();
@@ -31,6 +35,8 @@ PersonDataWindow::PersonDataWindow(Person &user)
   main_layout.addLayout(buttons_lay);
   main_widget.setLayout(&main_layout);
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
+  exit_button.set_position(WidgetData::EXIT_POSITION_X,
+                           WidgetData::EXIT_POSITION_Y);
 }
 
 QWidget *PersonDataWindow::get_widget() { return &main_widget; }
@@ -69,9 +75,11 @@ QHBoxLayout *PersonDataWindow::create_entry_box(Person::Data entry_name) {
   ptr->set_read_only(true);
   ptr->set_label_width(WidgetData::DEFAULT_WIDTH);
   items_map.insert({entry_name, std::move(ptr)});
-  set_person_data(entry_name);
+  //  set_person_data(entry_name);
   return layout;
 }
+
+ImageButton &PersonDataWindow::get_exit_button() { return exit_button; }
 
 void PersonDataWindow::change_button_function() {
   savebutton.setEnabled(true);
@@ -100,7 +108,7 @@ void PersonDataWindow::discard_changes() {
 
 void PersonDataWindow::set_person_data(Person::Data entry_name) {
   auto entry = get_line_edit(entry_name);
-  auto content = person.get_data(entry_name);
+  auto content = person->get_data(entry_name);
   entry->setText(content);
 }
 
@@ -111,11 +119,10 @@ EntryLine *PersonDataWindow::get_line_edit(Person::Data entry_enum) {
 
 void PersonDataWindow::save_function() {
   std::vector<Person::Data> potential_errors;
-
   for (int i = 0; i <= 6; i++) {
     auto name = static_cast<Person::Data>(i);
     auto text = get_line_edit(name)->text();
-    if (!person.is_valid_data(text, name)) {
+    if (!person->is_valid_data(text, name)) {
       potential_errors.push_back(name);
     }
   }
@@ -123,7 +130,7 @@ void PersonDataWindow::save_function() {
     for (int i = 0; i <= 6; i++) {
       auto name = static_cast<Person::Data>(i);
       auto text = get_line_edit(name)->text();
-      person.set_data(text, name);
+      person->set_data(text, name);
     }
     discard_changes();
   } else {
@@ -143,11 +150,18 @@ void PersonDataWindow::save_function() {
 void PersonDataWindow::every_change_event(Person::Data entry_enum) {
   auto entry = items_map.at(entry_enum)->get_entryline();
   auto text = entry->text();
-  if (text != person.get_data(entry_enum)) {
+  if (text != person->get_data(entry_enum)) {
     auto color =
-        person.is_valid_data(text, entry_enum) ? Colors::GREEN : Colors::RED;
+        person->is_valid_data(text, entry_enum) ? Colors::GREEN : Colors::RED;
     change_color({entry}, color);
   } else {
     change_color({entry}, Colors::DEFAULT);
+  }
+}
+
+void PersonDataWindow::set_person(Person *person_pointer) {
+  person = person_pointer;
+  for (auto &[name, entry_box] : items_map) {
+    set_person_data(name);
   }
 }

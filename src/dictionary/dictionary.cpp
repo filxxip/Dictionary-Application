@@ -9,10 +9,12 @@
 #include <numeric>
 #include <regex>
 
-Dictionary::Dictionary(Person *owner_) : owner(owner_) {}
+Dictionary::Dictionary(Person *owner_, QString name_)
+    : owner(owner_), name(name_) {}
 
-Dictionary::Dictionary(Person *owner_, const std::vector<Word> &wordlist_ptr)
-    : wordlist(wordlist_ptr), owner(owner_) {}
+Dictionary::Dictionary(Person *owner_, const std::vector<Word> &wordlist_ptr,
+                       QString name_)
+    : wordlist(wordlist_ptr), owner(owner_), name(name_) {}
 
 int Dictionary::get_number_of_words() { return wordlist.size(); }
 
@@ -72,7 +74,8 @@ const std::vector<Word> Dictionary::regex_search(const QString &regex,
 }
 
 Dictionary::Dictionary(const Dictionary &dictionary)
-    : wordlist(dictionary.wordlist), owner(dictionary.owner) {}
+    : wordlist(dictionary.wordlist), owner(dictionary.owner),
+      name(dictionary.name) {}
 
 std::vector<Word> Dictionary::get_specific_words(Word::Language language) {
   std::vector<Word> result;
@@ -107,4 +110,14 @@ const Person *Dictionary::get_person() const { return owner; }
 
 const std::vector<Word> &Dictionary::get_full_wordlist() const {
   return wordlist;
+}
+
+int Dictionary::get_number_of_words(Word::Language language) {
+  int number = 0;
+  for (auto &word : wordlist) {
+    if (word.is_defined(language)) {
+      number++;
+    }
+  }
+  return number;
 }
