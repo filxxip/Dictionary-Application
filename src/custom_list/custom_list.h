@@ -5,12 +5,14 @@
 
 #include "../dictionary/dictionary.h"
 #include "../person/person.h"
+#include "../wordlist_widget/wordlist_widget.h"
 
 /** CustomList class which contain all application users*/
-class CustomList {
+class CustomList : public QObject {
+  Q_OBJECT
 private:
   std::vector<Person> person_list; ///< list which contain every person in app
-  std::vector<Dictionary> dictionary_list;
+  std::vector<Dictionary> dictionary_list; ///< list which contains dictionaries
 
 public:
   /**
@@ -27,8 +29,10 @@ public:
   /**
    * @brief add_dictionary method which add dictionary to dictionary list
    * @param dictionary dictionary which will be added
+   * @param add_to_box parameter which defines if dictionary should be automatic
+   * added to view
    */
-  void add_dictionary(const Dictionary &dictionary);
+  void add_dictionary(const Dictionary &dictionary, bool add_to_box = false);
 
   /**
    * @brief remove_person method which remove given person from list
@@ -107,4 +111,13 @@ public:
    * @return vector instance with pointers to dicts
    */
   std::vector<Dictionary *> get_dictionary_list(const QString &email);
+
+signals:
+
+  /**
+   * @brief adding_to_box signal emitted when user creates new dict and includes
+   * it in layout
+   * @param dict pointer to dict
+   */
+  void adding_to_box(Dictionary *dict);
 };

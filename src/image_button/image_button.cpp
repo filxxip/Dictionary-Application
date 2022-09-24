@@ -8,6 +8,7 @@ ImageButton ::ImageButton(QWidget *widget_, const QString &source_to_image,
                           Displays::DisplayStyle style, int size)
     : QPushButton(widget_), image_source(source_to_image) {
   setObjectName("imagebutton");
+  setFlat(true);
   switch (style) {
   case Displays::DisplayStyle::SCALED_WIDTH: {
     scaled_to(size, Displays::ScaledPossibilities::HEIGHT);
@@ -43,6 +44,7 @@ void ImageButton::scaled_to(int size,
   }
   }
   const auto &geo = geometry();
+  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed); //??
   setGeometry(geo.x(), geo.y(), pixmap.width() - 1, pixmap.height() - 1);
   setIcon(icon);
 
@@ -85,4 +87,5 @@ void ImageButton::change_image(const QString &new_path) {
   auto new_pixmap = QPixmap("../" + new_path);
   auto new_icon = QIcon(new_pixmap);
   setIcon(new_icon);
+  setIconSize(current_size);
 }

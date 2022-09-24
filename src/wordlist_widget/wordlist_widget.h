@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../dictionary/dictionary.h"
+#include "../double_grp_box/double_grp_box.h"
 #include "../image_button/image_button.h"
 #include "../text_label/text_label.h"
 
@@ -17,6 +18,7 @@ class WordlistWindow : public QObject {
   Q_OBJECT
 
 private:
+  QString owner;
   QWidget main_widget;     ///< main widget on which everything will be placed
   ImageButton exit_button; ///< button which is responsible for logging out
   ImageLabel main_label;   ///< main label with title image
@@ -25,51 +27,21 @@ private:
   QVBoxLayout mainlayout;                  ///< main layout with some widgets
   std::unique_ptr<QVBoxLayout> baselayout; ///< base layout with groupbox
   std::vector<Dictionary *> dict; ///< vecotr with pointers to user dictionaries
+  std::vector<std::unique_ptr<DoubleGrpBox>>
+      groupbox_dict; ///< dictionary with pair of groupbox
 
-  /**
-   * @brief create_groupbox method which create groupbox with one dictionary
-   * @param dict dict whose data will be placed on groupbox
-   * @return  pointer to groupbox
-   */
-  QGroupBox *create_groupbox(Dictionary *dict);
-
-  /**
-   * @brief create_pair method which creates pair of two groupbox, combines them
-   * in one layout
-   * @param first left groupbox of layout
-   * @param second right groupbox of layout
-   * @return pointer to layout
-   */
-  QHBoxLayout *create_pair(QGroupBox *first, QGroupBox *second = nullptr);
-
+public:
   /**
    * @brief setting_scroll_options method which sets some options of scrollbar
    */
   void setting_scroll_options();
 
   /**
-   * @brief create_base_groupbox method which creates some basic functionalities
-   * for groupbox
-   * @return pointer to groupbox
+   * @brief add_groupbox method which add new groupbox to window
+   * @param dict dict which will be represented by groupbox
    */
-  QGroupBox *create_base_groupbox();
+  void add_groupbox(Dictionary *dict);
 
-  /**
-   * @brief create_new_dict_groupbox method which creates groupbox for adding
-   * new dictionary
-   * @return pointer to groupbox
-   */
-  QGroupBox *create_new_dict_groupbox();
-
-  /**
-   * @brief create_base_label method which creates base for every groupbox with
-   * some text
-   * @param text text on label
-   * @return pointer to text label
-   */
-  TextLabel *create_base_label(const QString &text);
-
-public:
   /**
    * @brief WordlistWindow constructor method
    */
@@ -91,7 +63,8 @@ public:
    * @brief set_dict method which set new user on widget
    * @param dictionary vector with user's dictionaries
    */
-  void set_dict(std::vector<Dictionary *> dictionary);
+  void set_dict(const QString &person_mail,
+                std::vector<Dictionary *> dictionary);
 
 public slots:
 
@@ -99,4 +72,13 @@ public slots:
    * @brief method which runs after clicking set button
    */
   void method() { qDebug() << "kliknietp"; }
+
+signals:
+  /**
+   * @brief new_dict_signal signal which is emitted when user want to create new
+   * dictionary
+   * @param name name of dictionary
+   * @param email email of user
+   */
+  void new_dict_signal(const QString &name, const QString &email);
 };

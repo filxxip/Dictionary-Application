@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QLabel>
 #include <QObject>
+#include <QScrollBar>
+#include <QTimer>
 
 #include <map>
 #include <utility>
@@ -13,17 +15,11 @@
 namespace {
 constexpr char EXIT_IMAGE[] = "images/exit.png";
 constexpr char TITLE_IMAGE[] = "images/dict.png";
-constexpr char NEW_IMAGE[] = "images/plus.png";
-constexpr char GROUPBOX_NAME[] = "smallgroupbox";
 
-std::map<Word::Language, QString> source_languages = {
-    {Word::Language::POLISH, "images/poland.jpg"},
-    {Word::Language::GERMAN, "images/german.jpg"},
-    {Word::Language::ENGLISH, "images/english.png"}};
 } // namespace
 
 void WordlistWindow::setting_scroll_options() {
-  scrollarea.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+  scrollarea.setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   scrollarea.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   scrollarea.setWidgetResizable(true);
   groupbox->setEnabled(true);
@@ -55,113 +51,68 @@ QWidget *WordlistWindow::get_widget() { return &main_widget; };
 
 ImageButton &WordlistWindow::get_exit_button() { return exit_button; }
 
-void WordlistWindow::set_dict(std::vector<Dictionary *> dictionary) {
+void WordlistWindow::set_dict(const QString &person_mail,
+                              std::vector<Dictionary *> dictionary) {
+  owner = person_mail;
   dict = dictionary;
+  groupbox_dict.clear();
   baselayout = std::make_unique<QVBoxLayout>();
   groupbox = std::make_unique<QGroupBox>();
 
   scrollarea.setWidget(groupbox.get());
-  QHBoxLayout *hboxlay;
   auto dict_size = dict.size();
-  for (unsigned long i = 0; i <= dict_size; i++) {
-    if (i < dict_size - 1) {
-      auto first = create_groupbox(dict.at(i));
-      i++;
-      auto second = create_groupbox(dict.at(i));
-      hboxlay = create_pair(first, second);
-      baselayout->addLayout(hboxlay);
-      continue;
+  if (dict_size > 0) {
+    for (unsigned long i = 0; i <= dict_size; i++) {
+      if (i < dict_size - 1) {
+        auto grpbox = std::make_unique<DoubleGrpBox>(main_widget, dict.at(i),
+                                                     dict.at(i + 1));
+        i++;
+        baselayout->addLayout(grpbox.get());
+        groupbox_dict.push_back(std::move(grpbox));
+
+        continue;
+      }
+      if (i == dict_size - 1) {
+        auto grpbox = std::make_unique<DoubleGrpBox>(main_widget, dict.at(i));
+        baselayout->addLayout(grpbox.get());
+        groupbox_dict.push_back(std::move(grpbox));
+        break;
+      }
+      if (i == dict_size) {
+        auto grpbox = std::make_unique<DoubleGrpBox>(main_widget);
+        baselayout->addLayout(grpbox.get());
+        groupbox_dict.push_back(std::move(grpbox));
+        break;
+      }
     }
-    if (i == dict_size - 1) {
-      auto first = create_groupbox(dict.at(i));
-      auto second = create_new_dict_groupbox();
-      hboxlay = create_pair(first, second);
-      baselayout->addLayout(hboxlay);
-      break;
-    }
-    if (i == dict_size) {
-      auto first = create_new_dict_groupbox();
-      hboxlay = create_pair(first);
-      baselayout->addLayout(hboxlay);
-      break;
-    }
+    QObject::connect(
+        (groupbox_dict.end() - 1)->get(), &DoubleGrpBox::new_box_signal, this,
+        [this](const QString &name) { emit new_dict_signal(name, owner); });
   }
   groupbox->setLayout(baselayout.get());
 }
 
-QGroupBox *WordlistWindow::create_groupbox(Dictionary *dict) {
-  auto *box = create_base_groupbox();
-
-  auto *layout = new QVBoxLayout;
-  box->setLayout(layout);
-
-  auto label = new TextLabel(&main_widget, dict->get_name());
-  label->setFixedHeight(WidgetData::ELEMENT_HEIGHT);
-  layout->addWidget(label);
-
-  for (auto &[language, source] : source_languages) {
-    auto lay = new QHBoxLayout;
-    auto image = new ImageLabel(&main_widget, source,
-                                Displays::DisplayStyle::SCALED_WIDTH,
-                                WidgetData::ELEMENT_HEIGHT);
-
-    auto words_number = dict->get_number_of_words(language);
-    auto label = create_base_label(QString::number(words_number) + " words");
-
-    lay->addWidget(image);
-    lay->addWidget(label);
-    layout->addLayout(lay);
+void WordlistWindow::add_groupbox(Dictionary *dict) {
+  std::unique_ptr<DoubleGrpBox> ptr = nullptr;
+  std::unique_ptr<DoubleGrpBox> ptr2 = nullptr;
+  if (groupbox_dict.size() > 0) {
+    auto last_pair = std::move(groupbox_dict.at(groupbox_dict.size() - 1));
+    groupbox_dict.erase(groupbox_dict.end() - 1);
+    if (last_pair->get_pointer(DoubleGrpBox::Status::SECOND) == nullptr) {
+      ptr = std::make_unique<DoubleGrpBox>(main_widget, dict);
+    } else {
+      auto dict1 = last_pair->get_dict(DoubleGrpBox::Status::FIRST);
+      ptr2 = std::make_unique<DoubleGrpBox>(main_widget, dict1, dict);
+      ptr = std::make_unique<DoubleGrpBox>(main_widget);
+    }
+    if (ptr2) {
+      baselayout->addLayout(ptr2.get());
+      groupbox_dict.push_back(std::move(ptr2));
+    }
+    baselayout->addLayout(ptr.get());
+    groupbox_dict.push_back(std::move(ptr));
   }
-  auto set_button = new TextButton(&main_widget, WidgetData::SET_BUTTON_TEXT);
-  set_button->setMaximumWidth(WidgetData::ELEMENT_WIDTH);
-  layout->addWidget(set_button);
-  return box;
-}
-
-QHBoxLayout *WordlistWindow::create_pair(QGroupBox *first, QGroupBox *second) {
-  auto *lay = new QHBoxLayout;
-  lay->addWidget(first);
-  if (second) {
-    lay->addWidget(second);
-  }
-  return lay;
-}
-
-QGroupBox *WordlistWindow::create_new_dict_groupbox() {
-
-  auto *box = create_base_groupbox();
-  auto *layout = new QVBoxLayout;
-  box->setLayout(layout);
-
-  auto label = new TextLabel(&main_widget, WidgetData::NEW_DICT_LABEL_TEXT);
-  label->setFixedHeight(WidgetData::ELEMENT_HEIGHT);
-  layout->addWidget(label);
-
-  auto entry = new EntryLine(&main_widget, EntryLine::Status::NORMAL);
-  entry->setPlaceholderText(Placeholders::NEW_DICT_PLACEHOLDER);
-  entry->setAlignment(Qt::AlignRight);
-
-  auto button = new ImageButton(&main_widget, NEW_IMAGE,
-                                Displays::DisplayStyle::SCALED_WIDTH,
-                                WidgetData::NEW_DICT_BUTTON);
-  layout->setSpacing(WidgetData::NEW_DICT_SPACING);
-  layout->addWidget(entry);
-  layout->addWidget(button);
-  return box;
-}
-
-TextLabel *WordlistWindow::create_base_label(const QString &text) {
-  auto label = new TextLabel(&main_widget, text);
-  label->setAlignment(Qt::AlignRight);
-  label->setFixedHeight(WidgetData::ELEMENT_HEIGHT);
-  label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  return label;
-}
-
-QGroupBox *WordlistWindow::create_base_groupbox() {
-  auto *box = new QGroupBox;
-  box->setEnabled(true);
-  box->setObjectName(GROUPBOX_NAME);
-  box->setFixedWidth(WidgetData::ELEMENT_WIDTH);
-  return box;
+  QObject::connect(
+      (groupbox_dict.end() - 1)->get(), &DoubleGrpBox::new_box_signal, this,
+      [this](const QString &name) { emit new_dict_signal(name, owner); });
 }

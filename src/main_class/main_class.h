@@ -8,6 +8,10 @@
 #include "../register_window/register_window.h"
 #include "../wordlist_widget/wordlist_widget.h"
 
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QTimer>
+
 /** Main Class which controls each part of app*/
 class MainClass : public QObject {
   Q_OBJECT
@@ -44,4 +48,11 @@ public slots:
    * @brief logout method which logout user from app
    */
   void logout();
+
+  /**
+   * @brief add_new_dictionary method which adds new dictionary to list
+   * @param name name of dict
+   * @param owner owner of dict
+   */
+  void add_new_dictionary(const QString &name, const QString &owner);
 };

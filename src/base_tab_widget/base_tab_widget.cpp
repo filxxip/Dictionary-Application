@@ -38,3 +38,8 @@ void BaseTabWidget::set_stylesheet(const QString &style_name) {
   application->setStyleSheet(stylesheet);
   file.close();
 }
+
+void BaseTabWidget::set_widget(const QString &name) {
+  auto widget = tab_widget->findChild<QWidget *>(name);
+  tab_widget->setCurrentWidget(widget);
+}

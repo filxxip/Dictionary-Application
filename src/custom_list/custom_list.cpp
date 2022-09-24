@@ -6,8 +6,10 @@
 #include <algorithm>
 #include <exception>
 #include <map>
+
 CustomList::CustomList() {
   person_list_reserve(MaxValues::MAX_PERSON_NUM);
+  dictionary_list_reserve(400);
   create_from_json();
 }
 
@@ -54,13 +56,17 @@ const std::vector<Person> &CustomList::get_person_list() const {
   return person_list;
 }
 
-void CustomList::add_dictionary(const Dictionary &dictionary) {
+void CustomList::add_dictionary(const Dictionary &dictionary, bool add_to_box) {
   auto index = std::find(person_list.begin(), person_list.end(),
                          *dictionary.get_person());
   if (index == person_list.end()) {
     add_person(*dictionary.get_person());
   }
   dictionary_list.push_back(dictionary);
+  if (add_to_box) {
+    auto size = dictionary_list.size();
+    emit adding_to_box(&dictionary_list.at(size - 1));
+  }
 }
 
 void CustomList::update_json() {
@@ -80,7 +86,7 @@ void CustomList::dictionary_list_reserve(int value) {
 void CustomList::person_list_reserve(int value) { person_list.reserve(value); }
 
 const std::map<QString, QString> CustomList::get_logs_data() const {
-  std::map<QString, QString> logs; /// why connot create unordered map
+  std::map<QString, QString> logs;
   for (auto &person : person_list) {
     logs.emplace(std::pair(person.get_email(), person.get_password()));
   }
@@ -98,7 +104,6 @@ const std::vector<QString> CustomList::get_emails_list() const {
 std::vector<Dictionary *>
 CustomList::get_dictionary_list(const QString &email) {
   std::vector<Dictionary *> dictionary_list_result;
-  qDebug() << (dictionary_list.size());
   for (auto &dict : dictionary_list) {
     auto dict_email = dict.get_person()->get_email();
     if (dict_email == email) {

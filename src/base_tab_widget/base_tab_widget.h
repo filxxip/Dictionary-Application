@@ -53,4 +53,10 @@ public:
    * @param style_name path to styling file from main file
    */
   void set_stylesheet(const QString &style_name);
+
+  /**
+   * @brief set_widget method which sets widget on active
+   * @param name title name of widget
+   */
+  void set_widget(const QString &name);
 };

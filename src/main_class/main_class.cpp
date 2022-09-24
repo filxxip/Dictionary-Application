@@ -25,14 +25,20 @@ MainClass::MainClass(QApplication &app)
   auto &exit_button2 = wordlist_window.get_exit_button();
   QObject::connect(&exit_button2, &QPushButton::clicked, this,
                    &MainClass::logout);
+  QObject::connect(&wordlist_window, &WordlistWindow::new_dict_signal, this,
+                   &MainClass::add_new_dictionary);
   setting_new_person_data("f.polt2oraczyk@gmail.com"); // toremove
+  QObject::connect(&list, &CustomList::adding_to_box, this,
+                   [this](auto dict) { wordlist_window.add_groupbox(dict); });
 }
 
 void MainClass::setting_new_person_data(const QString &email) {
   auto &person = list.get_person(email);
   data_window.set_person(&person);
+
   auto dict_list = list.get_dictionary_list(email);
-  wordlist_window.set_dict(dict_list);
+  wordlist_window.set_dict(email, dict_list);
+
   auto data_widget = data_window.get_widget();
   base.add_widget(data_widget, Titles::DATA);
   auto wordlist_widget = wordlist_window.get_widget();
@@ -60,3 +66,9 @@ void MainClass::logout() {
 }
 
 CustomList &MainClass::get_list() { return list; }
+
+void MainClass::add_new_dictionary(const QString &name, const QString &owner) {
+  auto &person = list.get_person(owner);
+  Dictionary dict(&person, name);
+  list.add_dictionary(std::move(dict), true);
+}

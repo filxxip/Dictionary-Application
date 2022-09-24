@@ -32,6 +32,7 @@ add_executable(${PROJECT_NAME}
     src/custom_message_box/custom_message_box.cpp
     src/custom_completer/custom_completer.cpp
     src/wordlist_widget/wordlist_widget.cpp
+    src/double_grp_box/double_grp_box.cpp
     main.cpp
 )
 
