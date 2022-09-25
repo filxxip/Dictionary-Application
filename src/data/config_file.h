@@ -52,6 +52,7 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr QMargins NEW_GRPBOX_MARGINS = {10, 20, 10, 5};
 constexpr int NEW_DICT_BUTTON = 55;
 constexpr int MSGBOX_IMAGE_SIZE = 50;
 constexpr int LOGIN_BOX_HEIGHT = 40;

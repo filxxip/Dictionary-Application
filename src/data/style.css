@@ -154,3 +154,14 @@ QGroupBox{
  border: 3px solid rgb(161, 40, 40);
 border-radius: 3px;
 }
+
+QPushButton#plusbutton{
+background-color: rgb(18, 48, 22);
+/*margin-left:55px;*/
+}
+
+QPushButton:pressed#plusbutton{
+background-color: rgb(18, 48, 22);}
+QPushButton:flat#plusbutton{
+background-color: rgb(18, 48, 22);}
+
