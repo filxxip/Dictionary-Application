@@ -32,7 +32,7 @@ public:
    * @param add_to_box parameter which defines if dictionary should be automatic
    * added to view
    */
-  void add_dictionary(const Dictionary &dictionary, bool add_to_box = false);
+  void add_dictionary(const Dictionary &dictionary);
 
   /**
    * @brief remove_person method which remove given person from list
@@ -111,6 +111,11 @@ public:
    * @return vector instance with pointers to dicts
    */
   std::vector<Dictionary *> get_dictionary_list(const QString &email);
+
+  void remove_dictionary(Dictionary &dictionary);
+  bool dictionary_exists(Dictionary &dictionary);
+  void add_last_dictionary_to_box();
+  auto get_iterator(Dictionary &dictionary);
 
 signals:
 

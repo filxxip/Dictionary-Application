@@ -121,3 +121,5 @@ int Dictionary::get_number_of_words(Word::Language language) {
   }
   return number;
 }
+
+void Dictionary::set_name(const QString &name_) { name = name_; }

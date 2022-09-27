@@ -27,6 +27,8 @@ ImageButton ::ImageButton(QWidget *widget_, const QString &source_to_image,
     break;
   }
   }
+  QObject::connect(this, &QPushButton::clicked, this,
+                   [this]() { this->setDefault(true); });
 }
 
 void ImageButton::scaled_to(int size,

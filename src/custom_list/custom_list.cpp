@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <iterator>
 #include <map>
 
 CustomList::CustomList() {
@@ -56,17 +57,18 @@ const std::vector<Person> &CustomList::get_person_list() const {
   return person_list;
 }
 
-void CustomList::add_dictionary(const Dictionary &dictionary, bool add_to_box) {
+void CustomList::add_dictionary(const Dictionary &dictionary) {
   auto index = std::find(person_list.begin(), person_list.end(),
                          *dictionary.get_person());
   if (index == person_list.end()) {
     add_person(*dictionary.get_person());
   }
   dictionary_list.push_back(dictionary);
-  if (add_to_box) {
-    auto size = dictionary_list.size();
-    emit adding_to_box(&dictionary_list.at(size - 1));
-  }
+}
+
+void CustomList::add_last_dictionary_to_box() {
+  auto size = dictionary_list.size();
+  emit adding_to_box(&dictionary_list.at(size - 1));
 }
 
 void CustomList::update_json() {
@@ -111,4 +113,23 @@ CustomList::get_dictionary_list(const QString &email) {
     }
   }
   return dictionary_list_result;
+}
+auto CustomList::get_iterator(Dictionary &dictionary) {
+  auto dict = std::find_if(dictionary_list.begin(), dictionary_list.end(),
+                           [&dictionary](auto &iter_dictionary) {
+                             return &iter_dictionary == &dictionary;
+                           });
+  return dict;
+}
+
+void CustomList::remove_dictionary(Dictionary &dictionary) {
+  if (dictionary_exists(dictionary)) {
+    auto dict_itr = get_iterator(dictionary);
+    dictionary_list.erase(dict_itr);
+  }
+}
+
+bool CustomList::dictionary_exists(Dictionary &dictionary) {
+  auto dict = get_iterator(dictionary);
+  return dict != dictionary_list.end();
 }

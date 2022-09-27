@@ -59,6 +59,7 @@ constexpr int LOGIN_BOX_HEIGHT = 40;
 constexpr int SEE_BUTTON_HEIGHT = 50;
 constexpr QRect TAB_WIDGET_POSITION = {100, 100, 700, 700};
 constexpr QMargins DEFAULT_TEXT_MARGINS = {10, 5, 5, 5};
+constexpr int TRASH_EDIT_BUTTON = 40;
 constexpr int LOGIN_LABEL_WIDTH =
     130; ///< width of label which is placed next to login entryline
 constexpr int PASSWORD_LABEL_WIDTH =

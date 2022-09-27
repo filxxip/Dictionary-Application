@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../content_layout/content_layout.h"
 #include "../dictionary/dictionary.h"
 #include "../double_grp_box/double_grp_box.h"
 #include "../image_button/image_button.h"
@@ -29,6 +30,13 @@ private:
   std::vector<Dictionary *> dict; ///< vecotr with pointers to user dictionaries
   std::vector<std::unique_ptr<DoubleGrpBox>>
       groupbox_dict; ///< dictionary with pair of groupbox
+
+  /**
+   * @brief connect_doublebox method which connect doublebox with removing
+   * functions
+   * @param box box to connect
+   */
+  void connect_doublebox(DoubleGrpBox *box);
 
 public:
   /**
@@ -61,6 +69,7 @@ public:
 
   /**
    * @brief set_dict method which set new user on widget
+   * @param person_mail mail of person whose dict is set
    * @param dictionary vector with user's dictionaries
    */
   void set_dict(const QString &person_mail,
@@ -81,4 +90,11 @@ signals:
    * @param email email of user
    */
   void new_dict_signal(const QString &name, const QString &email);
+
+  /**
+   * @brief removing_dict_signal signal used to removing dictionary from list
+   * @param dict poitner to dictionary to remove
+   * @param email given person whose dict is removed
+   */
+  void removing_dict_signal(Dictionary *dict, const QString &email);
 };

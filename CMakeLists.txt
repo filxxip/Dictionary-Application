@@ -33,6 +33,9 @@ add_executable(${PROJECT_NAME}
     src/custom_completer/custom_completer.cpp
     src/wordlist_widget/wordlist_widget.cpp
     src/double_grp_box/double_grp_box.cpp
+    src/custom_vbox_layout/custom_vbox_layout.cpp
+    src/content_layout/content_layout.cpp
+    src/newdict_layout/newdict_layout.cpp
     main.cpp
 )
 

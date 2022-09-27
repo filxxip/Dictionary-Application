@@ -1,4 +1,5 @@
 #include "wordlist_widget.h"
+#include "../content_layout/content_layout.h"
 #include "../custom_entry_line/entry_line.h"
 #include "../data/config_file.h"
 #include "../text_button/text_button.h"
@@ -86,33 +87,62 @@ void WordlistWindow::set_dict(const QString &person_mail,
       }
     }
     QObject::connect(
-        (groupbox_dict.end() - 1)->get(), &DoubleGrpBox::new_box_signal, this,
+        (groupbox_dict.end() - 1)->get()->get_dict_layout(),
+        &NewDictLayout::new_box_signal, this,
         [this](const QString &name) { emit new_dict_signal(name, owner); });
   }
   groupbox->setLayout(baselayout.get());
+  for (auto &box : groupbox_dict) {
+    connect_doublebox(box.get());
+  }
 }
 
 void WordlistWindow::add_groupbox(Dictionary *dict) {
   std::unique_ptr<DoubleGrpBox> ptr = nullptr;
   std::unique_ptr<DoubleGrpBox> ptr2 = nullptr;
-  if (groupbox_dict.size() > 0) {
-    auto last_pair = std::move(groupbox_dict.at(groupbox_dict.size() - 1));
+  auto size = groupbox_dict.size();
+  if (size > 0) {
+    auto last_pair = std::move(groupbox_dict.at(size - 1));
     groupbox_dict.erase(groupbox_dict.end() - 1);
-    if (last_pair->get_pointer(DoubleGrpBox::Status::SECOND) == nullptr) {
+    if (last_pair->get_right_item() == nullptr) {
       ptr = std::make_unique<DoubleGrpBox>(main_widget, dict);
     } else {
-      auto dict1 = last_pair->get_dict(DoubleGrpBox::Status::FIRST);
+      auto dict1 = last_pair->get_left_dictionary();
       ptr2 = std::make_unique<DoubleGrpBox>(main_widget, dict1, dict);
       ptr = std::make_unique<DoubleGrpBox>(main_widget);
     }
     if (ptr2) {
       baselayout->addLayout(ptr2.get());
+      connect_doublebox(ptr2.get());
       groupbox_dict.push_back(std::move(ptr2));
     }
     baselayout->addLayout(ptr.get());
+    connect_doublebox(ptr.get());
     groupbox_dict.push_back(std::move(ptr));
   }
   QObject::connect(
-      (groupbox_dict.end() - 1)->get(), &DoubleGrpBox::new_box_signal, this,
+      (groupbox_dict.end() - 1)->get()->get_dict_layout(),
+      &NewDictLayout::new_box_signal, this,
       [this](const QString &name) { emit new_dict_signal(name, owner); });
+}
+
+void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
+  if (box->get_left_item() != nullptr) {
+    if (dynamic_cast<ContentLayout *>(box->get_left_item().get())) {
+      auto item = static_cast<ContentLayout *>(box->get_left_item().get());
+
+      QObject::connect(
+          item, &ContentLayout::trash_dict, this,
+          [this](auto dict) { emit removing_dict_signal(dict, owner); });
+    }
+  }
+  if (box->get_right_item() != nullptr) {
+    if (dynamic_cast<ContentLayout *>(box->get_right_item().get())) {
+      auto item = static_cast<ContentLayout *>(box->get_right_item().get());
+
+      QObject::connect(
+          item, &ContentLayout::trash_dict, this,
+          [this](auto dict) { emit removing_dict_signal(dict, owner); });
+    }
+  }
 }

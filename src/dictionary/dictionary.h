@@ -135,5 +135,7 @@ public:
    * @brief get_name method which provides name of dictionary
    * @return qstring instance with name of dictionary
    */
-  QString get_name() { return name; }
+  QString get_name() const { return name; }
+
+  void set_name(const QString &name_);
 };

@@ -55,4 +55,11 @@ public slots:
    * @param owner owner of dict
    */
   void add_new_dictionary(const QString &name, const QString &owner);
+
+  /**
+   * @brief remove_dictionary method which removes dictionary
+   * @param dictionary dictionary which will be removed
+   * @param person_mail mail of person whose dict will be removed
+   */
+  void remove_dictionary(Dictionary *dictionary, const QString &person_mail);
 };
