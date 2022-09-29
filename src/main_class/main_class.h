@@ -6,6 +6,7 @@
 #include "../login_view/login_view.h"
 #include "../person_data_window/person_data_window.h"
 #include "../register_window/register_window.h"
+#include "../word_window/word_window.h"
 #include "../wordlist_widget/wordlist_widget.h"
 
 #include <QScrollArea>
@@ -23,6 +24,7 @@ private:
   RegisterWindow register_window; ///< Personalize Register Window
   PersonDataWindow data_window;   ///< Personalize window about data of user
   WordlistWindow wordlist_window; ///< Personalize window with wordlist
+  std::vector<std::unique_ptr<WordWindow>> word_windows;
 
 public:
   /**
@@ -61,5 +63,9 @@ public slots:
    * @param dictionary dictionary which will be removed
    * @param person_mail mail of person whose dict will be removed
    */
-  void remove_dictionary(Dictionary *dictionary, const QString &person_mail);
+  void remove_dictionary(Dictionary *dictionary);
+
+  void add_new_dict_window(Dictionary *dictionary);
+
+  void close_widget_tab(QWidget *widget);
 };

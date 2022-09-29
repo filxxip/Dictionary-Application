@@ -118,6 +118,11 @@ public slots:
    * @brief cancel_title method which removes title changes
    */
   void cancel_title();
+
+  /**
+   * @brief set_box signal used to open new window with dictionary data
+   */
+  void set_box();
 signals:
 
   /**
@@ -125,4 +130,10 @@ signals:
    * @param dictionary pointer to dictionary which has to be removed
    */
   void trash_dict(Dictionary *dictionary);
+
+  /**
+   * @brief set_signal signal used to opening new window with dictionary
+   * @param dictionary dictionary which data will be shown
+   */
+  void set_signal(Dictionary *dictionary);
 };

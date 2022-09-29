@@ -56,7 +56,7 @@ public:
 
   /**
    * @brief set_widget method which sets widget on active
-   * @param name title name of widget
+   * @param widget qwidget instance
    */
-  void set_widget(const QString &name);
+  void set_widget(QWidget *widget);
 };

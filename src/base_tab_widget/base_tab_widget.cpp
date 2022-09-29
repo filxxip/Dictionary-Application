@@ -1,6 +1,7 @@
 #include "base_tab_widget.h"
 #include "../data/config_file.h"
 
+#include <QDebug>
 #include <QFile>
 
 BaseTabWidget::BaseTabWidget(QApplication *app, const QString &style_name)
@@ -39,7 +40,6 @@ void BaseTabWidget::set_stylesheet(const QString &style_name) {
   file.close();
 }
 
-void BaseTabWidget::set_widget(const QString &name) {
-  auto widget = tab_widget->findChild<QWidget *>(name);
+void BaseTabWidget::set_widget(QWidget *widget) {
   tab_widget->setCurrentWidget(widget);
 }

@@ -16,9 +16,9 @@ public:
   /**
    * @brief The Language enum which determines possible translations of word
    */
-  enum class Language { ENGLISH, POLISH, GERMAN };
+  enum class Language { UNDEFINED = -1, ENGLISH, POLISH, GERMAN };
 
-  const static std::unordered_map<Language, QString>
+  const static std::map<Language, QString>
       Language_names; ///< map used when user want to get string version of
                       ///< language name
 
@@ -49,6 +49,8 @@ public:
    */
   void change_translation_date(Language language,
                                const Date &date = get_current_date());
+
+  static void is_language_valid(Language language);
 
 private:
   /**

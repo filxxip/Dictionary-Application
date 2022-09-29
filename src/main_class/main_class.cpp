@@ -8,12 +8,18 @@ constexpr char LOGOUT_QUESTION[] = "Are you sure to logout?";
 constexpr char LOGOUT_TITLE[] = "LOGOUT";
 constexpr char QUESTION[] = "Are you sure to remove this dictionary";
 constexpr char TITLE[] = "REMOVING DICTIONARY";
+constexpr char REMOVING_INFORMATION[] =
+    "Are you sure to remove this dictionary tab";
+constexpr char SECOND_REMOVING_INFORMATION[] =
+    "Some unsaved data will be lost, save it whether you want to remain them!";
+constexpr char REMOVING_INFORMATION_TITLE[] = "REMOVING TAB";
 
 } // namespace
 
 MainClass::MainClass(QApplication &app)
     : QObject(), base(BaseTabWidget(&app, STYLE_PATH)), login_window(list),
       register_window(list) {
+  word_windows.reserve(MaxValues::MAX_OPENED_DICTS);
   auto login_widget = login_window.get_widget();
   auto register_widget = register_window.get_widget();
   auto wordlist_widget = wordlist_window.get_widget();
@@ -36,6 +42,9 @@ MainClass::MainClass(QApplication &app)
 
   QObject::connect(&wordlist_window, &WordlistWindow::removing_dict_signal,
                    this, &MainClass::remove_dictionary);
+
+  QObject::connect(&wordlist_window, &WordlistWindow::setting_new_window, this,
+                   &MainClass::add_new_dict_window);
 }
 
 void MainClass::setting_new_person_data(const QString &email) {
@@ -80,15 +89,41 @@ void MainClass::add_new_dictionary(const QString &name, const QString &owner) {
   list.add_last_dictionary_to_box();
 }
 
-void MainClass::remove_dictionary(Dictionary *dictionary,
-                                  const QString &person_mail) {
+void MainClass::remove_dictionary(Dictionary *dictionary) {
   list.remove_dictionary(*dictionary);
   auto msg = CustomMessageBox(wordlist_window.get_widget(), TITLE, QUESTION);
   auto choice =
       msg.run(CustomMessageBox::Type::Yes,
               {CustomMessageBox::Type::No}); // zmienic na ta fajna liste
   if (choice == CustomMessageBox::Type::Yes) {
-    wordlist_window.set_dict(person_mail,
-                             list.get_dictionary_list(person_mail));
+    auto person = dictionary->get_person();
+    auto mail = person->get_email();
+    wordlist_window.set_dict(mail, list.get_dictionary_list(mail));
+  }
+}
+
+void MainClass::add_new_dict_window(Dictionary *dictionary) {
+  auto window = std::make_unique<WordWindow>(dictionary);
+  auto title = dictionary->get_name() + " - dict";
+  base.add_widget(window->get_widget(), title);
+  QObject::connect(window.get(), &WordWindow::close_signal, this,
+                   &MainClass::close_widget_tab);
+  base.set_widget(window->get_widget());
+  word_windows.push_back(std::move(window));
+}
+
+void MainClass::close_widget_tab(QWidget *widget) {
+  auto msg = new CustomMessageBox(widget, REMOVING_INFORMATION_TITLE,
+                                  REMOVING_INFORMATION);
+  msg->create_detail_text(SECOND_REMOVING_INFORMATION);
+  auto result =
+      msg->run(CustomMessageBox::Type::Yes, {CustomMessageBox::Type::No});
+  if (result == CustomMessageBox::Type::Yes) {
+    auto index = std::find_if(word_windows.begin(), word_windows.end(),
+                              [&widget](auto &ptr_itr) {
+                                return ptr_itr.get()->get_widget() == widget;
+                              });
+    delete msg;
+    word_windows.erase(index);
   }
 }

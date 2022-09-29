@@ -73,12 +73,14 @@ QLineEdit:focus#entryline{
     background-color:rgb(41, 105, 49);
 }
 
+
 QLineEdit#entrytitle{
 background-color:rgb(18, 48, 22);
 border-radius: 3px;
 border: 2px solid rgb(161, 40, 40);
 color: antiquewhite;
 }
+
 
 
 QLabel#textlabel{
@@ -173,3 +175,6 @@ background-color: rgb(18, 48, 22);}
 QPushButton:flat#plusbutton{
 background-color: rgb(18, 48, 22);}
 
+QPushButton#bluecolor{
+background-color:  #026280;
+}

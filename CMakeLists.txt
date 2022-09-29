@@ -1,3 +1,6 @@
+#set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+#cmake_minimum_required(VERSION 3.16)
+
 project(dic_project)
 
 find_package(Qt5 5.12.8 COMPONENTS Widgets REQUIRED)
@@ -36,6 +39,12 @@ add_executable(${PROJECT_NAME}
     src/custom_vbox_layout/custom_vbox_layout.cpp
     src/content_layout/content_layout.cpp
     src/newdict_layout/newdict_layout.cpp
+    src/word_window/word_window.cpp
+    src/swiper/swiper.cpp
+    src/word_pair/word_pair.cpp
+    src/vertical_label/vertical_label.cpp
+    src/index_boxes/index_box.cpp
+    src/index_boxes/double_index_box.cpp
     main.cpp
 )
 

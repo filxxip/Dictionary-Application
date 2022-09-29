@@ -64,6 +64,7 @@ TextLabel *ContentLayout::create_base_label(const QString &text) {
 
 QHBoxLayout *ContentLayout::create_language_hbox(Word::Language language,
                                                  const QString &source) {
+  Word::is_language_valid(language);
   auto lay = new QHBoxLayout;
   auto image =
       new ImageLabel(&widget, source, Displays::DisplayStyle::SCALED_WIDTH,
@@ -77,6 +78,8 @@ QHBoxLayout *ContentLayout::create_language_hbox(Word::Language language,
   return lay;
 }
 
+void ContentLayout::set_box() { emit set_signal(dictionary); }
+
 QHBoxLayout *ContentLayout::create_operation_layout() {
   auto lay = new QHBoxLayout;
 
@@ -88,6 +91,8 @@ QHBoxLayout *ContentLayout::create_operation_layout() {
                    &ContentLayout::cancel_title);
   QObject::connect(&confirm_button, &QPushButton::clicked, this,
                    &ContentLayout::confirm_title);
+  QObject::connect(&set_button, &QPushButton::clicked, this,
+                   &ContentLayout::set_box);
 
   trash_button.setObjectName("plusbutton");
   edit_button.setObjectName("plusbutton");

@@ -4,7 +4,8 @@
 #include <ctime>
 #include <vector>
 
-const std::unordered_map<Word::Language, QString> Word::Language_names = {
+const std::map<Word::Language, QString> Word::Language_names = {
+    {Language::UNDEFINED, "none"},
     {Language::ENGLISH, "english"},
     {Language::POLISH, "polish"},
     {Language::GERMAN, "german"}};
@@ -13,6 +14,12 @@ const std::unordered_map<Word::Prioritity, QString> Word::Prioritity_names = {
     {Prioritity::UNDEFINED, "undefined"}, {Prioritity::LOW, "low"},
     {Prioritity::MOST, "most"},           {Prioritity::HIGHER, "higher"},
     {Prioritity::MEDIUM, "medium"},       {Prioritity::VERY_LOW, "very_low"}};
+
+void Word::is_language_valid(Word::Language language) {
+  if (static_cast<int>(language) == -1) {
+    throw std::invalid_argument("language must be defined");
+  }
+}
 
 void Word::basic_translation() {
   for (int value = static_cast<int>(Language::ENGLISH);
@@ -27,6 +34,7 @@ Word::Word() : prioritity(Prioritity::UNDEFINED) { basic_translation(); }
 
 Word::Word(Language language, const QString &word_base, Prioritity prioritity_)
     : prioritity(prioritity_) {
+  is_language_valid(language);
   basic_translation();
   Date date_now = get_current_date();
   translations.at(language) = word_base;
@@ -39,32 +47,37 @@ Word::Word(const std::map<Language, QString> &translations_,
   basic_translation();
   auto date_now = get_current_date();
   for (const auto &[language, translation] : translations_) {
+    is_language_valid(language);
     translations.at(language) = translation;
     translations_dates.at(language) = date_now;
   }
 }
 
 const QString &Word::get_translation(Language to) const {
+  is_language_valid(to);
   return translations.at(to);
 }
 
 const Date &Word::get_date(Language to) const {
+  is_language_valid(to);
   return translations_dates.at(to);
 }
 
 void Word::change_translation(Language language,
                               const QString &new_translation) {
-
+  is_language_valid(language);
   change_translation_date(language, get_current_date());
   translations.at(language) = new_translation;
 }
 
 void Word::change_translation_date(Language language,
                                    const Date &date) { // moga byc problemy
+  is_language_valid(language);
   translations_dates.at(language) = date;
 }
 
 int Word::get_lenght(Language language) const {
+  is_language_valid(language);
   return translations.at(language).length();
 }
 
@@ -78,6 +91,7 @@ Word &Word::operator=(const Word &word) {
 }
 
 bool Word::is_defined(Word::Language language) const {
+  is_language_valid(language);
   return (*translations.find(language)).second != "-";
 }
 

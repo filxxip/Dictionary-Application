@@ -20,6 +20,7 @@ int Dictionary::get_number_of_words() { return wordlist.size(); }
 
 const std::vector<Word> Dictionary::get_words(Word::Language language,
                                               const QString &word) {
+  Word::is_language_valid(language);
   std::vector<Word> results;
   auto func = [&word, language](const auto &value) {
     return value.get_translation(language) == word;
@@ -48,6 +49,7 @@ void Dictionary::add_word(const Word &word) {
 
 const std::vector<Word> Dictionary::regex_search(const QString &regex,
                                                  Word::Language language1) {
+  Word::is_language_valid(language1);
   QRegularExpression rx(regex + "[a-zA-Z0-9]*");
   auto result = get_specific_words(language1);
   auto new_end = std::remove_if(
@@ -62,6 +64,8 @@ const std::vector<Word> Dictionary::regex_search(const QString &regex,
 const std::vector<Word> Dictionary::regex_search(const QString &regex,
                                                  Word::Language language1,
                                                  Word::Language language2) {
+  Word::is_language_valid(language1);
+  Word::is_language_valid(language2);
   QRegularExpression rx(regex + "[a-zA-Z0-9]*");
   auto result = get_specific_translations(language1, language2);
   auto new_end = std::remove_if(
@@ -78,6 +82,7 @@ Dictionary::Dictionary(const Dictionary &dictionary)
       name(dictionary.name) {}
 
 std::vector<Word> Dictionary::get_specific_words(Word::Language language) {
+  Word::is_language_valid(language);
   std::vector<Word> result;
   for (auto &word : wordlist) {
     if (word.is_defined(language)) {
@@ -90,6 +95,8 @@ std::vector<Word> Dictionary::get_specific_words(Word::Language language) {
 std::vector<Word>
 Dictionary::get_specific_translations(Word::Language language1,
                                       Word::Language language2) {
+  Word::is_language_valid(language1);
+  Word::is_language_valid(language2);
   std::vector<Word> result;
   for (auto &word : wordlist) {
     if (word.is_defined(language1) and word.is_defined(language2)) {
@@ -113,6 +120,7 @@ const std::vector<Word> &Dictionary::get_full_wordlist() const {
 }
 
 int Dictionary::get_number_of_words(Word::Language language) {
+  Word::is_language_valid(language);
   int number = 0;
   for (auto &word : wordlist) {
     if (word.is_defined(language)) {

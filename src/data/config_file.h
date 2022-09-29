@@ -41,8 +41,10 @@ constexpr char NEW_DICT_PLACEHOLDER[] = "write dictionary name";
 
 namespace MaxValues {
 constexpr int MAX_PERSON_NUM = 100;
+constexpr int MAX_DICT_NUM = 400;
+constexpr int MAX_OPENED_DICTS = 20;
 
-}
+} // namespace MaxValues
 
 namespace Colors {
 constexpr char RED[] = "red";
@@ -52,6 +54,14 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr int TITLE_WIDTH = 45;
+constexpr QMargins WORD_WINDOW_HIGHBAR_LAYOUT = {100, 0, 0, 0};
+constexpr int WORD_WINDOW_DOWN_LAYOUT_SPACING = 30;
+constexpr int WORD_WINDOW_MAIN_LAYOUT_SPACING = 30;
+constexpr QMargins WORD_WINDOW_MAIN_LAYOUT_MARGINS = {30, 50, 40, 50};
+constexpr int ARROW_SIZE = 30;
+constexpr int LABEL_WIDTH_SWIPER = 140;
+constexpr int FONT_SIZE_SWIPER = 14;
 constexpr QMargins NEW_GRPBOX_MARGINS = {10, 20, 10, 5};
 constexpr int NEW_DICT_BUTTON = 55;
 constexpr int MSGBOX_IMAGE_SIZE = 50;
