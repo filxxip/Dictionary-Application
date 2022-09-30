@@ -133,8 +133,10 @@ void ContentLayout::confirm_title() {
     entry_title.setReadOnly(true);
     entry_title.setObjectName("entrytitle");
     entry_title.style()->polish(&entry_title);
+    // s    auto old_name = dictionary->get_name();
     dictionary->set_name(entry_title.text());
     set_edit_panel();
+    emit window_titles_changed_signal(dictionary);
   } else {
     auto msg = CustomMessageBox(&widget, TITLE, INFORMATION_WARNING);
     msg.run(CustomMessageBox::Type::Ok);

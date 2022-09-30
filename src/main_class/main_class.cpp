@@ -43,6 +43,10 @@ MainClass::MainClass(QApplication &app)
   QObject::connect(&wordlist_window, &WordlistWindow::removing_dict_signal,
                    this, &MainClass::remove_dictionary);
 
+  QObject::connect(&wordlist_window,
+                   &WordlistWindow::changing_name_dictionary_bar, this,
+                   &MainClass::change_every_dict_bar_title);
+
   QObject::connect(&wordlist_window, &WordlistWindow::setting_new_window, this,
                    &MainClass::add_new_dict_window);
 }
@@ -62,6 +66,18 @@ void MainClass::setting_new_person_data(const QString &email) {
   auto register_widget = register_window.get_widget();
   base.delete_widget(login_widget);
   base.delete_widget(register_widget);
+}
+
+void MainClass::change_every_dict_bar_title(Dictionary *dict) {
+  for (auto &tab_itr : word_windows) {
+    if (dict == tab_itr->get_dictionary()) {
+      auto new_name = dict->get_name();
+      tab_itr->change_title(new_name);
+      auto widget = tab_itr->get_widget();
+
+      base.change_name(widget, new_name + " - dict");
+    }
+  }
 }
 
 void MainClass::logout() {
@@ -99,7 +115,15 @@ void MainClass::remove_dictionary(Dictionary *dictionary) {
     auto person = dictionary->get_person();
     auto mail = person->get_email();
     wordlist_window.set_dict(mail, list.get_dictionary_list(mail));
+    remove_dictionary_from_list(dictionary);
   }
+}
+
+void MainClass::remove_dictionary_from_list(Dictionary *dict) {
+  auto index = std::remove_if(
+      word_windows.begin(), word_windows.end(),
+      [dict](auto &win) { return dict == win->get_dictionary(); });
+  word_windows.erase(index, word_windows.end());
 }
 
 void MainClass::add_new_dict_window(Dictionary *dictionary) {

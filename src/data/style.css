@@ -178,3 +178,7 @@ background-color: rgb(18, 48, 22);}
 QPushButton#bluecolor{
 background-color:  #026280;
 }
+
+QWidget#bluecolor{
+background-color:  #026280;
+}

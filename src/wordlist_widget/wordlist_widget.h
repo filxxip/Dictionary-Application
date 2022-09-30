@@ -106,4 +106,11 @@ signals:
    * @param dict dictionary which should be set
    */
   void setting_new_window(Dictionary *dict);
+
+  /**
+   * @brief changing_name_dictionary_bar signal which changes dictionary name on
+   * tab bar
+   * @param dict dict which title should be changed
+   */
+  void changing_name_dictionary_bar(Dictionary *dict);
 };

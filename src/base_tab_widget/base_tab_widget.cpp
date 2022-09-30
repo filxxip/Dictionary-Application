@@ -43,3 +43,8 @@ void BaseTabWidget::set_stylesheet(const QString &style_name) {
 void BaseTabWidget::set_widget(QWidget *widget) {
   tab_widget->setCurrentWidget(widget);
 }
+
+void BaseTabWidget::change_name(QWidget *widget, const QString &name) {
+  auto index = tab_widget->indexOf(widget);
+  tab_widget->setTabText(index, name);
+}

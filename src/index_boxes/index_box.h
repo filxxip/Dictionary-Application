@@ -11,10 +11,14 @@
 /** IndexBox class which contain index label with entry*/
 class IndexBox : public QHBoxLayout {
 protected:
-  QWidget *widget;           ///< widget on which layout will be placed
-  Word &word;                ///< word which data will be on layout
-  TextLabel index_label;     ///< label with given index
-  EntryLine from_word_entry; ///< entryline which contains first word
+  QWidget *widget; ///< widget on which layout will be placed
+  Word &word;      ///< word which data will be on layout
+  std::unique_ptr<QWidget> widget_index_entry_layout; ///< layout's widget
+  std::unique_ptr<QHBoxLayout>
+      index_entry_layout;       ///< unique pointer to main layout
+  TextLabel index_label;        ///< label with given index
+  EntryLine from_word_entry;    ///< entryline which contains first word
+  Word::Language base_language; ///< base language of searched word
 
 public:
   enum class Status { READ_ONLY, EDIT };
@@ -32,7 +36,7 @@ public:
    * @brief set_status method which change status of entry
    * @param status status enum type, ReadOnly or Edit
    */
-  void set_status(Status status);
+  virtual void set_status(Status status);
 
   /**
    * @brief set_entry_basic_options method which sets some options to entryline

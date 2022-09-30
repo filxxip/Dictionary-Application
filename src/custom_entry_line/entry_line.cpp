@@ -1,6 +1,8 @@
 #include "entry_line.h"
 #include "../data/config_file.h"
 
+#include <QStyle>
+
 EntryLine::EntryLine(QWidget *widget_, Status entry_type) : QLineEdit(widget_) {
   set_text_status(entry_type);
   setObjectName("entryline");
@@ -30,4 +32,9 @@ void EntryLine::set_text_status(EntryLine::Status new_status) {
     break;
   }
   }
+}
+
+void EntryLine::set_object_name_stylesheet(const QString &object_name) {
+  setObjectName(object_name);
+  style()->polish(this);
 }

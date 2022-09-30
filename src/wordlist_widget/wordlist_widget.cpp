@@ -91,6 +91,7 @@ void WordlistWindow::set_dict(const QString &person_mail,
         &NewDictLayout::new_box_signal, this,
         [this](const QString &name) { emit new_dict_signal(name, owner); });
   }
+
   groupbox->setLayout(baselayout.get());
   for (auto &box : groupbox_dict) {
     connect_doublebox(box.get());
@@ -136,6 +137,9 @@ void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
 
       QObject::connect(item, &ContentLayout::trash_dict, this,
                        [this](auto dict) { emit removing_dict_signal(dict); });
+      QObject::connect(
+          item, &ContentLayout::window_titles_changed_signal, this,
+          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
     }
   }
   if (box->get_right_item() != nullptr) {
@@ -144,6 +148,9 @@ void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
 
       QObject::connect(item, &ContentLayout::trash_dict, this,
                        [this](auto dict) { emit removing_dict_signal(dict); });
+      QObject::connect(
+          item, &ContentLayout::window_titles_changed_signal, this,
+          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
     }
   }
 }

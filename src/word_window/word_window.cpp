@@ -6,6 +6,7 @@
 
 #include <QFontMetrics>
 #include <QPainter>
+#include <QScrollBar>
 
 namespace {
 constexpr char IMAGE_EXIT[] = "images/exit2.png";
@@ -25,7 +26,11 @@ WordWindow::WordWindow(Dictionary *dictionary_)
       baselayout(std::make_unique<QVBoxLayout>()) {
 
   scrollarea.setWidgetResizable(true);
+  scrollarea.horizontalScrollBar()->setDisabled(true);
+  scrollarea.setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Expanding);
   scrollarea.setWidget(groupbox.get());
+  scrollarea.setHorizontalScrollBarPolicy(
+      Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 
   title.setFixedWidth(WidgetData::TITLE_WIDTH);
   high_bar_layout.addLayout(from_language.create_layout());
@@ -48,6 +53,8 @@ WordWindow::WordWindow(Dictionary *dictionary_)
   close_button_configuration();
   swiper_connect();
 }
+
+Dictionary *WordWindow::get_dictionary() { return dictionary; }
 
 void WordWindow::swiper_connect() {
   QObject::connect(&from_language, &Swiper::swipe_signal, this,
@@ -80,6 +87,10 @@ void WordWindow::set_layout(Word::Language word_base_language,
   } catch (std::invalid_argument &) {
     return;
   }
+}
+
+void WordWindow::change_title(const QString &new_title) {
+  title.setText(new_title);
 }
 
 void WordWindow::create_word_layout(Word::Language word_base_language) {

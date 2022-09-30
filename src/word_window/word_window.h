@@ -89,6 +89,17 @@ public:
   WordWindow(Dictionary *dictionary_);
 
   /**
+   * @brief change_title method which changes title of window
+   * @param title new title of window
+   */
+  void change_title(const QString &title);
+
+  /**
+   * @brief get_dictionary method which provides dictionary of widget
+   * @return pointer to dictionary instance
+   */
+  Dictionary *get_dictionary();
+  /**
    * @brief get_widget methdo which provides main widget
    * @return pointer to widget where whole data is placed
    */

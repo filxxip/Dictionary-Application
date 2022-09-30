@@ -68,4 +68,6 @@ public slots:
   void add_new_dict_window(Dictionary *dictionary);
 
   void close_widget_tab(QWidget *widget);
+  void remove_dictionary_from_list(Dictionary *dict);
+  void change_every_dict_bar_title(Dictionary *dict);
 };

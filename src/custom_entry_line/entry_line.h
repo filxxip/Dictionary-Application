@@ -53,4 +53,11 @@ public:
    * @param mode mode of text in line edit
    */
   void set_text_status(EntryLine::Status new_status);
+
+  /**
+   * @brief set_object_name_stylesheet method which sets new style using
+   * objectname of widget
+   * @param object_name new object_name of entry
+   */
+  void set_object_name_stylesheet(const QString &object_name);
 };

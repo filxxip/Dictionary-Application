@@ -136,4 +136,11 @@ signals:
    * @param dictionary dictionary which data will be shown
    */
   void set_signal(Dictionary *dictionary);
+
+  /**
+   * @brief window_titles_changed_signal signal used to changing titles of
+   * dictionary opened tabs
+   * @param pointer to changed dictionary
+   */
+  void window_titles_changed_signal(Dictionary *dictionary);
 };
