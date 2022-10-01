@@ -4,7 +4,46 @@
             "dict_wordlist": [
                 {
                     "english": [
-                        "milk",
+                        "-",
+                        "2022>9>15>18>28>36",
+                        "undefined"
+                    ],
+                    "german": [
+                        "-",
+                        "2022>10>1>14>10>44",
+                        "undefined"
+                    ],
+                    "polish": [
+                        "mleko3",
+                        "2022>9>15>18>28>36",
+                        "undefined"
+                    ]
+                }
+            ],
+            "name": "xxx"
+        },
+        {
+            "dict_wordlist": [
+                {
+                    "english": [
+                        "-",
+                        "2022>10>1>16>57>4",
+                        "undefined"
+                    ],
+                    "german": [
+                        "milch",
+                        "2022>9>15>18>28>36",
+                        "undefined"
+                    ],
+                    "polish": [
+                        "-",
+                        "2022>10>1>16>57>11",
+                        "undefined"
+                    ]
+                },
+                {
+                    "english": [
+                        "-",
                         "2022>9>15>18>28>36",
                         "undefined"
                     ],
@@ -14,8 +53,30 @@
                         "undefined"
                     ],
                     "polish": [
-                        "mleko2",
+                        "mleko3",
                         "2022>9>15>18>28>36",
+                        "undefined"
+                    ]
+                }
+            ],
+            "name": "xxx"
+        },
+        {
+            "dict_wordlist": [
+                {
+                    "english": [
+                        "-",
+                        "2022>10>1>16>58>20",
+                        "undefined"
+                    ],
+                    "german": [
+                        "milch",
+                        "2022>9>15>18>28>36",
+                        "undefined"
+                    ],
+                    "polish": [
+                        "-",
+                        "2022>10>1>16>57>58",
                         "undefined"
                     ]
                 },
@@ -48,86 +109,8 @@
                         "undefined"
                     ],
                     "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko2",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
                         "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                }
-            ],
-            "name": "xxx"
-        },
-        {
-            "dict_wordlist": [
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko2",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                }
-            ],
-            "name": "xxx"
-        },
-        {
-            "dict_wordlist": [
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
+                        "2022>10>1>16>40>14",
                         "undefined"
                     ],
                     "polish": [
@@ -160,455 +143,78 @@
     "f.polt2oraczyk@gmail.com": [
         {
             "dict_wordlist": [
-                {
-                    "english": [
-                        "mleko54ss",
-                        "2022>9>30>16>19>30",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "milk",
-                        "2022>9>30>16>19>30",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3666",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko24353",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko345345",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko25435",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3223",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko244",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko234234",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko2322",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko213",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko1111",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko11",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko53244",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko36626",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko24354233",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko345423345",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko25432435",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3324223",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko23444",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko234232344",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko232234",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko2142343",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko111342341",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko1332431",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                }
             ],
-            "name": "dfdfdd"
+            "name": "xxx"
         },
         {
             "dict_wordlist": [
-                {
-                    "english": [
-                        "milk",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko2",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                },
-                {
-                    "english": [
-                        "-",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "german": [
-                        "milch",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ],
-                    "polish": [
-                        "mleko3",
-                        "2022>9>15>18>28>36",
-                        "undefined"
-                    ]
-                }
             ],
-            "name": "xxx"
+            "name": "dad"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "dfds"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "ewrw"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "werw"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "werw"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "fsdf"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "afa"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "asd"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "asdas"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "sdad"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "dasd"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "dsfd"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "sdfdf"
+        },
+        {
+            "dict_wordlist": [
+            ],
+            "name": "kuba"
         }
     ]
 }

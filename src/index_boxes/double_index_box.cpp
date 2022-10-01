@@ -9,6 +9,7 @@ namespace {
 constexpr char EDIT_IMAGE[] = "images/editv2.png";
 constexpr char CONFIRM_CHANGES[] = "images/confirm2.png";
 constexpr char CANCEL_CHANGES[] = "images/cancel2.png";
+constexpr char DELETE_TRANSLATION[] = "images/delete.png";
 } // namespace
 
 DoubleIndexBox::DoubleIndexBox(QWidget *widget_, Word &word_,
@@ -24,8 +25,11 @@ DoubleIndexBox::DoubleIndexBox(QWidget *widget_, Word &word_,
                      Displays::DisplayStyle::SCALED_WIDTH, 30),
       cancel_button(widget, CANCEL_CHANGES,
                     Displays::DisplayStyle::SCALED_WIDTH, 30),
+      delete_button(widget, DELETE_TRANSLATION,
+                    Displays::DisplayStyle::SCALED_WIDTH, 30),
       translated_language(translated_language_) {
 
+  set_status(Status::READ_ONLY);
   set_entry_basic_options(&to_word_entry, translated_language);
   widget_change_bar_layout->setLayout(change_bar_layout.get());
   addWidget(widget_change_bar_layout.get());
@@ -34,6 +38,7 @@ DoubleIndexBox::DoubleIndexBox(QWidget *widget_, Word &word_,
   apply_button_configuration(&edit_button);
   apply_button_configuration(&confirm_button);
   apply_button_configuration(&cancel_button);
+  apply_button_configuration(&delete_button);
 
   set_status(Status::READ_ONLY);
   QObject::connect(&edit_button, &QPushButton::clicked, this,
@@ -42,6 +47,8 @@ DoubleIndexBox::DoubleIndexBox(QWidget *widget_, Word &word_,
                    &DoubleIndexBox::cancel_changes);
   QObject::connect(&confirm_button, &QPushButton::clicked, this,
                    &DoubleIndexBox::confirm_changes);
+  QObject::connect(&delete_button, &QPushButton::clicked, this,
+                   &DoubleIndexBox::delete_translation);
 }
 
 void DoubleIndexBox::apply_button_configuration(QPushButton *button) {
@@ -87,13 +94,14 @@ void DoubleIndexBox::change_status_images(Status status) {
     cancel_button.setVisible(true);
     confirm_button.setVisible(true);
     edit_button.setVisible(false);
+    delete_button.setVisible(false);
     break;
   }
   case IndexBox::Status::READ_ONLY: {
     cancel_button.setVisible(false);
     confirm_button.setVisible(false);
     edit_button.setVisible(true);
-    ;
+    delete_button.setVisible(true);
     break;
   }
   }
@@ -110,11 +118,17 @@ void DoubleIndexBox::cancel_changes() {
 }
 
 void DoubleIndexBox::confirm_changes() {
-  auto translation = from_word_entry.text();
-  auto base = to_word_entry.text();
+  auto base = from_word_entry.text();
+  auto translation = to_word_entry.text();
   word.change_translation(translated_language, translation);
   word.change_translation(base_language, base);
   set_status(IndexBox::Status::READ_ONLY);
   set_read_style(&to_word_entry);
   set_read_style(&from_word_entry);
+  emit update_window();
+}
+
+void DoubleIndexBox::delete_translation() {
+  word.set_not_defined(translated_language);
+  emit update_window();
 }

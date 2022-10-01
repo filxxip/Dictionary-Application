@@ -132,3 +132,7 @@ std::vector<Word::Language> Word::get_defined_languages() const {
   }
   return languages;
 }
+
+void Word::set_not_defined(Language language) {
+  change_translation(language, "-");
+}

@@ -54,6 +54,7 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr int ELEMENT_DETAIL_HEIGHT = 40;
 constexpr int TITLE_WIDTH = 45;
 constexpr QMargins WORD_WINDOW_HIGHBAR_LAYOUT = {100, 0, 0, 0};
 constexpr int WORD_WINDOW_DOWN_LAYOUT_SPACING = 30;

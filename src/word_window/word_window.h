@@ -118,6 +118,19 @@ public:
    */
   void set_layout(Word::Language word_base_language,
                   Word::Language word_translation_language);
+
+  /**
+   * @brief reload method which updates data on widget
+   */
+  void reload();
+
+  /**
+   * @brief add_detail_view method which emit signal which is used to adding new
+   * detail view
+   * @param word word which data will be on detail view
+   * @param language language in which word is defined
+   */
+  void add_detail_view(Word &word, Word::Language language);
 signals:
 
   /**
@@ -125,4 +138,12 @@ signals:
    * @param widget widget which should be closed
    */
   void close_signal(QWidget *widget);
+
+  void add_detail_view_signal(const Dictionary *dict, Word &word,
+                              Word::Language language);
+
+  void update_rest_tabs(Dictionary *dict);
+
+public slots:
+  void update_dictionary();
 };

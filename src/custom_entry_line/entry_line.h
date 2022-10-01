@@ -27,7 +27,7 @@ public:
    * @param widget_ shared pointer to QWidget on which entryline is placed
    * @param entry_type type of entryline, password or normal
    */
-  EntryLine(QWidget *widget_, Status entry_type);
+  EntryLine(QWidget *widget_, Status entry_type = Status::NORMAL);
 
   /**
    * @brief append_text method which appends text to line edit's current text

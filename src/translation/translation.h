@@ -175,4 +175,10 @@ public:
    * @return vector with all defined languages.
    */
   std::vector<Word::Language> get_defined_languages() const;
+
+  /**
+   * @brief set_not_defined method used to remove translation of given language
+   * @param language alnguage which translation should be removed
+   */
+  void set_not_defined(Language language);
 };

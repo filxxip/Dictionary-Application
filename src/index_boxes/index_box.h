@@ -5,11 +5,13 @@
 #include <QWidget>
 
 #include "../custom_entry_line/entry_line.h"
+#include "../image_button/image_button.h"
 #include "../text_label/text_label.h"
 #include "../translation/translation.h"
 
 /** IndexBox class which contain index label with entry*/
 class IndexBox : public QHBoxLayout {
+  Q_OBJECT
 protected:
   QWidget *widget; ///< widget on which layout will be placed
   Word &word;      ///< word which data will be on layout
@@ -32,16 +34,16 @@ public:
   IndexBox(QWidget *widget_, Word &word_, const QString &index,
            Word::Language l1);
 
-  /**
-   * @brief set_status method which change status of entry
-   * @param status status enum type, ReadOnly or Edit
-   */
-  virtual void set_status(Status status);
+  virtual void set_status(Status status) = 0;
 
   /**
-   * @brief set_entry_basic_options method which sets some options to entryline
+   * @brief set_entry_basic_options method which sets some options to
+   * entryline
    * @param entry pointer to entry which user want to change
    * @param language language of data in entryline
    */
   void set_entry_basic_options(EntryLine *entry, Word::Language language);
+signals:
+  void update_window();
+  void creating_detail_view(Word &word, Word::Language language);
 };

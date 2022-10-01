@@ -59,10 +59,16 @@ public:
 
   /**
    * @brief to_string method which convert Date to string format type
-   * "year>month>day>hour>minute>second"
+   * "year/month/day  hour:minute:second"
    * @return the string version of date
    */
   QString to_string() const;
+  /**
+   * @brief to_string method which convert Date to string format type
+   * "year>month>day>hour>minute>second"
+   * @return the string version of date
+   */
+  QString to_string_second_version() const;
 };
 
 /**

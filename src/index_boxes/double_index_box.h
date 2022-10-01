@@ -11,9 +11,10 @@ private:
   EntryLine to_word_entry; ///< entryline with word translation
   std::unique_ptr<QWidget> widget_change_bar_layout; ///< layout's widget
   std::unique_ptr<QHBoxLayout> change_bar_layout;
-  ImageButton edit_button;            ///< button which allows to edit entries
-  ImageButton confirm_button;         ///< button which applies changes
-  ImageButton cancel_button;          ///< button which cancels changes
+  ImageButton edit_button;    ///< button which allows to edit entries
+  ImageButton confirm_button; ///< button which applies changes
+  ImageButton cancel_button;  ///< button which cancels changes
+  ImageButton delete_button;  ///< button which removes given translation
   Word::Language translated_language; ///< language of second entry box's word
 
   /**
@@ -78,6 +79,11 @@ public slots:
    * @brief confirm_changes slot used to confirming changes
    */
   void confirm_changes();
+
+  /**
+   * @brief delete_translation slot used to delete given translation
+   */
+  void delete_translation();
 signals:
   void cancel_changes_signal();
 };

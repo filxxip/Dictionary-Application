@@ -91,4 +91,11 @@ public:
    * text into it
    */
   void set_read_only(bool status);
+
+  /**
+   * @brief change_entry_line_object_name method which changes object name of
+   * entry and apply new stylesheet
+   * @param new_object_name new object name
+   */
+  void change_entry_line_object_name(const QString &new_object_name);
 };

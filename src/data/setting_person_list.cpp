@@ -141,7 +141,8 @@ void update_json_dictionary_file(std::vector<Dictionary> &dictionaries) {
         auto language_translation = word.get_translation(language);
         QJsonArray result_word_array;
         result_word_array.append(language_translation);
-        result_word_array.append(word.get_date(language).to_string());
+        result_word_array.append(
+            word.get_date(language).to_string_second_version());
         auto prioritity_as_string =
             Word::Prioritity_names.at(word.get_prioritity());
         result_word_array.append(prioritity_as_string);

@@ -45,6 +45,9 @@ add_executable(${PROJECT_NAME}
     src/vertical_label/vertical_label.cpp
     src/index_boxes/index_box.cpp
     src/index_boxes/double_index_box.cpp
+    src/index_boxes/once_index_box.cpp
+    src/detail_view/detail_view.cpp
+    src/detail_view_one_language_layout/detail_view_one_language_layout.cpp
     main.cpp
 )
 

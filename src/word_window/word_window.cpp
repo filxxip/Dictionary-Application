@@ -1,5 +1,7 @@
 #include "word_window.h"
 #include "../data/config_file.h"
+#include "../detail_view/detail_view.h"
+#include "../index_boxes/once_index_box.h"
 #include "../swiper/swiper.h"
 #include "../translation/translation.h"
 #include "../word_pair/word_pair.h"
@@ -99,13 +101,21 @@ void WordWindow::create_word_layout(Word::Language word_base_language) {
       dictionary->get_specific_words(word_base_language);
   for (auto &x : list_of_translations) {
     index++;
-    auto lay =
-        std::make_unique<IndexBox>(&main_widget, dictionary->get_word(x),
-                                   QString::number(index), word_base_language);
+    auto lay = std::make_unique<OnceIndexBox>(
+        &main_widget, dictionary->get_word(x), QString::number(index),
+        word_base_language);
     baselayout->addLayout(lay.get());
     current_words.push_back(std::move(lay));
   }
   groupbox->setLayout(baselayout.get());
+  for (auto &x : current_words) {
+    QObject::connect(x.get(), &IndexBox::creating_detail_view, this,
+                     &WordWindow::add_detail_view);
+  }
+}
+
+void WordWindow::add_detail_view(Word &word, Word::Language language) {
+  emit add_detail_view_signal(dictionary, word, language);
 }
 
 void WordWindow::create_word_layout(Word::Language word_base_language,
@@ -123,6 +133,10 @@ void WordWindow::create_word_layout(Word::Language word_base_language,
     current_words.push_back(std::move(lay));
   }
   groupbox->setLayout(baselayout.get());
+  for (auto &x : current_words) {
+    QObject::connect(x.get(), &IndexBox::update_window, this,
+                     &WordWindow::update_dictionary);
+  }
 }
 
 QWidget *WordWindow::get_widget() { return &main_widget; }
@@ -152,3 +166,16 @@ void WordWindow::configurate_swiper(Swiper *swiper, int position_x,
 }
 
 void WordWindow::clear_layout() { current_words.clear(); }
+
+void WordWindow::update_dictionary() {
+  auto base_language = from_language.get_text();
+  auto translated_language = to_language.get_text();
+  set_layout(base_language, translated_language);
+  emit update_rest_tabs(dictionary);
+}
+
+void WordWindow::reload() {
+  auto base_language = from_language.get_text();
+  auto translation_language = to_language.get_text();
+  create_word_layout(base_language, translation_language);
+}

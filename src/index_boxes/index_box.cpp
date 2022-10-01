@@ -20,22 +20,8 @@ IndexBox::IndexBox(QWidget *widget_, Word &word_, const QString &index,
   index_entry_layout->setContentsMargins(0, 0, 0, 0);
 }
 
-void IndexBox::set_status(Status status) {
-  switch (status) {
-  case IndexBox::Status::EDIT: {
-    from_word_entry.setReadOnly(false);
-    break;
-  }
-  case IndexBox::Status::READ_ONLY: {
-    from_word_entry.setReadOnly(true);
-    break;
-  }
-  }
-}
-
 void IndexBox::set_entry_basic_options(EntryLine *entry,
                                        Word::Language language) {
-  set_status(Status::READ_ONLY);
   entry->setObjectName("entrytitle");
   auto content = word.get_translation(language);
   entry->setText(content);
