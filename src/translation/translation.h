@@ -16,9 +16,9 @@ public:
   /**
    * @brief The Language enum which determines possible translations of word
    */
-  enum class Language { ENGLISH, POLISH, GERMAN };
+  enum class Language { UNDEFINED = -1, ENGLISH, POLISH, GERMAN };
 
-  const static std::unordered_map<Language, QString>
+  const static std::map<Language, QString>
       Language_names; ///< map used when user want to get string version of
                       ///< language name
 
@@ -38,6 +38,7 @@ private:
   std::map<Language, Date>
       translations_dates; ///< map with dates when specified translations were
                           ///< added
+
 public:
   /**
    * @brief change_translation_date private method which changes translation of
@@ -49,6 +50,8 @@ public:
    */
   void change_translation_date(Language language,
                                const Date &date = get_current_date());
+
+  static void is_language_valid(Language language);
 
 private:
   /**
@@ -173,4 +176,10 @@ public:
    * @return vector with all defined languages.
    */
   std::vector<Word::Language> get_defined_languages() const;
+
+  /**
+   * @brief set_not_defined method used to remove translation of given language
+   * @param language alnguage which translation should be removed
+   */
+  void set_not_defined(Language language);
 };

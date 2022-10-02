@@ -91,9 +91,11 @@ void WordlistWindow::set_dict(const QString &person_mail,
         &NewDictLayout::new_box_signal, this,
         [this](const QString &name) { emit new_dict_signal(name, owner); });
   }
+
   groupbox->setLayout(baselayout.get());
   for (auto &box : groupbox_dict) {
     connect_doublebox(box.get());
+    connect_setting_doublebox(box.get());
   }
 }
 
@@ -114,10 +116,12 @@ void WordlistWindow::add_groupbox(Dictionary *dict) {
     if (ptr2) {
       baselayout->addLayout(ptr2.get());
       connect_doublebox(ptr2.get());
+      connect_setting_doublebox(ptr2.get());
       groupbox_dict.push_back(std::move(ptr2));
     }
     baselayout->addLayout(ptr.get());
     connect_doublebox(ptr.get());
+    connect_setting_doublebox(ptr.get());
     groupbox_dict.push_back(std::move(ptr));
   }
   QObject::connect(
@@ -131,18 +135,41 @@ void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
     if (dynamic_cast<ContentLayout *>(box->get_left_item().get())) {
       auto item = static_cast<ContentLayout *>(box->get_left_item().get());
 
+      QObject::connect(item, &ContentLayout::trash_dict, this,
+                       [this](auto dict) { emit removing_dict_signal(dict); });
       QObject::connect(
-          item, &ContentLayout::trash_dict, this,
-          [this](auto dict) { emit removing_dict_signal(dict, owner); });
+          item, &ContentLayout::window_titles_changed_signal, this,
+          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
     }
   }
   if (box->get_right_item() != nullptr) {
     if (dynamic_cast<ContentLayout *>(box->get_right_item().get())) {
       auto item = static_cast<ContentLayout *>(box->get_right_item().get());
 
+      QObject::connect(item, &ContentLayout::trash_dict, this,
+                       [this](auto dict) { emit removing_dict_signal(dict); });
       QObject::connect(
-          item, &ContentLayout::trash_dict, this,
-          [this](auto dict) { emit removing_dict_signal(dict, owner); });
+          item, &ContentLayout::window_titles_changed_signal, this,
+          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
+    }
+  }
+}
+
+void WordlistWindow::connect_setting_doublebox(DoubleGrpBox *box) {
+  if (box->get_left_item() != nullptr) {
+    if (dynamic_cast<ContentLayout *>(box->get_left_item().get())) {
+      auto item = static_cast<ContentLayout *>(box->get_left_item().get());
+
+      QObject::connect(item, &ContentLayout::set_signal, this,
+                       [this](auto dict) { emit setting_new_window(dict); });
+    }
+  }
+  if (box->get_right_item() != nullptr) {
+    if (dynamic_cast<ContentLayout *>(box->get_right_item().get())) {
+      auto item = static_cast<ContentLayout *>(box->get_right_item().get());
+
+      QObject::connect(item, &ContentLayout::set_signal, this,
+                       [this](auto dict) { emit setting_new_window(dict); });
     }
   }
 }

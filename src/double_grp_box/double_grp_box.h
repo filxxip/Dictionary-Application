@@ -29,11 +29,12 @@ private:
   std::unique_ptr<CustomVBoxLayout>
       right_layout; ///< unique ptr to right custom layout
 
-  /**
-   * @brief create_edit_trash_layout method which create bottom panel of layout
-   * @return pointer to yet created layout
-   */
-  QHBoxLayout *create_edit_trash_layout();
+  //  /**
+  //   * @brief create_edit_trash_layout method which create bottom panel of
+  //   layout
+  //   * @return pointer to yet created layout
+  //   */
+  //  QHBoxLayout *create_edit_trash_layout();
 
 public:
   /**

@@ -27,7 +27,7 @@ public:
    * @param widget_ shared pointer to QWidget on which entryline is placed
    * @param entry_type type of entryline, password or normal
    */
-  EntryLine(QWidget *widget_, Status entry_type);
+  EntryLine(QWidget *widget_, Status entry_type = Status::NORMAL);
 
   /**
    * @brief append_text method which appends text to line edit's current text
@@ -53,4 +53,11 @@ public:
    * @param mode mode of text in line edit
    */
   void set_text_status(EntryLine::Status new_status);
+
+  /**
+   * @brief set_object_name_stylesheet method which sets new style using
+   * objectname of widget
+   * @param object_name new object_name of entry
+   */
+  void set_object_name_stylesheet(const QString &object_name);
 };

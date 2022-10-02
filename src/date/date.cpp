@@ -77,10 +77,10 @@ bool Date::operator>(const Date &date) {
 }
 
 QString Date::to_string() const {
-  QString result = QString::number(year) + ">" +
-                   QString::number(static_cast<int>(month)) + ">" +
-                   QString::number(day) + ">" + QString::number(hour) + ">" +
-                   QString::number(minute) + ">" + QString::number(second);
+  QString result = QString::number(year) + "/" +
+                   QString::number(static_cast<int>(month)) + "/" +
+                   QString::number(day) + "  " + QString::number(hour) + ":" +
+                   QString::number(minute) + ":" + QString::number(second);
   return result;
 }
 
@@ -108,4 +108,12 @@ Date to_date(const QString &date) {
   int minute = date_elements.at(4).toInt();
   int second = date_elements.at(5).toInt();
   return Date(second, minute, hour, day, month, year);
+}
+
+QString Date::to_string_second_version() const {
+  QString result = QString::number(year) + ">" +
+                   QString::number(static_cast<int>(month)) + ">" +
+                   QString::number(day) + ">" + QString::number(hour) + ">" +
+                   QString::number(minute) + ">" + QString::number(second);
+  return result;
 }

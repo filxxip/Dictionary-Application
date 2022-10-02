@@ -2,6 +2,7 @@
 
 #include "../image_label/image_label.h"
 
+#include <QDebug>
 #include <QPushButton>
 
 class ImageButton : public QPushButton {

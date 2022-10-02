@@ -56,7 +56,14 @@ public:
 
   /**
    * @brief set_widget method which sets widget on active
-   * @param name title name of widget
+   * @param widget qwidget instance
    */
-  void set_widget(const QString &name);
+  void set_widget(QWidget *widget);
+
+  /**
+   * @brief change_name method which changes title of tab
+   * @param widget widget which name should be changed
+   * @param name new name of widget
+   */
+  void change_name(QWidget *widget, const QString &name);
 };

@@ -23,4 +23,11 @@ public:
    * @param position_y y position of label
    */
   void set_position(int position_x, int position_y);
+
+  /**
+   * @brief set_adjusted_width mehtod which set width depended on label text
+   * size
+   * @param margin super space in label
+   */
+  void set_adjusted_width(int margin);
 };

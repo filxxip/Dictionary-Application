@@ -38,6 +38,8 @@ private:
    */
   void connect_doublebox(DoubleGrpBox *box);
 
+  void connect_setting_doublebox(DoubleGrpBox *box);
+
 public:
   /**
    * @brief setting_scroll_options method which sets some options of scrollbar
@@ -96,5 +98,19 @@ signals:
    * @param dict poitner to dictionary to remove
    * @param email given person whose dict is removed
    */
-  void removing_dict_signal(Dictionary *dict, const QString &email);
+  void removing_dict_signal(Dictionary *dict);
+
+  /**
+   * @brief setting_new_window signal used to setting new window with dictionary
+   * words to app
+   * @param dict dictionary which should be set
+   */
+  void setting_new_window(Dictionary *dict);
+
+  /**
+   * @brief changing_name_dictionary_bar signal which changes dictionary name on
+   * tab bar
+   * @param dict dict which title should be changed
+   */
+  void changing_name_dictionary_bar(Dictionary *dict);
 };

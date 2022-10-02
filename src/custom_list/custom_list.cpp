@@ -10,7 +10,7 @@
 
 CustomList::CustomList() {
   person_list_reserve(MaxValues::MAX_PERSON_NUM);
-  dictionary_list_reserve(400);
+  dictionary_list_reserve(MaxValues::MAX_DICT_NUM);
   create_from_json();
 }
 

@@ -16,3 +16,11 @@ void TextLabel::set_font_size(int size) {
 void TextLabel::set_position(int position_x, int position_y) {
   setGeometry(position_x, position_y, geometry().width(), geometry().height());
 }
+
+void TextLabel::set_adjusted_width(int margin) {
+  auto fm = fontMetrics();
+  auto width = fm.horizontalAdvance(text());
+  width += margin;
+  setFixedWidth(width);
+  setAlignment(Qt::AlignCenter);
+}
