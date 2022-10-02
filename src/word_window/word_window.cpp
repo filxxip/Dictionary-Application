@@ -76,18 +76,19 @@ void WordWindow::set_layout(Word::Language word_base_language,
   clear_layout();
   try {
     Word::is_language_valid(word_base_language);
-    try {
-      Word::is_language_valid(word_translation_language);
-      if (word_base_language != word_translation_language) {
-        create_word_layout(word_base_language, word_translation_language);
-      } else {
-        create_word_layout(word_base_language);
-      }
-    } catch (std::invalid_argument &) {
+  } catch (std::invalid_argument &) {
+    return;
+  }
+
+  try {
+    Word::is_language_valid(word_translation_language);
+    if (word_base_language != word_translation_language) {
+      create_word_layout(word_base_language, word_translation_language);
+    } else {
       create_word_layout(word_base_language);
     }
   } catch (std::invalid_argument &) {
-    return;
+    create_word_layout(word_base_language);
   }
 }
 
@@ -135,7 +136,7 @@ void WordWindow::create_word_layout(Word::Language word_base_language,
   groupbox->setLayout(baselayout.get());
   for (auto &x : current_words) {
     QObject::connect(x.get(), &IndexBox::update_window, this,
-                     &WordWindow::update_dictionary);
+                     &WordWindow::update_whole_dictionary);
   }
 }
 
@@ -151,7 +152,8 @@ void WordWindow::close_button_configuration() {
 void WordWindow::configurate_swiper(Swiper *swiper) {
   auto opt = Word::Language_names;
   std::vector<Word::Language> v;
-  for (auto &[lang, string] : opt) {
+  v.reserve(opt.size());
+  for (const auto &[lang, string] : opt) {
     v.push_back(lang);
   }
 
@@ -167,15 +169,17 @@ void WordWindow::configurate_swiper(Swiper *swiper, int position_x,
 
 void WordWindow::clear_layout() { current_words.clear(); }
 
-void WordWindow::update_dictionary() {
-  auto base_language = from_language.get_text();
-  auto translated_language = to_language.get_text();
-  set_layout(base_language, translated_language);
+void WordWindow::update_whole_dictionary() {
+  reload();
   emit update_rest_tabs(dictionary);
 }
 
 void WordWindow::reload() {
   auto base_language = from_language.get_text();
-  auto translation_language = to_language.get_text();
-  create_word_layout(base_language, translation_language);
+  auto translated_language = to_language.get_text();
+  set_layout(base_language, translated_language);
+}
+
+QString WordWindow::get_tab_title() const {
+  return dictionary->get_name() + " - dict";
 }

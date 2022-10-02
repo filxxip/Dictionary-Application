@@ -9,12 +9,14 @@ constexpr char BASE_UNDEFINED_TEXT[] = "<-translation undefined->";
 } // namespace
 
 DetailViewOneLanguageLayout::DetailViewOneLanguageLayout(
-    QWidget *widget_, Word &word_, Word::Language language_)
+    QWidget *widget_, Word &word_, Word::Language language_,
+    const Dictionary *dict)
     : QHBoxLayout(), widget(widget_), word(word_), language(language_),
       translation_entry(widget), date_entry(widget),
       language_label(widget, Word::Language_names.at(language)),
       delete_button(widget, DELETE_BUTTON, Displays::DisplayStyle::SCALED_WIDTH,
-                    WidgetData::ELEMENT_DETAIL_HEIGHT) {
+                    WidgetData::ELEMENT_DETAIL_HEIGHT),
+      dictionary(dict) {
   language_label.setFixedWidth(100);
   date_entry.setAlignment(Qt::AlignCenter);
   translation_entry.setAlignment(Qt::AlignCenter);
@@ -68,5 +70,10 @@ void DetailViewOneLanguageLayout::delete_translation() {
   if (word.is_defined(language)) {
     word.set_not_defined(language);
     update_content();
+    emit update_rest_dictionaries(dictionary);
   }
+}
+
+const Dictionary *DetailViewOneLanguageLayout::get_dictionary() const {
+  return dictionary;
 }

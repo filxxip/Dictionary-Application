@@ -13,7 +13,8 @@ constexpr int BASIC_TITLE_LABEL_HEIGHT = 120;
 constexpr QMargins BASIC_HBOX_MARGIN = {10, 0, 10, 50};
 } // namespace
 
-DetailView::DetailView(Word &word_, const Dictionary *dictionary_)
+DetailView::DetailView(Word &word_, const Dictionary *dictionary_,
+                       Word::Language base_language_)
     : QObject(), dictionary(dictionary_),
       exit_button(&main_widget, EXIT_BUTTON,
                   Displays::DisplayStyle::SCALED_WIDTH,
@@ -22,7 +23,7 @@ DetailView::DetailView(Word &word_, const Dictionary *dictionary_)
       title_label(&main_widget, TITLE_IMAGE,
                   Displays::DisplayStyle::CHANGED_WIDTH,
                   BASIC_TITLE_LABEL_HEIGHT),
-      word(word_) {
+      word(word_), base_language(base_language_) {
   exit_button.set_position(WidgetData::EXIT_POSITION_X,
                            WidgetData::EXIT_POSITION_Y);
   QObject::connect(&exit_button, &QPushButton::clicked, this,
@@ -33,7 +34,10 @@ DetailView::DetailView(Word &word_, const Dictionary *dictionary_)
   main_layout.setContentsMargins(WidgetData::MAIN_LAYOUT_MARGINS);
   for (int i = 0; i <= static_cast<int>(Word::Language::GERMAN); i++) {
     auto item = std::make_unique<DetailViewOneLanguageLayout>(
-        &main_widget, word, static_cast<Word::Language>(i));
+        &main_widget, word, static_cast<Word::Language>(i), dictionary);
+    QObject::connect(
+        item.get(), &DetailViewOneLanguageLayout::update_rest_dictionaries,
+        this, [this](auto dict) { emit update_rest_dicts_signal(dict); });
     main_layout.addLayout(item.get());
     language_detail_panels.push_back(std::move(item));
   }
@@ -42,12 +46,11 @@ DetailView::DetailView(Word &word_, const Dictionary *dictionary_)
 QWidget *DetailView::get_widget() { return &main_widget; }
 
 void DetailView::update() {
-  dictionary_title.setText(dictionary->get_name());
-  //  dictionary_title.set_adjusted_width(BASIC_TEXT_MARGIN);
+  update_title();
   for (auto &language : language_detail_panels) {
     language->update_content();
   }
-}
+} // metoda
 
 void DetailView::create_dictionary_title() {
 
@@ -69,3 +72,12 @@ void DetailView::create_dictionary_title() {
 }
 
 const Dictionary *DetailView::get_dictionary() const { return dictionary; }
+
+QString DetailView::get_tab_title() const {
+  return word.get_translation(base_language) + " - detail";
+}
+
+void DetailView::update_title() {
+  auto title = dictionary->get_name();
+  dictionary_title.setText(std::move(title));
+}

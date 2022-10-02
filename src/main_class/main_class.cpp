@@ -75,9 +75,11 @@ void MainClass::change_every_dict_bar_title(Dictionary *dict) {
       auto new_name = dict->get_name();
       tab_itr->change_title(new_name);
       auto widget = tab_itr->get_widget();
-
-      base.change_name(widget, new_name + " - dict");
+      base.change_name(widget, tab_itr->get_tab_title());
     }
+  }
+  for (auto &tab_itr : detail_tabs) {
+    tab_itr->update_title();
   }
 }
 
@@ -110,8 +112,8 @@ void MainClass::remove_dictionary(Dictionary *dictionary) {
   list.remove_dictionary(*dictionary);
   auto msg = CustomMessageBox(wordlist_window.get_widget(), TITLE, QUESTION);
   auto choice =
-      msg.run(CustomMessageBox::Type::Yes,
-              {CustomMessageBox::Type::No}); // zmienic na ta fajna liste
+      msg.run(CustomMessageBox::Type::No,
+              {CustomMessageBox::Type::Yes}); // zmienic na ta fajna liste
   if (choice == CustomMessageBox::Type::Yes) {
     auto person = dictionary->get_person();
     auto mail = person->get_email();
@@ -120,17 +122,28 @@ void MainClass::remove_dictionary(Dictionary *dictionary) {
   }
 }
 
-void MainClass::remove_dictionary_from_list(Dictionary *dict) {
+void MainClass::remove_every_dict_from_list(Dictionary *dict) {
   auto index = std::remove_if(
       word_windows.begin(), word_windows.end(),
       [dict](auto &win) { return dict == win->get_dictionary(); });
   word_windows.erase(index, word_windows.end());
 }
+void MainClass::remove_every_dict_detail_tab_from_list(Dictionary *dict) {
+  auto index2 =
+      std::remove_if(detail_tabs.begin(), detail_tabs.end(), [dict](auto &win) {
+        return dict == win->get_dictionary();
+      });
+  detail_tabs.erase(index2, detail_tabs.end());
+}
+
+void MainClass::remove_dictionary_from_list(Dictionary *dict) {
+  remove_every_dict_from_list(dict);
+  remove_every_dict_detail_tab_from_list(dict);
+}
 
 void MainClass::add_new_dict_window(Dictionary *dictionary) {
   auto window = std::make_unique<WordWindow>(dictionary);
-  auto title = dictionary->get_name() + " - dict";
-  base.add_widget(window->get_widget(), title);
+  base.add_widget(window->get_widget(), window->get_tab_title());
   QObject::connect(window.get(), &WordWindow::close_signal, this,
                    &MainClass::close_widget_tab);
   QObject::connect(window.get(), &WordWindow::update_rest_tabs, this,
@@ -146,27 +159,29 @@ void MainClass::close_widget_tab(QWidget *widget) {
                                   REMOVING_INFORMATION);
   msg->create_detail_text(SECOND_REMOVING_INFORMATION);
   auto result =
-      msg->run(CustomMessageBox::Type::Yes, {CustomMessageBox::Type::No});
+      msg->run(CustomMessageBox::Type::No, {CustomMessageBox::Type::Yes});
   if (result == CustomMessageBox::Type::Yes) {
     auto index = std::find_if(word_windows.begin(), word_windows.end(),
-                              [&widget](auto &ptr_itr) {
+                              [widget](auto &ptr_itr) {
                                 return ptr_itr.get()->get_widget() == widget;
                               });
     delete msg;
+    base.delete_widget(widget);
     word_windows.erase(index);
   }
 }
 
-void MainClass::update_every_tab(Dictionary *dict) {
-  qDebug() << "xxxx";
+void MainClass::update_every_tab(const Dictionary *dict) {
   for (auto &window : word_windows) {
     if (window->get_dictionary() == dict) {
       window->reload();
+      base.change_name(window->get_widget(), window->get_tab_title());
     }
   }
   for (auto &window : detail_tabs) {
     if (window->get_dictionary() == dict) {
       window->update();
+      base.change_name(window->get_widget(), window->get_tab_title());
       // zrobic jakos mozliwosc zmiany w gornym panelu tytuly przy zmianie
       // slowka i problemy ogolnie z integracja miedzy tabelkami
       //      auto widget = window->get_widget();
@@ -179,10 +194,18 @@ void MainClass::update_every_tab(Dictionary *dict) {
 
 void MainClass::add_new_detail_view(const Dictionary *dict, Word &word,
                                     Word::Language language) {
-  auto view = std::make_unique<DetailView>(word, dict);
-  base.add_widget(view->get_widget(),
-                  word.get_translation(language) + " - detail");
-  QObject::connect(view.get(), &DetailView::close_window_signal, this,
-                   [this](auto widget) { base.delete_widget(widget); });
+  auto view = std::make_unique<DetailView>(word, dict, language);
+  base.add_widget(view->get_widget(), view->get_tab_title());
+  QObject::connect(
+      view.get(), &DetailView::close_window_signal, this, [this](auto widget) {
+        base.delete_widget(widget);
+        auto index = std::find_if(detail_tabs.begin(), detail_tabs.end(),
+                                  [widget](auto &ptr_itr) {
+                                    return ptr_itr->get_widget() == widget;
+                                  });
+        detail_tabs.erase(index);
+      });
+  QObject::connect(view.get(), &DetailView::update_rest_dicts_signal, this,
+                   [this](auto dict) { update_every_tab(dict); });
   detail_tabs.push_back(std::move(view));
 }

@@ -45,11 +45,7 @@ void Swiper::set_options(std::vector<Word::Language> options_) {
   current_index = 0;
   set_text(current_language);
   left_arrow.setDisabled(true);
-  if (options.size() == 0) {
-    right_arrow.setDisabled(true);
-  } else {
-    right_arrow.setDisabled(false);
-  }
+  right_arrow.setDisabled(options.size() == 0);
 }
 
 void Swiper::set_font(int value) { main_label.set_font_size(value); }
@@ -76,8 +72,7 @@ void Swiper::swipe_right() {
 
 void Swiper::swiper_left() {
   right_arrow.setDisabled(false);
-  current_index--;
-  if (static_cast<unsigned long>(current_index) == 0) {
+  if (static_cast<unsigned long>(--current_index) == 0) {
     left_arrow.setDisabled(true);
   }
   auto result = options.at(current_index);

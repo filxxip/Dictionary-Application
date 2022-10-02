@@ -131,6 +131,12 @@ public:
    * @param language language in which word is defined
    */
   void add_detail_view(Word &word, Word::Language language);
+
+  /**
+   * @brief get_tab_title method which provides title of tab
+   * @return QString instance with tab title
+   */
+  QString get_tab_title() const;
 signals:
 
   /**
@@ -145,5 +151,5 @@ signals:
   void update_rest_tabs(Dictionary *dict);
 
 public slots:
-  void update_dictionary();
+  void update_whole_dictionary();
 };

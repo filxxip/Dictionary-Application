@@ -37,6 +37,9 @@ public:
 
   void widget_change_title(QWidget *widget);
 
+  void remove_every_dict_from_list(Dictionary *dict);
+  void remove_every_dict_detail_tab_from_list(Dictionary *dict);
+
 public slots:
   /**
    * @brief setting_new_person_data method which set new data on data window
@@ -75,7 +78,7 @@ public slots:
   void remove_dictionary_from_list(Dictionary *dict);
   void change_every_dict_bar_title(Dictionary *dict);
 
-  void update_every_tab(Dictionary *dict);
+  void update_every_tab(const Dictionary *dict);
   void add_new_detail_view(const Dictionary *dict, Word &word,
                            Word::Language language);
 };

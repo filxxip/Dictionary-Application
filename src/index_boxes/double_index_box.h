@@ -55,7 +55,7 @@ public:
    * @brief set_status method which change status of entry
    * @param status status enum type, ReadOnly or Edit
    */
-  virtual void set_status(Status status);
+  virtual void set_status(Status status) override;
 
   /**
    * @brief change_status_images method which change visibility of button

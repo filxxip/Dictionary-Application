@@ -25,6 +25,7 @@ private:
   std::vector<std::unique_ptr<DetailViewOneLanguageLayout>>
       language_detail_panels; ///< vector with every language layout
   Word &word;                 ///< word reference whose data is on window
+  Word::Language base_language;
 
   /**
    * @brief create_dictionary_title method which add some basic configuration to
@@ -38,7 +39,8 @@ public:
    * @param word_ word whose data is on widget
    * @param dictionary_ dictionary for which word belongs
    */
-  DetailView(Word &word_, const Dictionary *dictionary_);
+  DetailView(Word &word_, const Dictionary *dictionary_,
+             Word::Language base_language_);
 
   /**
    * @brief get_widget method which provides main widget
@@ -57,6 +59,16 @@ public:
    */
   const Dictionary *get_dictionary() const;
 
+  /**
+   * @brief get_tab_title method which provides title of tab
+   * @return QString instance with tab title
+   */
+  QString get_tab_title() const;
+
+  /**
+   * @brief update_title method which updates title of detail view
+   */
+  void update_title();
 signals:
 
   /**
@@ -64,4 +76,10 @@ signals:
    * @param widget widget which will be closed
    */
   void close_window_signal(QWidget *widget);
+
+  /**
+   * @brief update_rest_dicts_signal signal used to updating every dict tab
+   * @param dict constant pointer to dict
+   */
+  void update_rest_dicts_signal(const Dictionary *dict);
 };

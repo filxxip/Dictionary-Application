@@ -38,6 +38,7 @@ private:
   std::map<Language, Date>
       translations_dates; ///< map with dates when specified translations were
                           ///< added
+
 public:
   /**
    * @brief change_translation_date private method which changes translation of

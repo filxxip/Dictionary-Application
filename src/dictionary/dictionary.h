@@ -100,7 +100,7 @@ public:
    * @brief add_word method which add new word to vector
    * @param word word preperaed to add
    */
-  void add_word(const Word &word);
+  void add_word(Word &word);
 
   /**
    * @brief change_memory method which change capacity of vector
@@ -137,5 +137,9 @@ public:
    */
   QString get_name() const { return name; }
 
+  /**
+   * @brief set_name method which sets new name of dictionary
+   * @param name_ new name of dictionary
+   */
   void set_name(const QString &name_);
 };

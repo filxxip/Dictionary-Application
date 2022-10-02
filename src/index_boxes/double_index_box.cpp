@@ -71,40 +71,34 @@ void DoubleIndexBox::set_read_style(EntryLine *entryline) {
 }
 
 void DoubleIndexBox::set_status(Status status) {
-  switch (status) {
-  case IndexBox::Status::EDIT: {
-    from_word_entry.setReadOnly(false);
-    to_word_entry.setReadOnly(false);
-
-    change_status_images(IndexBox::Status::EDIT);
-    break;
-  }
-  case IndexBox::Status::READ_ONLY: {
-    from_word_entry.setReadOnly(true);
-    to_word_entry.setReadOnly(true);
-    change_status_images(IndexBox::Status::READ_ONLY);
-    break;
-  }
-  }
+  auto condition = status == IndexBox::Status::READ_ONLY;
+  from_word_entry.setReadOnly(condition);
+  to_word_entry.setReadOnly(condition);
+  change_status_images(status);
 }
 
 void DoubleIndexBox::change_status_images(Status status) {
-  switch (status) {
-  case IndexBox::Status::EDIT: {
-    cancel_button.setVisible(true);
-    confirm_button.setVisible(true);
-    edit_button.setVisible(false);
-    delete_button.setVisible(false);
-    break;
-  }
-  case IndexBox::Status::READ_ONLY: {
-    cancel_button.setVisible(false);
-    confirm_button.setVisible(false);
-    edit_button.setVisible(true);
-    delete_button.setVisible(true);
-    break;
-  }
-  }
+  auto condition = status == IndexBox::Status::READ_ONLY;
+  cancel_button.setVisible(!condition);
+  confirm_button.setVisible(!condition);
+  edit_button.setVisible(condition);
+  delete_button.setVisible(condition);
+  //  switch (status) {
+  //  case IndexBox::Status::EDIT: {
+  //    cancel_button.setVisible(true);
+  //    confirm_button.setVisible(true);
+  //    edit_button.setVisible(false);
+  //    delete_button.setVisible(false);
+  //    break;
+  //  }
+  //  case IndexBox::Status::READ_ONLY: {
+  //    cancel_button.setVisible(false);
+  //    confirm_button.setVisible(false);
+  //    edit_button.setVisible(true);
+  //    delete_button.setVisible(true);
+  //    break;
+  //  }
+  //  }
 }
 
 void DoubleIndexBox::cancel_changes() {

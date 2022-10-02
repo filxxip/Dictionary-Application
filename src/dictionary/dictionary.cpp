@@ -34,7 +34,7 @@ const std::vector<Word> Dictionary::get_words(Word::Language language,
   return results;
 }
 
-void Dictionary::add_word(const Word &word) {
+void Dictionary::add_word(Word &word) {
   auto searched =
       std::find_if(wordlist.begin(), wordlist.end(),
                    [&word](const auto &value) { return word.contain(value); });
