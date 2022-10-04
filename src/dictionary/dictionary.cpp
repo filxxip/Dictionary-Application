@@ -131,3 +131,11 @@ int Dictionary::get_number_of_words(Word::Language language) {
 }
 
 void Dictionary::set_name(const QString &name_) { name = name_; }
+
+void Dictionary::delete_word(Word &word) {
+  auto index =
+      std::find_if(wordlist.begin(), wordlist.end(),
+                   [&word](auto &word_itr) { return &word_itr == &word; });
+  qDebug() << &*index << "tutajj" << &*wordlist.end();
+  wordlist.erase(index);
+}

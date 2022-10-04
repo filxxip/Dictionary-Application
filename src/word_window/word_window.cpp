@@ -100,6 +100,7 @@ void WordWindow::create_word_layout(Word::Language word_base_language) {
   int index = 0;
   auto list_of_translations =
       dictionary->get_specific_words(word_base_language);
+  qDebug() << "oto lista" << list_of_translations.size();
   for (auto &x : list_of_translations) {
     index++;
     auto lay = std::make_unique<OnceIndexBox>(
@@ -167,7 +168,10 @@ void WordWindow::configurate_swiper(Swiper *swiper, int position_x,
   swiper->set_position(position_x, position_y);
 }
 
-void WordWindow::clear_layout() { current_words.clear(); }
+void WordWindow::clear_layout() {
+  //  baselayout->deleteLater();
+  current_words.clear();
+}
 
 void WordWindow::update_whole_dictionary() {
   reload();
@@ -177,6 +181,7 @@ void WordWindow::update_whole_dictionary() {
 void WordWindow::reload() {
   auto base_language = from_language.get_text();
   auto translated_language = to_language.get_text();
+  qDebug() << "wykonuje reload";
   set_layout(base_language, translated_language);
 }
 

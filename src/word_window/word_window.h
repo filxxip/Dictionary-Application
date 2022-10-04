@@ -145,7 +145,7 @@ signals:
    */
   void close_signal(QWidget *widget);
 
-  void add_detail_view_signal(const Dictionary *dict, Word &word,
+  void add_detail_view_signal(Dictionary *dict, Word &word,
                               Word::Language language);
 
   void update_rest_tabs(Dictionary *dict);

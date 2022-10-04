@@ -142,4 +142,6 @@ public:
    * @param name_ new name of dictionary
    */
   void set_name(const QString &name_);
+
+  void delete_word(Word &word);
 };

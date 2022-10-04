@@ -37,8 +37,16 @@ public:
 
   void widget_change_title(QWidget *widget);
 
+  //  void remove_given_word_from_tabs(Word &word);
+
   void remove_every_dict_from_list(Dictionary *dict);
   void remove_every_dict_detail_tab_from_list(Dictionary *dict);
+
+  void delete_given_word_from_tabs(Word &word);
+  void delete_given_word_from_list(Word &word);
+
+  void update_word_windows(Dictionary *dict);
+  void update_dict_windows(Dictionary *dict);
 
 public slots:
   /**
@@ -78,7 +86,7 @@ public slots:
   void remove_dictionary_from_list(Dictionary *dict);
   void change_every_dict_bar_title(Dictionary *dict);
 
-  void update_every_tab(const Dictionary *dict);
-  void add_new_detail_view(const Dictionary *dict, Word &word,
+  void update_every_tab(Dictionary *dict);
+  void add_new_detail_view(Dictionary *dict, Word &word,
                            Word::Language language);
 };

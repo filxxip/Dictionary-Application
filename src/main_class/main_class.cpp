@@ -27,6 +27,7 @@ MainClass::MainClass(QApplication &app)
   base.add_widget(login_widget, Titles::LOGIN);
   base.add_widget(register_widget, Titles::REGISTER);
   base.add_widget(wordlist_widget, Titles::WORDLIST);
+
   QObject::connect(&login_window, &LoginView::data_window_create, this,
                    &MainClass::setting_new_person_data);
   auto &exit_button1 = data_window.get_exit_button();
@@ -171,28 +172,30 @@ void MainClass::close_widget_tab(QWidget *widget) {
   }
 }
 
-void MainClass::update_every_tab(const Dictionary *dict) {
+void MainClass::update_word_windows(Dictionary *dict) {
+  for (auto &window : detail_tabs) {
+    if (window->get_dictionary() == dict) {
+      window->update();
+      base.change_name(window->get_widget(), window->get_tab_title());
+    }
+  }
+}
+
+void MainClass::update_dict_windows(Dictionary *dict) {
   for (auto &window : word_windows) {
     if (window->get_dictionary() == dict) {
       window->reload();
       base.change_name(window->get_widget(), window->get_tab_title());
     }
   }
-  for (auto &window : detail_tabs) {
-    if (window->get_dictionary() == dict) {
-      window->update();
-      base.change_name(window->get_widget(), window->get_tab_title());
-      // zrobic jakos mozliwosc zmiany w gornym panelu tytuly przy zmianie
-      // slowka i problemy ogolnie z integracja miedzy tabelkami
-      //      auto widget = window->get_widget();
-      //      auto word = window.get
-      //      auto new_name = window->get_dictionary()->get_name();
-      //      base.change_name(widget, new_name + " - detail");
-    }
-  }
 }
 
-void MainClass::add_new_detail_view(const Dictionary *dict, Word &word,
+void MainClass::update_every_tab(Dictionary *dict) {
+  update_dict_windows(dict);
+  update_word_windows(dict);
+}
+
+void MainClass::add_new_detail_view(Dictionary *dict, Word &word,
                                     Word::Language language) {
   auto view = std::make_unique<DetailView>(word, dict, language);
   base.add_widget(view->get_widget(), view->get_tab_title());
@@ -206,6 +209,30 @@ void MainClass::add_new_detail_view(const Dictionary *dict, Word &word,
         detail_tabs.erase(index);
       });
   QObject::connect(view.get(), &DetailView::update_rest_dicts_signal, this,
-                   [this](auto dict) { update_every_tab(dict); });
+                   &MainClass::update_every_tab); // glowny widok
+  QObject::connect(view.get(), &DetailView::delete_window_signal, this,
+                   [this](auto &word, auto dict) {
+                     delete_given_word_from_tabs(word);
+                     delete_given_word_from_list(word);
+                     dict->delete_word(word);
+                     update_word_windows(dict);
+                     update_dict_windows(dict); // zrobic metode ktora
+                                                // uaktualnie glowny widok
+                   });
   detail_tabs.push_back(std::move(view));
+}
+
+void MainClass::delete_given_word_from_list(Word &word) {
+  auto new_end =
+      std::remove_if(detail_tabs.begin(), detail_tabs.end(),
+                     [&word](auto &tab) { return &tab->get_word() == &word; });
+  detail_tabs.erase(new_end, detail_tabs.end());
+}
+
+void MainClass::delete_given_word_from_tabs(Word &word) {
+  for (auto &window : detail_tabs) {
+    if (&window->get_word() == &word) {
+      base.delete_widget(window->get_widget());
+    }
+  }
 }

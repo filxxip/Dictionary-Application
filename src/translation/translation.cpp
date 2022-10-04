@@ -55,6 +55,7 @@ Word::Word(const std::map<Language, QString> &translations_,
 
 const QString &Word::get_translation(Language to) const {
   is_language_valid(to);
+  qDebug() << "tuu";
   return translations.at(to);
 }
 

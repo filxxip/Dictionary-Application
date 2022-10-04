@@ -45,6 +45,8 @@ public:
    */
   void change_image(const QString &new_path);
 
+  void set_style_sheet(const QString &new_style);
+
 private:
   QString image_source; ///< source to image file from main
 

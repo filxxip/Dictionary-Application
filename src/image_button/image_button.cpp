@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QIcon>
 #include <QPixmap>
+#include <QStyle>
 
 ImageButton ::ImageButton(QWidget *widget_, const QString &source_to_image,
                           Displays::DisplayStyle style, int size)
@@ -90,4 +91,9 @@ void ImageButton::change_image(const QString &new_path) {
   auto new_icon = QIcon(new_pixmap);
   setIcon(new_icon);
   setIconSize(current_size);
+}
+
+void ImageButton::set_style_sheet(const QString &new_style) {
+  setObjectName(new_style);
+  style()->polish(this);
 }

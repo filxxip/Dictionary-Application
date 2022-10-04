@@ -182,3 +182,15 @@ background-color:  #026280;
 QWidget#bluecolor{
 background-color:  #026280;
 }
+
+QPushButton#edit_panel_style{
+background-color:#a5a4a4;
+
+}
+
+QPushButton:disabled#edit_panel_style:disabled{
+background-color:#a5a4a4;
+border: 5px solid rgb(161, 40, 40);
+border-radius: 3px;
+}
+
