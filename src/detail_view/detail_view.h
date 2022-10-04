@@ -72,6 +72,10 @@ public:
    */
   void update_title();
 
+  /**
+   * @brief get_word method which provides reference to word
+   * @return reference of word whose data is on widget
+   */
   Word &get_word();
 signals:
 

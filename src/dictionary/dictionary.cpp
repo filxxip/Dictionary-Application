@@ -136,6 +136,5 @@ void Dictionary::delete_word(Word &word) {
   auto index =
       std::find_if(wordlist.begin(), wordlist.end(),
                    [&word](auto &word_itr) { return &word_itr == &word; });
-  qDebug() << &*index << "tutajj" << &*wordlist.end();
   wordlist.erase(index);
 }

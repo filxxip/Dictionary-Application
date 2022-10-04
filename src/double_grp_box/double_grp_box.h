@@ -117,6 +117,20 @@ public:
    */
   const std::unique_ptr<CustomVBoxLayout> &get_right_item();
 
+  /**
+   * @brief has_dictionary method which checks if doubl
+   * @param dict dictionary
+   * @return true if doublebox contain dict, otherwise false
+   */
+  bool has_dictionary(Dictionary *dict);
+
+  /**
+   * @brief update_dictionary method which updates data on widget
+   * @param dict dict which specifies which box, left or right contain
+   * dictionary
+   */
+  void update_dictionary(Dictionary *dict);
+
 signals:
 
   /**

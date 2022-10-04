@@ -35,18 +35,61 @@ public:
    */
   MainClass(QApplication &app);
 
+  void add_login_tabs();
+  //  void add_basic_personal_tabs();
+  void remove_personal_tabs();
+  void remove_every_dict_from_list();
+  void remove_every_dict_detail_tab_from_list();
+
+  /**
+   * @brief widget_change_title method which changes title of widget
+   * @param widget widget which title should be changed
+   */
   void widget_change_title(QWidget *widget);
 
   //  void remove_given_word_from_tabs(Word &word);
 
+  /**
+   * @brief remove_every_dict_from_list method which removes specified dict from
+   * tabs
+   * @param dict dictionary to remove
+   */
   void remove_every_dict_from_list(Dictionary *dict);
+
+  /**
+   * @brief remove_every_dict_detail_tab_from_list method which removes every
+   * detail tab with specified dictionary
+   * @param dict dictionary which is removed
+   */
   void remove_every_dict_detail_tab_from_list(Dictionary *dict);
 
+  /**
+   * @brief remove_every_dict_detail_tab_from_list method which removes every
+   * detail tab with specified word
+   * @param word word which is removed
+   */
   void delete_given_word_from_tabs(Word &word);
+
+  /**
+   * @brief delete_given_word_from_list method which removes specified detail
+   * tab from detail tab lists
+   * @param word word whose tabs will be removed
+   */
   void delete_given_word_from_list(Word &word);
 
+  /**
+   * @brief update_word_windows method which updates data of every detail tab
+   * @param dict dict for which word belongs
+   */
   void update_word_windows(Dictionary *dict);
+
+  /**
+   * @brief update_dict_windows method which updates every dictionary tab
+   * @param dict dict which is updating
+   */
   void update_dict_windows(Dictionary *dict);
+
+  //  void update_base_window();
 
 public slots:
   /**

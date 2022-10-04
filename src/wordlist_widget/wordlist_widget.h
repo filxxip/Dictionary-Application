@@ -77,6 +77,10 @@ public:
   void set_dict(const QString &person_mail,
                 std::vector<Dictionary *> dictionary);
 
+  void clear();
+
+  void update(Dictionary *dictionary);
+
 public slots:
 
   /**

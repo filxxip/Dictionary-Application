@@ -53,6 +53,7 @@ public:
    * @return nullptr
    */
   virtual Dictionary *get_dictionary() final;
+  virtual void update(){};
 signals:
 
   /**

@@ -49,4 +49,5 @@ public:
    * @return poiner to Dictionary which is on layout
    */
   virtual Dictionary *get_dictionary() = 0;
+  virtual void update() = 0;
 };

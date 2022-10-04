@@ -173,3 +173,15 @@ void WordlistWindow::connect_setting_doublebox(DoubleGrpBox *box) {
     }
   }
 }
+
+void WordlistWindow::clear() {}
+
+void WordlistWindow::update(Dictionary *dictionary) {
+  clear();
+  auto index = std::find_if(groupbox_dict.begin(), groupbox_dict.end(),
+                            [dictionary](auto &doublebox) {
+                              return doublebox->has_dictionary(dictionary);
+                            });
+  index->get()->update_dictionary(dictionary);
+  //  set_dict(owner, dict);
+}
