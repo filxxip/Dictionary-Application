@@ -20,11 +20,6 @@ public:
   CustomizeImageButton(QWidget *widget, const QString &image_source);
 };
 
-namespace {
-const QString IMAGE_FILE QStringLiteral("images/%1");
-constexpr int IMAGE_HEIGHT = 40;
-}; // namespace
-
 /** ConfigDetailViewPanel is a class used for performing activities on specified
  * word */
 class ConfigDetailViewPanel : public QHBoxLayout {

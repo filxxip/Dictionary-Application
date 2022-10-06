@@ -174,7 +174,7 @@ void WordlistWindow::connect_setting_doublebox(DoubleGrpBox *box) {
   }
 }
 
-void WordlistWindow::clear() {}
+void WordlistWindow::clear() {} //?
 
 void WordlistWindow::update(Dictionary *dictionary) {
   clear();

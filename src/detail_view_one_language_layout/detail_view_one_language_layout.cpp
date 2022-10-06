@@ -1,6 +1,7 @@
 #include "detail_view_one_language_layout.h"
 #include "../data/config_file.h"
 
+#include <QStringLiteral>
 #include <QStyle>
 
 namespace {
@@ -31,15 +32,9 @@ DetailViewOneLanguageLayout::DetailViewOneLanguageLayout(
 }
 
 void DetailViewOneLanguageLayout::set_entries_read_only(bool status) {
-  if (status) {
-    translation_entry.setReadOnly(true);
-    date_entry.setReadOnly(true);
-    set_entries_new_object_names("entrytitle");
-  } else {
-    translation_entry.setReadOnly(false);
-    date_entry.setReadOnly(false);
-    set_entries_new_object_names("entryline");
-  }
+  translation_entry.setReadOnly(status);
+  date_entry.setReadOnly(status);
+  set_entries_new_object_names(status ? "entrytitle" : "entryline");
 }
 
 void DetailViewOneLanguageLayout::set_entries_new_object_names(
@@ -56,21 +51,22 @@ void DetailViewOneLanguageLayout::set_height(int height) {
 
 void DetailViewOneLanguageLayout::update_content() {
   auto translation = word.get_translation(language);
-  if (word.is_defined(language)) {
-    translation_entry.setText(translation);
-  } else {
-    translation_entry.setText(BASE_UNDEFINED_TEXT);
-  }
+  translation_entry.setText(word.is_defined(language) ? translation
+                                                      : BASE_UNDEFINED_TEXT);
   auto translation_date = word.get_date(language);
   date_entry.setText(translation_date.to_string());
 }
 
 void DetailViewOneLanguageLayout::delete_translation() {
-  if (word.is_defined(language)) {
-    word.set_not_defined(language);
-    update_content();
-    emit update_rest_dictionaries(dictionary);
+  if (!word.is_defined(language)) {
+    auto text = QStringLiteral("Language is not defined for &1")
+                    .arg(word.get_translation(language));
+    qDebug() << text;
+    return;
   }
+  word.set_not_defined(language);
+  update_content();
+  emit update_rest_dictionaries(dictionary);
 }
 
 Dictionary *DetailViewOneLanguageLayout::get_dictionary() const {

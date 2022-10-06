@@ -87,5 +87,5 @@ QString DetailView::get_tab_title() const {
 
 void DetailView::update_title() {
   auto title = dictionary->get_name();
-  dictionary_title.setText(std::move(title));
+  dictionary_title.setText(title);
 }

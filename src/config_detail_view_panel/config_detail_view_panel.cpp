@@ -1,21 +1,26 @@
 #include "config_detail_view_panel.h"
+#include "../data/config_file.h"
 
 #include <QStyle>
 
 CustomizeImageButton::CustomizeImageButton(QWidget *widget,
                                            const QString &image_source)
     : ImageButton(widget, image_source, Displays::DisplayStyle::SCALED_WIDTH,
-                  IMAGE_HEIGHT) {
+                  WidgetData::IMAGE_HEIGHT_OF_DETAIL_PANEL) {
   set_style_sheet("edit_panel_style");
 }
 
 ConfigDetailViewPanel::ConfigDetailViewPanel(QWidget *widget, Word &word_)
     : main_widget(widget),
-      trash_all_button(main_widget, IMAGE_FILE.arg("trashall.png")),
-      add_button(main_widget, IMAGE_FILE.arg("add.png")),
-      edit_button(main_widget, IMAGE_FILE.arg("edit3.png")),
-      cancel_button(main_widget, IMAGE_FILE.arg("cancel3.png")),
-      confirm_button(main_widget, IMAGE_FILE.arg("confirm3.png")), word(word_) {
+      trash_all_button(main_widget,
+                       WidgetData::IMAGE_FILE_LITERAL.arg("trashall.png")),
+      add_button(main_widget, WidgetData::IMAGE_FILE_LITERAL.arg("add.png")),
+      edit_button(main_widget, WidgetData::IMAGE_FILE_LITERAL.arg("edit3.png")),
+      cancel_button(main_widget,
+                    WidgetData::IMAGE_FILE_LITERAL.arg("cancel3.png")),
+      confirm_button(main_widget,
+                     WidgetData::IMAGE_FILE_LITERAL.arg("confirm3.png")),
+      word(word_) {
   addWidget(&confirm_button);
   addWidget(&trash_all_button);
   addWidget(&edit_button);
