@@ -83,3 +83,17 @@ const std::unique_ptr<CustomVBoxLayout> &DoubleGrpBox::get_left_item() {
 const std::unique_ptr<CustomVBoxLayout> &DoubleGrpBox::get_right_item() {
   return right_layout;
 }
+
+bool DoubleGrpBox::has_dictionary(Dictionary *dict) {
+  return left_layout->get_dictionary() == dict ||
+         right_layout->get_dictionary() == dict;
+}
+
+void DoubleGrpBox::update_dictionary(Dictionary *dict) {
+  if (left_layout->get_dictionary() == dict) {
+    left_layout->update();
+  }
+  if (right_layout->get_dictionary() == dict) {
+    right_layout->update();
+  }
+}

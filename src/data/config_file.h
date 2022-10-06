@@ -2,6 +2,8 @@
 
 #include <QMargins>
 #include <QRect>
+#include <QString>
+#include <QStringLiteral>
 #include <unordered_map>
 
 namespace Json {
@@ -54,6 +56,8 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+const QString IMAGE_FILE_LITERAL QStringLiteral("images/%1");
+constexpr int IMAGE_HEIGHT_OF_DETAIL_PANEL = 40;
 constexpr int ELEMENT_DETAIL_HEIGHT = 40;
 constexpr int TITLE_WIDTH = 45;
 constexpr QMargins WORD_WINDOW_HIGHBAR_LAYOUT = {100, 0, 0, 0};

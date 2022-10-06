@@ -72,6 +72,7 @@ QHBoxLayout *ContentLayout::create_language_hbox(Word::Language language,
 
   auto words_number = dictionary->get_number_of_words(language);
   auto label = create_base_label(QString::number(words_number) + " words");
+  text_labels_map.insert({language, label});
 
   lay->addWidget(image);
   lay->addWidget(label);
@@ -163,3 +164,10 @@ void ContentLayout::set_edit_panel() {
 }
 
 void ContentLayout::trash_element() { emit trash_dict(dictionary); }
+
+void ContentLayout::update() {
+  for (auto [language, label] : text_labels_map) {
+    auto words_number = dictionary->get_number_of_words(language);
+    label->setText(QString::number(words_number) + " words");
+  }
+}

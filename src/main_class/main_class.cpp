@@ -84,19 +84,45 @@ void MainClass::change_every_dict_bar_title(Dictionary *dict) {
   }
 }
 
+void MainClass::add_login_tabs() {
+  auto login_widget = login_window.get_widget();
+  auto register_widget = register_window.get_widget();
+  base.add_widget(login_widget, Titles::LOGIN);
+  base.add_widget(register_widget, Titles::REGISTER);
+}
+
+void MainClass::remove_personal_tabs() {
+  remove_every_dict_from_list();
+  remove_every_dict_detail_tab_from_list();
+
+  auto data_widget = data_window.get_widget();
+  auto wordlist_widget = wordlist_window.get_widget();
+  base.delete_widget(data_widget);
+  base.delete_widget(wordlist_widget);
+}
+
+void MainClass::remove_every_dict_from_list() {
+  for (auto &window : word_windows) {
+    auto widget = window->get_widget();
+    base.delete_widget(widget);
+  }
+  word_windows.clear();
+}
+void MainClass::remove_every_dict_detail_tab_from_list() {
+  for (auto &window : detail_tabs) {
+    auto widget = window->get_widget();
+    base.delete_widget(widget);
+  }
+  detail_tabs.clear();
+}
+
 void MainClass::logout() {
   CustomMessageBox msg(data_window.get_widget(), LOGOUT_TITLE, LOGOUT_QUESTION);
   auto choice =
       msg.run(CustomMessageBox::Type::No, {CustomMessageBox::Type::Yes});
   if (choice == CustomMessageBox::Type::Yes) {
-    auto data_widget = data_window.get_widget();
-    auto wordlist_widget = wordlist_window.get_widget();
-    base.delete_widget(data_widget);
-    base.delete_widget(wordlist_widget);
-    auto login_widget = login_window.get_widget();
-    auto register_widget = register_window.get_widget();
-    base.add_widget(login_widget, Titles::LOGIN);
-    base.add_widget(register_widget, Titles::REGISTER);
+    remove_personal_tabs();
+    add_login_tabs();
   }
 }
 
@@ -191,6 +217,7 @@ void MainClass::update_dict_windows(Dictionary *dict) {
 }
 
 void MainClass::update_every_tab(Dictionary *dict) {
+  //  wordlist_window.update(dict);
   update_dict_windows(dict);
   update_word_windows(dict);
 }
@@ -216,8 +243,9 @@ void MainClass::add_new_detail_view(Dictionary *dict, Word &word,
                      delete_given_word_from_list(word);
                      dict->delete_word(word);
                      update_word_windows(dict);
-                     update_dict_windows(dict); // zrobic metode ktora
-                                                // uaktualnie glowny widok
+                     update_dict_windows(dict);
+                     wordlist_window.update(dict); // zrobic metode ktora
+                                                   // uaktualnie glowny widok
                    });
   detail_tabs.push_back(std::move(view));
 }

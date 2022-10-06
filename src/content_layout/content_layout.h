@@ -25,6 +25,7 @@ private:
   TextButton
       set_button; ///< button used to open new window with dictionary data
   Dictionary *dictionary; ///< dictionary from which data is taken
+  std::map<Word::Language, TextLabel *> text_labels_map;
 
   /**
    * @brief create_base_entryline method which create entry_title instance
@@ -68,6 +69,10 @@ private:
   void entry_configuration();
 
 public:
+  /**
+   * @brief update method which updates layout words number labels
+   */
+  void update();
   /**
    * @brief ContentLayout constructor method of class
    * @param widget_ main widget where widget will be placed
