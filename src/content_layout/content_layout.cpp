@@ -23,13 +23,13 @@ std::map<Word::Language, QString> source_languages = {
 } // namespace
 
 void ContentLayout::create_base_entryline() {
-  auto dict_name = dictionary->get_name();
+  auto dict_name = dictionary.get_name();
   entry_title.setText(std::move(dict_name));
   layout->addWidget(&entry_title);
   entry_title.setReadOnly(true);
 }
 
-ContentLayout::ContentLayout(QWidget &widget_, Dictionary *dict)
+ContentLayout::ContentLayout(QWidget &widget_, Dictionary &dict)
     : CustomVBoxLayout(widget_),
       entry_title(&widget_, EntryLine::Status::NORMAL),
       trash_button(&widget, TRASH_IMAGE, Displays::DisplayStyle::SCALED_HEIGHT,
@@ -70,7 +70,7 @@ QHBoxLayout *ContentLayout::create_language_hbox(Word::Language language,
       new ImageLabel(&widget, source, Displays::DisplayStyle::SCALED_WIDTH,
                      WidgetData::ELEMENT_HEIGHT);
 
-  auto words_number = dictionary->get_number_of_words(language);
+  auto words_number = dictionary.get_number_of_words(language);
   auto label = create_base_label(QString::number(words_number) + " words");
   text_labels_map.insert({language, label});
 
@@ -83,7 +83,6 @@ void ContentLayout::set_box() { emit set_signal(dictionary); }
 
 QHBoxLayout *ContentLayout::create_operation_layout() {
   auto lay = new QHBoxLayout;
-
   QObject::connect(&trash_button, &QPushButton::clicked, this,
                    [this]() { trash_element(); });
   QObject::connect(&edit_button, &QPushButton::clicked, this,
@@ -120,7 +119,7 @@ void ContentLayout::create_layout() {
   layout->addLayout(std::move(edit_trash_panel));
 }
 
-Dictionary *ContentLayout::get_dictionary() { return dictionary; }
+Dictionary &ContentLayout::get_dictionary() { return dictionary; }
 
 void ContentLayout::change_title() {
   entry_title.setReadOnly(false);
@@ -134,8 +133,7 @@ void ContentLayout::confirm_title() {
     entry_title.setReadOnly(true);
     entry_title.setObjectName("entrytitle");
     entry_title.style()->polish(&entry_title);
-    // s    auto old_name = dictionary->get_name();
-    dictionary->set_name(entry_title.text());
+    dictionary.set_name(entry_title.text());
     set_edit_panel();
     emit window_titles_changed_signal(dictionary);
   } else {
@@ -148,7 +146,7 @@ void ContentLayout::cancel_title() {
   entry_title.setReadOnly(true);
   entry_title.setObjectName("entrytitle");
   entry_title.style()->polish(&entry_title);
-  entry_title.setText(dictionary->get_name());
+  entry_title.setText(dictionary.get_name());
   set_edit_panel();
 }
 
@@ -167,7 +165,9 @@ void ContentLayout::trash_element() { emit trash_dict(dictionary); }
 
 void ContentLayout::update() {
   for (auto [language, label] : text_labels_map) {
-    auto words_number = dictionary->get_number_of_words(language);
+    auto words_number = dictionary.get_number_of_words(language);
     label->setText(QString::number(words_number) + " words");
   }
 }
+
+bool ContentLayout::has_dictionary() const { return true; }

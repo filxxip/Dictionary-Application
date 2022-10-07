@@ -14,12 +14,12 @@ namespace {
 constexpr char IMAGE_EXIT[] = "images/exit2.png";
 } // namespace
 
-WordWindow::WordWindow(Dictionary *dictionary_)
+WordWindow::WordWindow(Dictionary &dictionary_)
     : QObject(), dictionary(dictionary_),
       close_button(&main_widget, IMAGE_EXIT,
                    Displays::DisplayStyle::SCALED_WIDTH,
                    WidgetData::EXIT_HEIGHT),
-      title(&main_widget, dictionary->get_name()),
+      title(&main_widget, dictionary.get_name()),
       from_language(&main_widget, WidgetData::LABEL_WIDTH_SWIPER,
                     WidgetData::ARROW_SIZE),
       to_language(&main_widget, WidgetData::LABEL_WIDTH_SWIPER,
@@ -56,7 +56,7 @@ WordWindow::WordWindow(Dictionary *dictionary_)
   swiper_connect();
 }
 
-Dictionary *WordWindow::get_dictionary() { return dictionary; }
+Dictionary &WordWindow::get_dictionary() { return dictionary; }
 
 void WordWindow::swiper_connect() {
   QObject::connect(&from_language, &Swiper::swipe_signal, this,
@@ -98,12 +98,11 @@ void WordWindow::change_title(const QString &new_title) {
 
 void WordWindow::create_word_layout(Word::Language word_base_language) {
   int index = 0;
-  auto list_of_translations =
-      dictionary->get_specific_words(word_base_language);
+  auto list_of_translations = dictionary.get_specific_words(word_base_language);
   for (auto &x : list_of_translations) {
     index++;
     auto lay = std::make_unique<OnceIndexBox>(
-        &main_widget, dictionary->get_word(x), QString::number(index),
+        &main_widget, dictionary.get_word(x), QString::number(index),
         word_base_language);
     baselayout->addLayout(lay.get());
     current_words.push_back(std::move(lay));
@@ -123,12 +122,12 @@ void WordWindow::create_word_layout(Word::Language word_base_language,
                                     Word::Language word_translation_language) {
   clear_layout();
   int index = 0;
-  auto list_of_translations = dictionary->get_specific_translations(
+  auto list_of_translations = dictionary.get_specific_translations(
       word_base_language, word_translation_language);
   for (auto &x : list_of_translations) {
     index++;
     auto lay = std::make_unique<DoubleIndexBox>(
-        &main_widget, dictionary->get_word(x), QString::number(index),
+        &main_widget, dictionary.get_word(x), QString::number(index),
         word_base_language, word_translation_language);
     baselayout->addLayout(lay.get());
     current_words.push_back(std::move(lay));
@@ -184,5 +183,5 @@ void WordWindow::reload() {
 }
 
 QString WordWindow::get_tab_title() const {
-  return dictionary->get_name() + " - dict";
+  return dictionary.get_name() + " - dict";
 }

@@ -18,6 +18,7 @@
 class MainClass : public QObject {
   Q_OBJECT
 private:
+  int value = 10;
   BaseTabWidget base; ///< Base for whole app
   CustomList
       list; ///< Custom list with information about users and its dictionaries
@@ -54,14 +55,14 @@ public:
    * tabs
    * @param dict dictionary to remove
    */
-  void remove_every_dict_from_list(Dictionary *dict);
+  void remove_every_dict_from_list(Dictionary &dict);
 
   /**
    * @brief remove_every_dict_detail_tab_from_list method which removes every
    * detail tab with specified dictionary
    * @param dict dictionary which is removed
    */
-  void remove_every_dict_detail_tab_from_list(Dictionary *dict);
+  void remove_every_dict_detail_tab_from_list(Dictionary &dict);
 
   /**
    * @brief remove_every_dict_detail_tab_from_list method which removes every
@@ -81,13 +82,13 @@ public:
    * @brief update_word_windows method which updates data of every detail tab
    * @param dict dict for which word belongs
    */
-  void update_word_windows(Dictionary *dict);
+  void update_word_windows(Dictionary &dict);
 
   /**
    * @brief update_dict_windows method which updates every dictionary tab
    * @param dict dict which is updating
    */
-  void update_dict_windows(Dictionary *dict);
+  void update_dict_windows(Dictionary &dict);
 
   //  void update_base_window();
 
@@ -121,15 +122,15 @@ public slots:
    * @param dictionary dictionary which will be removed
    * @param person_mail mail of person whose dict will be removed
    */
-  void remove_dictionary(Dictionary *dictionary);
+  void remove_dictionary(Dictionary &dictionary);
 
-  void add_new_dict_window(Dictionary *dictionary);
+  void add_new_dict_window(Dictionary &dictionary);
 
   void close_widget_tab(QWidget *widget);
-  void remove_dictionary_from_list(Dictionary *dict);
-  void change_every_dict_bar_title(Dictionary *dict);
+  void remove_dictionary_from_list(Dictionary &dict);
+  void change_every_dict_bar_title(Dictionary &dict);
 
-  void update_every_tab(Dictionary *dict);
-  void add_new_detail_view(Dictionary *dict, Word &word,
+  void update_every_tab(Dictionary &dict);
+  void add_new_detail_view(Dictionary &dict, Word &word,
                            Word::Language language);
 };

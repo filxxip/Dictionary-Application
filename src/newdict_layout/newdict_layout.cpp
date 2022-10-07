@@ -51,7 +51,7 @@ void NewDictLayout::create_layout(Qt::Alignment align) {
   layout->addLayout(hboxlayout);
 }
 
-Dictionary *NewDictLayout::get_dictionary() { return nullptr; }
+// Dictionary &NewDictLayout::get_dictionary() { return nullptr; } // todo
 
 void NewDictLayout::new_button_function() {
   auto text = entry.text();
@@ -67,3 +67,5 @@ void NewDictLayout::create_entry(Qt::Alignment align) {
   entry.setPlaceholderText(Placeholders::NEW_DICT_PLACEHOLDER);
   entry.setAlignment(align);
 }
+
+bool NewDictLayout::has_dictionary() const { return false; }

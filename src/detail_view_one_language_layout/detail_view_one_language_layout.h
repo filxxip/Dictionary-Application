@@ -23,7 +23,7 @@ private:
   EntryLine date_entry;        ///< entryline with date
   TextLabel language_label;  ///< label which specifies language of translation
   ImageButton delete_button; ///< button which removes given translation
-  Dictionary *dictionary;
+  Dictionary &dictionary;
 
 public:
   /**
@@ -33,7 +33,7 @@ public:
    * @param language_ language of data
    */
   DetailViewOneLanguageLayout(QWidget *widget_, Word &word_,
-                              Word::Language language_, Dictionary *dict);
+                              Word::Language language_, Dictionary &dict);
 
   /**
    * @brief set_entries_read_only which sets whether data should be only
@@ -59,7 +59,7 @@ public:
    */
   void update_content();
 
-  Dictionary *get_dictionary() const;
+  Dictionary &get_dictionary() const;
 public slots:
 
   /**
@@ -72,5 +72,5 @@ signals:
    * @brief update_rest_dictionaries signal used to update every tab
    * @param dict dictionary which data was changed
    */
-  void update_rest_dictionaries(Dictionary *dict);
+  void update_rest_dictionaries(Dictionary &dict);
 };

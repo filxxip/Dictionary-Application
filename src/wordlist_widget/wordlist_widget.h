@@ -27,7 +27,8 @@ private:
   std::unique_ptr<QGroupBox> groupbox;     ///< pointer to groupbox with dicts
   QVBoxLayout mainlayout;                  ///< main layout with some widgets
   std::unique_ptr<QVBoxLayout> baselayout; ///< base layout with groupbox
-  std::vector<Dictionary *> dict; ///< vecotr with pointers to user dictionaries
+  //  std::vector<Dictionary *> dict; ///< vecotr with pointers to user
+  //  dictionaries
   std::vector<std::unique_ptr<DoubleGrpBox>>
       groupbox_dict; ///< dictionary with pair of groupbox
 
@@ -50,7 +51,7 @@ public:
    * @brief add_groupbox method which add new groupbox to window
    * @param dict dict which will be represented by groupbox
    */
-  void add_groupbox(Dictionary *dict);
+  void add_groupbox(Dictionary &dict);
 
   /**
    * @brief WordlistWindow constructor method
@@ -79,7 +80,7 @@ public:
 
   void clear();
 
-  void update(Dictionary *dictionary);
+  void update(Dictionary &dictionary);
 
 public slots:
 
@@ -102,19 +103,19 @@ signals:
    * @param dict poitner to dictionary to remove
    * @param email given person whose dict is removed
    */
-  void removing_dict_signal(Dictionary *dict);
+  void removing_dict_signal(Dictionary &dict);
 
   /**
    * @brief setting_new_window signal used to setting new window with dictionary
    * words to app
    * @param dict dictionary which should be set
    */
-  void setting_new_window(Dictionary *dict);
+  void setting_new_window(Dictionary &dict);
 
   /**
    * @brief changing_name_dictionary_bar signal which changes dictionary name on
    * tab bar
    * @param dict dict which title should be changed
    */
-  void changing_name_dictionary_bar(Dictionary *dict);
+  void changing_name_dictionary_bar(Dictionary &dict);
 };

@@ -52,8 +52,10 @@ public:
    * cannot has any data
    * @return nullptr
    */
-  virtual Dictionary *get_dictionary() final;
+  //  virtual Dictionary &get_dictionary() final;
   virtual void update(){};
+
+  bool has_dictionary() const final;
 signals:
 
   /**

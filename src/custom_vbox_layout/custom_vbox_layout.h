@@ -48,6 +48,7 @@ public:
    * @brief get_dictionary virtual method which
    * @return poiner to Dictionary which is on layout
    */
-  virtual Dictionary *get_dictionary() = 0;
+  //  virtual Dictionary *get_dictionary() = 0;
+  virtual bool has_dictionary() const = 0;
   virtual void update() = 0;
 };

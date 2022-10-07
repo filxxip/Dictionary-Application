@@ -40,7 +40,7 @@ MainClass::MainClass(QApplication &app)
                    &MainClass::add_new_dictionary);
   setting_new_person_data("f.pol2@gmail.com"); // toremove
   QObject::connect(&list, &CustomList::adding_to_box, this,
-                   [this](auto dict) { wordlist_window.add_groupbox(dict); });
+                   [this](auto &dict) { wordlist_window.add_groupbox(dict); });
 
   QObject::connect(&wordlist_window, &WordlistWindow::removing_dict_signal,
                    this, &MainClass::remove_dictionary);
@@ -57,9 +57,15 @@ void MainClass::setting_new_person_data(const QString &email) {
   auto &person = list.get_person(email);
   data_window.set_person(&person);
 
-  auto dict_list = list.get_dictionary_list(email);
-  wordlist_window.set_dict(email, dict_list);
-
+  auto &dict_list = list.get_dictionary_list();
+  std::vector<Dictionary *> dictionary_list_result;
+  for (auto &dict : dict_list) {
+    auto dict_email = dict.get_person()->get_email();
+    if (dict_email == email) {
+      dictionary_list_result.push_back(&dict);
+    }
+  }
+  wordlist_window.set_dict(email, dictionary_list_result);
   auto data_widget = data_window.get_widget();
   base.add_widget(data_widget, Titles::DATA);
   auto wordlist_widget = wordlist_window.get_widget();
@@ -70,10 +76,10 @@ void MainClass::setting_new_person_data(const QString &email) {
   base.delete_widget(register_widget);
 }
 
-void MainClass::change_every_dict_bar_title(Dictionary *dict) {
+void MainClass::change_every_dict_bar_title(Dictionary &dict) {
   for (auto &tab_itr : word_windows) {
-    if (dict == tab_itr->get_dictionary()) {
-      auto new_name = dict->get_name();
+    if (&dict == &tab_itr->get_dictionary()) {
+      auto new_name = dict.get_name();
       tab_itr->change_title(new_name);
       auto widget = tab_itr->get_widget();
       base.change_name(widget, tab_itr->get_tab_title());
@@ -102,17 +108,17 @@ void MainClass::remove_personal_tabs() {
 }
 
 void MainClass::remove_every_dict_from_list() {
-  for (auto &window : word_windows) {
-    auto widget = window->get_widget();
-    base.delete_widget(widget);
-  }
+  //  for (auto &window : word_windows) {
+  //    auto widget = window->get_widget();
+  //    base.delete_widget(widget);
+  //  }
   word_windows.clear();
 }
 void MainClass::remove_every_dict_detail_tab_from_list() {
-  for (auto &window : detail_tabs) {
-    auto widget = window->get_widget();
-    base.delete_widget(widget);
-  }
+  //  for (auto &window : detail_tabs) {
+  //    auto widget = window->get_widget();
+  //    base.delete_widget(widget);
+  //  }
   detail_tabs.clear();
 }
 
@@ -135,40 +141,65 @@ void MainClass::add_new_dictionary(const QString &name, const QString &owner) {
   list.add_last_dictionary_to_box();
 }
 
-void MainClass::remove_dictionary(Dictionary *dictionary) {
-  list.remove_dictionary(*dictionary);
+void MainClass::remove_dictionary(Dictionary &dictionary) {
+  //  list.remove_dictionary(dictionary);
+  qDebug() << word_windows.size();
+  qDebug() << detail_tabs.size();
   auto msg = CustomMessageBox(wordlist_window.get_widget(), TITLE, QUESTION);
   auto choice =
       msg.run(CustomMessageBox::Type::No,
               {CustomMessageBox::Type::Yes}); // zmienic na ta fajna liste
   if (choice == CustomMessageBox::Type::Yes) {
-    auto person = dictionary->get_person();
+    auto person = dictionary.get_person();
     auto mail = person->get_email();
-    wordlist_window.set_dict(mail, list.get_dictionary_list(mail));
+    qDebug() << word_windows.size();
+    qDebug() << detail_tabs.size();
     remove_dictionary_from_list(dictionary);
+    qDebug() << word_windows.size();
+    qDebug() << detail_tabs.size();
+    list.remove_dictionary(dictionary);
+    qDebug() << word_windows.size();
+    qDebug() << detail_tabs.size();
+    auto &dict_list = list.get_dictionary_list();
+    std::vector<Dictionary *> dictionary_list_result;
+    for (auto &dict : dict_list) {
+      auto dict_email = dict.get_person()->get_email();
+      if (dict_email == mail) {
+        dictionary_list_result.push_back(&dict);
+      }
+    }
+    qDebug() << word_windows.size();
+    qDebug() << detail_tabs.size();
+    wordlist_window.set_dict(mail, dictionary_list_result);
   }
 }
 
-void MainClass::remove_every_dict_from_list(Dictionary *dict) {
-  auto index = std::remove_if(
-      word_windows.begin(), word_windows.end(),
-      [dict](auto &win) { return dict == win->get_dictionary(); });
-  word_windows.erase(index, word_windows.end());
-}
-void MainClass::remove_every_dict_detail_tab_from_list(Dictionary *dict) {
-  auto index2 =
-      std::remove_if(detail_tabs.begin(), detail_tabs.end(), [dict](auto &win) {
-        return dict == win->get_dictionary();
+void MainClass::remove_every_dict_from_list(Dictionary &dict) {
+  qDebug() << word_windows.size() << "xxx";
+  qDebug() << detail_tabs.size() << "xxx";
+  auto index = std::remove_if( // todo
+      word_windows.begin(), word_windows.end(), [&dict](auto &win) {
+        return &dict == &win->get_dictionary(); /// sssss
       });
+  word_windows.erase(index, word_windows.end());
+  qDebug() << word_windows.size() << "xxx";
+  qDebug() << detail_tabs.size() << "xxx";
+}
+void MainClass::remove_every_dict_detail_tab_from_list(Dictionary &dict) {
+  auto index2 = std::remove_if(
+      detail_tabs.begin(), detail_tabs.end(),
+      [&dict](auto &win) { return &dict == &win->get_dictionary(); });
   detail_tabs.erase(index2, detail_tabs.end());
 }
 
-void MainClass::remove_dictionary_from_list(Dictionary *dict) {
+void MainClass::remove_dictionary_from_list(Dictionary &dict) {
   remove_every_dict_from_list(dict);
   remove_every_dict_detail_tab_from_list(dict);
 }
 
-void MainClass::add_new_dict_window(Dictionary *dictionary) {
+void MainClass::add_new_dict_window(Dictionary &dictionary) {
+  value += 15;
+
   auto window = std::make_unique<WordWindow>(dictionary);
   base.add_widget(window->get_widget(), window->get_tab_title());
   QObject::connect(window.get(), &WordWindow::close_signal, this,
@@ -193,36 +224,36 @@ void MainClass::close_widget_tab(QWidget *widget) {
                                 return ptr_itr.get()->get_widget() == widget;
                               });
     delete msg;
-    base.delete_widget(widget);
+    //    base.delete_widget(widget);
     word_windows.erase(index);
   }
 }
 
-void MainClass::update_word_windows(Dictionary *dict) {
+void MainClass::update_word_windows(Dictionary &dict) {
   for (auto &window : detail_tabs) {
-    if (window->get_dictionary() == dict) {
+    if (&window->get_dictionary() == &dict) {
       window->update();
       base.change_name(window->get_widget(), window->get_tab_title());
     }
   }
 }
 
-void MainClass::update_dict_windows(Dictionary *dict) {
+void MainClass::update_dict_windows(Dictionary &dict) {
   for (auto &window : word_windows) {
-    if (window->get_dictionary() == dict) {
+    if (&window->get_dictionary() == &dict) {
       window->reload();
       base.change_name(window->get_widget(), window->get_tab_title());
     }
   }
 }
 
-void MainClass::update_every_tab(Dictionary *dict) {
+void MainClass::update_every_tab(Dictionary &dict) {
   //  wordlist_window.update(dict);
   update_dict_windows(dict);
   update_word_windows(dict);
 }
 
-void MainClass::add_new_detail_view(Dictionary *dict, Word &word,
+void MainClass::add_new_detail_view(Dictionary &dict, Word &word,
                                     Word::Language language) {
   auto view = std::make_unique<DetailView>(word, dict, language);
   base.add_widget(view->get_widget(), view->get_tab_title());
@@ -238,10 +269,10 @@ void MainClass::add_new_detail_view(Dictionary *dict, Word &word,
   QObject::connect(view.get(), &DetailView::update_rest_dicts_signal, this,
                    &MainClass::update_every_tab); // glowny widok
   QObject::connect(view.get(), &DetailView::delete_window_signal, this,
-                   [this](auto &word, auto dict) {
+                   [this](auto &word, auto &dict) {
                      delete_given_word_from_tabs(word);
                      delete_given_word_from_list(word);
-                     dict->delete_word(word);
+                     dict.delete_word(word);
                      update_word_windows(dict);
                      update_dict_windows(dict);
                      wordlist_window.update(dict); // zrobic metode ktora

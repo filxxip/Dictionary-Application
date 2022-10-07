@@ -17,7 +17,7 @@
 class DetailView : public QObject {
   Q_OBJECT
 private:
-  Dictionary *dictionary;  ///< dictionary which contains word
+  Dictionary &dictionary;  ///< dictionary which contains word
   QWidget main_widget;     ///< widget on which class intance is placed
   ImageButton exit_button; ///< exit button to close tab
   QVBoxLayout main_layout; ///< main layout on which every component is placed
@@ -41,7 +41,7 @@ public:
    * @param word_ word whose data is on widget
    * @param dictionary_ dictionary for which word belongs
    */
-  DetailView(Word &word_, Dictionary *dictionary_,
+  DetailView(Word &word_, Dictionary &dictionary_,
              Word::Language base_language_);
 
   /**
@@ -59,7 +59,7 @@ public:
    * @brief get_dictionary method which provides dictionary of word
    * @return const pointer to dictionary
    */
-  Dictionary *get_dictionary() const;
+  Dictionary &get_dictionary() const;
 
   /**
    * @brief get_tab_title method which provides title of tab
@@ -89,7 +89,7 @@ signals:
    * @brief update_rest_dicts_signal signal used to updating every dict tab
    * @param dict constant pointer to dict
    */
-  void update_rest_dicts_signal(Dictionary *dict);
+  void update_rest_dicts_signal(Dictionary &dict);
 
-  void delete_window_signal(Word &word, Dictionary *dict);
+  void delete_window_signal(Word &word, Dictionary &dict);
 };

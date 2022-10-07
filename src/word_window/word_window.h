@@ -22,7 +22,7 @@ class WordWindow : public QObject {
   Q_OBJECT
 private:
   QWidget main_widget;      ///< main widget on which everything will be placed
-  Dictionary *dictionary;   ///< pointer to dictionary which is on window
+  Dictionary &dictionary;   ///< pointer to dictionary which is on window
   ImageButton close_button; ///< close button which close given
   VerticalLabel title;      ///< vertical label with title of dictionary
   Swiper from_language;     ///< swiper class intance which allows to choose
@@ -86,7 +86,7 @@ public:
    * @brief WordWindow constructor method
    * @param dictionary_ dictionary whose data will be on widget
    */
-  WordWindow(Dictionary *dictionary_);
+  WordWindow(Dictionary &dictionary_);
 
   /**
    * @brief change_title method which changes title of window
@@ -98,7 +98,7 @@ public:
    * @brief get_dictionary method which provides dictionary of widget
    * @return pointer to dictionary instance
    */
-  Dictionary *get_dictionary();
+  Dictionary &get_dictionary();
   /**
    * @brief get_widget methdo which provides main widget
    * @return pointer to widget where whole data is placed
@@ -145,10 +145,10 @@ signals:
    */
   void close_signal(QWidget *widget);
 
-  void add_detail_view_signal(Dictionary *dict, Word &word,
+  void add_detail_view_signal(Dictionary &dict, Word &word,
                               Word::Language language);
 
-  void update_rest_tabs(Dictionary *dict);
+  void update_rest_tabs(Dictionary &dict);
 
 public slots:
   void update_whole_dictionary();
