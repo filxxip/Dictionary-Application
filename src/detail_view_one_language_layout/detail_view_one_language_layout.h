@@ -59,6 +59,8 @@ public:
    */
   void update_content();
 
+  void set_entry_content_to_word();
+
   Dictionary &get_dictionary() const;
 public slots:
 

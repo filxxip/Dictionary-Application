@@ -24,8 +24,8 @@ DetailViewOneLanguageLayout::DetailViewOneLanguageLayout(
   addWidget(&translation_entry);
   addWidget(&date_entry);
   addWidget(&delete_button);
-  update_content();
   set_entries_read_only(true);
+  update_content();
   set_height(WidgetData::ELEMENT_DETAIL_HEIGHT);
   QObject::connect(&delete_button, &QPushButton::clicked, this,
                    &DetailViewOneLanguageLayout::delete_translation);
@@ -33,7 +33,9 @@ DetailViewOneLanguageLayout::DetailViewOneLanguageLayout(
 
 void DetailViewOneLanguageLayout::set_entries_read_only(bool status) {
   translation_entry.setReadOnly(status);
-  date_entry.setReadOnly(status);
+  if (!status && translation_entry.text() == BASE_UNDEFINED_TEXT) {
+    translation_entry.setText("");
+  }
   set_entries_new_object_names(status ? "entrytitle" : "entryline");
 }
 
@@ -51,8 +53,13 @@ void DetailViewOneLanguageLayout::set_height(int height) {
 
 void DetailViewOneLanguageLayout::update_content() {
   auto translation = word.get_translation(language);
-  translation_entry.setText(word.is_defined(language) ? translation
-                                                      : BASE_UNDEFINED_TEXT);
+  if (word.is_defined(language)) {
+    translation_entry.setText(translation);
+  } else {
+    translation_entry.setText(
+        translation_entry.isReadOnly() ? BASE_UNDEFINED_TEXT : "");
+  }
+
   auto translation_date = word.get_date(language);
   date_entry.setText(translation_date.to_string());
 }
@@ -61,12 +68,29 @@ void DetailViewOneLanguageLayout::delete_translation() {
   if (!word.is_defined(language)) {
     auto text = QStringLiteral("Language is not defined for &1")
                     .arg(word.get_translation(language));
-    qDebug() << text;
     return;
   }
   word.set_not_defined(language);
   update_content();
   emit update_rest_dictionaries(dictionary);
+}
+
+void DetailViewOneLanguageLayout::set_entry_content_to_word() {
+  auto text = translation_entry.text();
+
+  if (text != "" && text != BASE_UNDEFINED_TEXT) {
+    if (text != word.get_translation(language)) {
+      word.change_translation(language, text);
+    }
+  } else {
+    if (word.is_defined(language)) {
+      word.set_not_defined(language);
+    }
+  }
+
+  //  text != "" && text != BASE_UNDEFINED_TEXT
+  //      ? word.change_translation(language, text)
+  //      : word.set_not_defined(language);
 }
 
 Dictionary &DetailViewOneLanguageLayout::get_dictionary() const {

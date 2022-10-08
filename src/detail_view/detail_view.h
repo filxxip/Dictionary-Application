@@ -77,6 +77,8 @@ public:
    * @return reference of word whose data is on widget
    */
   Word &get_word();
+  void set_panels_read_only(bool status);
+  void update_word_data_to_entry();
 signals:
 
   /**

@@ -39,10 +39,23 @@ DetailView::DetailView(Word &word_, Dictionary &dictionary_,
     QObject::connect(
         item.get(), &DetailViewOneLanguageLayout::update_rest_dictionaries,
         this, [this](auto &dict) { emit update_rest_dicts_signal(dict); });
+
     main_layout.addLayout(item.get());
     language_detail_panels.push_back(std::move(item));
   }
-
+  QObject::connect(&edit_panel, &ConfigDetailViewPanel::edit_word_signal, this,
+                   [this]() { set_panels_read_only(false); });
+  QObject::connect(&edit_panel, &ConfigDetailViewPanel::cancel_changes_singal,
+                   this, [this]() {
+                     set_panels_read_only(true);
+                     update();
+                   });
+  QObject::connect(&edit_panel, &ConfigDetailViewPanel::confirm_changes_singal,
+                   this, [this]() {
+                     set_panels_read_only(true);
+                     update_word_data_to_entry();
+                     update_rest_dicts_signal(dictionary);
+                   });
   QObject::connect(
       &edit_panel, &ConfigDetailViewPanel::delete_word_signal, this,
       [this](auto &word) { emit delete_window_signal(word, dictionary); });
@@ -61,7 +74,6 @@ void DetailView::update() {
 }
 
 void DetailView::create_dictionary_title() {
-
   auto hbox = new QHBoxLayout;
   hbox->setContentsMargins(BASIC_HBOX_MARGIN);
 
@@ -88,4 +100,16 @@ QString DetailView::get_tab_title() const {
 void DetailView::update_title() {
   auto title = dictionary.get_name();
   dictionary_title.setText(title);
+}
+
+void DetailView::set_panels_read_only(bool status) {
+  for (auto &panel : language_detail_panels) {
+    panel->set_entries_read_only(status);
+  }
+}
+
+void DetailView::update_word_data_to_entry() {
+  for (auto &panel : language_detail_panels) {
+    panel->set_entry_content_to_word();
+  }
 }

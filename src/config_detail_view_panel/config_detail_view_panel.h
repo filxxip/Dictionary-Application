@@ -85,6 +85,7 @@ public slots:
 signals:
   void delete_word_signal(Word &word);
   void add_new_word();
-  void edit_word_signal(Word &word);
-  void confirm_changes_singal(Word &word);
+  void edit_word_signal();
+  void confirm_changes_singal();
+  void cancel_changes_singal();
 };

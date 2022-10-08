@@ -59,8 +59,17 @@ void ConfigDetailViewPanel::delete_word_slot() {
 
 void ConfigDetailViewPanel::add_new_word_slot() {}
 
-void ConfigDetailViewPanel::edit_word_slot() {}
+void ConfigDetailViewPanel::edit_word_slot() {
+  set_status(Status::EDIT);
+  emit edit_word_signal();
+}
 
-void ConfigDetailViewPanel::confirm_changes_slot() {}
+void ConfigDetailViewPanel::confirm_changes_slot() {
+  emit confirm_changes_singal();
+  set_status(Status::NORMAL);
+}
 
-void ConfigDetailViewPanel::cancel_changes_slot() {}
+void ConfigDetailViewPanel::cancel_changes_slot() {
+  emit cancel_changes_singal();
+  set_status(Status::NORMAL);
+}

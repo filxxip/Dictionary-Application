@@ -142,9 +142,6 @@ void MainClass::add_new_dictionary(const QString &name, const QString &owner) {
 }
 
 void MainClass::remove_dictionary(Dictionary &dictionary) {
-  //  list.remove_dictionary(dictionary);
-  qDebug() << word_windows.size();
-  qDebug() << detail_tabs.size();
   auto msg = CustomMessageBox(wordlist_window.get_widget(), TITLE, QUESTION);
   auto choice =
       msg.run(CustomMessageBox::Type::No,
@@ -152,14 +149,8 @@ void MainClass::remove_dictionary(Dictionary &dictionary) {
   if (choice == CustomMessageBox::Type::Yes) {
     auto person = dictionary.get_person();
     auto mail = person->get_email();
-    qDebug() << word_windows.size();
-    qDebug() << detail_tabs.size();
     remove_dictionary_from_list(dictionary);
-    qDebug() << word_windows.size();
-    qDebug() << detail_tabs.size();
     list.remove_dictionary(dictionary);
-    qDebug() << word_windows.size();
-    qDebug() << detail_tabs.size();
     auto &dict_list = list.get_dictionary_list();
     std::vector<Dictionary *> dictionary_list_result;
     for (auto &dict : dict_list) {
@@ -168,22 +159,16 @@ void MainClass::remove_dictionary(Dictionary &dictionary) {
         dictionary_list_result.push_back(&dict);
       }
     }
-    qDebug() << word_windows.size();
-    qDebug() << detail_tabs.size();
     wordlist_window.set_dict(mail, dictionary_list_result);
   }
 }
 
 void MainClass::remove_every_dict_from_list(Dictionary &dict) {
-  qDebug() << word_windows.size() << "xxx";
-  qDebug() << detail_tabs.size() << "xxx";
   auto index = std::remove_if( // todo
       word_windows.begin(), word_windows.end(), [&dict](auto &win) {
         return &dict == &win->get_dictionary(); /// sssss
       });
   word_windows.erase(index, word_windows.end());
-  qDebug() << word_windows.size() << "xxx";
-  qDebug() << detail_tabs.size() << "xxx";
 }
 void MainClass::remove_every_dict_detail_tab_from_list(Dictionary &dict) {
   auto index2 = std::remove_if(
@@ -276,7 +261,6 @@ void MainClass::add_new_detail_view(Dictionary &dict, Word &word,
                      update_word_windows(dict);
                      update_dict_windows(dict);
                      wordlist_window.update(dict); // zrobic metode ktora
-                                                   // uaktualnie glowny widok
                    });
   detail_tabs.push_back(std::move(view));
 }
