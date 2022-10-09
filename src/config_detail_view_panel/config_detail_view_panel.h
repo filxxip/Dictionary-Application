@@ -28,8 +28,7 @@ class ConfigDetailViewPanel : public QHBoxLayout {
 private:
   QWidget *main_widget; ///*main widget on which buttons will be placed
   CustomizeImageButton
-      trash_all_button;            ///< imagebutton used for removing whole word
-  CustomizeImageButton add_button; ///< button used for adding new word
+      trash_all_button; ///< imagebutton used for removing whole word
   CustomizeImageButton edit_button; ///< button used for editing data
   CustomizeImageButton
       cancel_button; ///< button used for removing changes made by user
@@ -61,11 +60,6 @@ public slots:
    * @brief delete_word_slot method used for removing word
    */
   void delete_word_slot();
-
-  /**
-   * @brief add_new_word_slot method used for adding new word
-   */
-  void add_new_word_slot();
 
   /**
    * @brief edit_word_slot used for edding current word

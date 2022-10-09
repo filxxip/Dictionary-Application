@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../add_new_word/add_new_word.h"
 #include "../dictionary/dictionary.h"
 #include "../image_button/image_button.h"
 #include "../index_boxes/double_index_box.h"
@@ -40,6 +41,7 @@ private:
   std::vector<std::unique_ptr<IndexBox>>
       current_words; ///< vector with unique pointers to each word translation
                      ///< on widget
+  ImageButton new_word_button;
 
   /**
    * @brief swiper_connect method which connect swipers with some functions
@@ -149,7 +151,9 @@ signals:
                               Word::Language language);
 
   void update_rest_tabs(Dictionary &dict);
+  void add_new_word_signal(Word::Language, Dictionary &dictionary);
 
 public slots:
   void update_whole_dictionary();
+  void add_new_word();
 };

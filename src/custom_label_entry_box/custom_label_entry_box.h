@@ -74,12 +74,6 @@ public:
   QString get_style_sheet();
 
   /**
-   * @brief set_entry_style_sheet method which sets new stylesheet of entry
-   * @param stylesheet QString instance which is new stylesheet
-   */
-  void set_entry_style_sheet(const QString &stylesheet);
-
-  /**
    * @brief get_entryline method which provide entryline
    * @return pointer to entryline
    */

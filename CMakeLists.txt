@@ -49,6 +49,7 @@ add_executable(${PROJECT_NAME}
     src/detail_view/detail_view.cpp
     src/detail_view_one_language_layout/detail_view_one_language_layout.cpp
     src/config_detail_view_panel/config_detail_view_panel.cpp
+    src/add_new_word/add_new_word.cpp
     main.cpp
 )
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../add_new_word/add_new_word.h"
 #include "../base_tab_widget/base_tab_widget.h"
 #include "../custom_list/custom_list.h"
 #include "../custom_message_box/custom_message_box.h"
@@ -28,6 +29,7 @@ private:
   WordlistWindow wordlist_window; ///< Personalize window with wordlist
   std::vector<std::unique_ptr<WordWindow>> word_windows;
   std::vector<std::unique_ptr<DetailView>> detail_tabs;
+  std::vector<std::unique_ptr<AddNewWord>> add_new_word_tabs;
 
 public:
   /**
@@ -90,6 +92,8 @@ public:
    */
   void update_dict_windows(Dictionary &dict);
 
+  void update_new_word_windows(Dictionary &dict);
+
   //  void update_base_window();
 
 public slots:
@@ -133,4 +137,6 @@ public slots:
   void update_every_tab(Dictionary &dict);
   void add_new_detail_view(Dictionary &dict, Word &word,
                            Word::Language language);
+  void add_new_new_word_window(Word::Language language, Dictionary &dictionary);
+  void remove_new_word_window(QWidget *widget);
 };

@@ -34,11 +34,6 @@ void LabelEntryBox::clear() { entry->clear(); }
 
 QString LabelEntryBox::get_style_sheet() { return entry->styleSheet(); }
 
-void LabelEntryBox::set_entry_style_sheet(const QString &stylesheet) {
-  entry->setStyleSheet(stylesheet);
-  entry->style()->polish(entry.get());
-}
-
 EntryLine *LabelEntryBox::get_entryline() { return entry.get(); }
 
 void LabelEntryBox::set_read_only(bool status) { entry->setReadOnly(status); }

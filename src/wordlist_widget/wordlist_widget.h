@@ -27,8 +27,6 @@ private:
   std::unique_ptr<QGroupBox> groupbox;     ///< pointer to groupbox with dicts
   QVBoxLayout mainlayout;                  ///< main layout with some widgets
   std::unique_ptr<QVBoxLayout> baselayout; ///< base layout with groupbox
-  //  std::vector<Dictionary *> dict; ///< vecotr with pointers to user
-  //  dictionaries
   std::vector<std::unique_ptr<DoubleGrpBox>>
       groupbox_dict; ///< dictionary with pair of groupbox
 

@@ -3,6 +3,8 @@
 #include "../data/config_file.h"
 #include "../detail_view/detail_view.h"
 
+#include <QStringLiteral>
+
 namespace {
 constexpr char STYLE_PATH[] = "src/data/style.css";
 constexpr char LOGOUT_QUESTION[] = "Are you sure to logout?";
@@ -14,6 +16,8 @@ constexpr char REMOVING_INFORMATION[] =
 constexpr char SECOND_REMOVING_INFORMATION[] =
     "Some unsaved data will be lost, save it whether you want to remain them!";
 constexpr char REMOVING_INFORMATION_TITLE[] = "REMOVING TAB";
+
+const QString adding_word = QStringLiteral("%1 - adding word");
 
 } // namespace
 
@@ -193,6 +197,8 @@ void MainClass::add_new_dict_window(Dictionary &dictionary) {
                    &MainClass::update_every_tab);
   QObject::connect(window.get(), &WordWindow::add_detail_view_signal, this,
                    &MainClass::add_new_detail_view);
+  QObject::connect(window.get(), &WordWindow::add_new_word_signal, this,
+                   &MainClass::add_new_new_word_window);
   base.set_widget(window->get_widget());
   word_windows.push_back(std::move(window));
 }
@@ -238,6 +244,14 @@ void MainClass::update_every_tab(Dictionary &dict) {
   update_word_windows(dict);
 }
 
+void MainClass::update_new_word_windows(Dictionary &dict) {
+  for (auto &window : add_new_word_tabs) {
+    if (&window->get_dictionary() == &dict) {
+      remove_new_word_window(window->get_widget());
+    }
+  }
+}
+
 void MainClass::add_new_detail_view(Dictionary &dict, Word &word,
                                     Word::Language language) {
   auto view = std::make_unique<DetailView>(word, dict, language);
@@ -278,4 +292,28 @@ void MainClass::delete_given_word_from_tabs(Word &word) {
       base.delete_widget(window->get_widget());
     }
   }
+}
+
+void MainClass::add_new_new_word_window(Word::Language language,
+                                        Dictionary &dictionary) {
+  auto new_word_tab = std::make_unique<AddNewWord>(language, dictionary);
+  QObject::connect(new_word_tab.get(), &AddNewWord::add_new_word_signal, this,
+                   [this](auto &dict) {
+                     wordlist_window.update(dict);
+                     update_every_tab(dict);
+                     update_new_word_windows(dict);
+                   });
+  QObject::connect(new_word_tab.get(), &AddNewWord::exit_signal, this,
+                   &MainClass::remove_new_word_window);
+  base.add_widget(new_word_tab->get_widget(),
+                  adding_word.arg(new_word_tab->get_dictionary().get_name()));
+  add_new_word_tabs.push_back(std::move(new_word_tab));
+}
+
+void MainClass::remove_new_word_window(QWidget *widget) {
+  base.delete_widget(widget);
+  auto index = std::remove_if(
+      add_new_word_tabs.begin(), add_new_word_tabs.end(),
+      [widget](auto &tab) { return tab->get_widget() == widget; });
+  add_new_word_tabs.erase(index);
 }

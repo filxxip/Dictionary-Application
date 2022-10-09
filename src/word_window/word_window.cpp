@@ -1,4 +1,5 @@
 #include "word_window.h"
+#include "../add_new_word/add_new_word.h"
 #include "../data/config_file.h"
 #include "../detail_view/detail_view.h"
 #include "../index_boxes/once_index_box.h"
@@ -12,6 +13,7 @@
 
 namespace {
 constexpr char IMAGE_EXIT[] = "images/exit2.png";
+constexpr char NEW_WORD_IMAGE[] = "images/add.png";
 } // namespace
 
 WordWindow::WordWindow(Dictionary &dictionary_)
@@ -25,8 +27,13 @@ WordWindow::WordWindow(Dictionary &dictionary_)
       to_language(&main_widget, WidgetData::LABEL_WIDTH_SWIPER,
                   WidgetData::ARROW_SIZE),
       scrollarea(&main_widget), groupbox(std::make_unique<QGroupBox>()),
-      baselayout(std::make_unique<QVBoxLayout>()) {
-
+      baselayout(std::make_unique<QVBoxLayout>()),
+      new_word_button(&main_widget, NEW_WORD_IMAGE,
+                      Displays::DisplayStyle::SCALED_WIDTH,
+                      WidgetData::NEW_WORD_HEIGHT) {
+  new_word_button.set_position(WidgetData::NEW_WORD_X, WidgetData::NEW_WORD_Y);
+  QObject::connect(&new_word_button, &QPushButton::clicked, this,
+                   &WordWindow::add_new_word);
   scrollarea.setWidgetResizable(true);
   scrollarea.horizontalScrollBar()->setDisabled(true);
   scrollarea.setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Expanding);
@@ -184,4 +191,8 @@ void WordWindow::reload() {
 
 QString WordWindow::get_tab_title() const {
   return dictionary.get_name() + " - dict";
+}
+
+void WordWindow::add_new_word() {
+  emit add_new_word_signal(this->from_language.get_text(), dictionary);
 }
