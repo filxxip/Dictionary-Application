@@ -140,3 +140,21 @@ void Dictionary::delete_word(Word &word) {
                    [&word](auto &word_itr) { return &word_itr == &word; });
   wordlist.erase(index);
 }
+
+bool Dictionary::any_word_contain(Word &word) {
+  for (auto &compared_word : wordlist) {
+    if (compared_word.contain(word)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Dictionary::contain_any_word(Word &word) {
+  for (auto &compared_word : wordlist) {
+    if (word.contain(compared_word)) {
+      return true;
+    }
+  }
+  return false;
+}

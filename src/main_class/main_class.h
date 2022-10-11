@@ -43,7 +43,7 @@ public:
   void remove_personal_tabs();
   void remove_every_dict_from_list();
   void remove_every_dict_detail_tab_from_list();
-
+  void remove_every_new_word_from_list();
   /**
    * @brief widget_change_title method which changes title of widget
    * @param widget widget which title should be changed

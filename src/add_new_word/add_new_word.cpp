@@ -1,10 +1,32 @@
 #include "add_new_word.h"
+#include "../custom_message_box/custom_message_box.h"
 
 #include <QStringLiteral>
 
 namespace {
 auto text = QStringLiteral("images/%1");
+
+constexpr char EMPTY_MAIN_LANGUAGE_TITLE[] = "INCORRECT DATA";
+
+constexpr char EMPTY_MAIN_LANGUAGE_TEXT[] =
+    "Creating empty main language is banned, pass something to it!";
+
+constexpr char CORRECT_DATA_TITLE[] = "CORRECT DATA";
+
+const QString CORRECT_DATA_TEXT = QStringLiteral(
+    "Are you sure to create '%1' in %2 language new word with given "
+    "translations?");
+
+const QString WORD_CONTAIN_OTHER_WORD_TEXT = QStringLiteral(
+    "Are you sure to create '%1' in %2 language new word with given "
+    "translations? Other word is part of this word and will be removed!");
+
+const QString OTHER_WORD_CONTAIN_WORD_TEXT = QStringLiteral(
+    "Are you sure to create '%1' in %2 language new word with given "
+    "translations? Content of this word will be added to other word");
 } // namespace
+
+const Word::Language AddNewWord::MAIN_BASE_LANGUAGE = Word::Language::ENGLISH;
 
 AddNewWord::AddNewWord(Word::Language main_language_, Dictionary &dictionary)
     : QObject(), dict(dictionary),
@@ -33,6 +55,7 @@ void AddNewWord::create_config_panel_layout() {
   hboxlayout->addWidget(&confirm_button);
   hboxlayout->addWidget(&cancel_button);
   hboxlayout->addWidget(&clear_button);
+
   QObject::connect(&confirm_button, &QPushButton::clicked, this,
                    &AddNewWord::add_new_word);
   QObject::connect(&clear_button, &QPushButton::clicked, this,
@@ -70,28 +93,63 @@ std::map<Word::Language, QString> AddNewWord::get_defined_translations() const {
   for (auto &[language, name] : Word::Language_names) {
     if (language != Word::Language::UNDEFINED) {
       auto translation = language_panels.at(language)->get_text();
-      qDebug() << translation;
       mapa.insert({language, translation});
     }
   }
   return mapa;
 }
+void AddNewWord::adding_undefined_main_language(
+    Word::Language information_language) {
+  auto text = language_panels.at(information_language)->get_entryline()->text();
+  auto content = text.isEmpty() ? "undefined" : text;
+  auto language_name = Word::Language_names.at(information_language);
+  Word word(get_defined_translations());
+
+  CustomMessageBox *msg =
+      nullptr; // jesli chodzi o te operatory new to sa one tutaj mam nadzieje
+               // chwilowo, po prostu jest to poki co jedyna dzialajaca opcja
+               // ktora odkrylem, problem jest w tym, ze w trakcie emitacji
+               // sygnalu usuwany jest obiekt tej klasy i powoduje to tak jakby
+               // podwojna probe usuniecia tych messageboxow podwuje, gdy
+               // korzystam z new no to to usuniecie nie nastepuje ani razu,
+               // wiec wiem, ze musi to koniecznie byc skorygowane
+  if (dict.any_word_contain(word)) {
+    msg = new CustomMessageBox(
+        &main_window, CORRECT_DATA_TITLE,
+        OTHER_WORD_CONTAIN_WORD_TEXT.arg(content, language_name));
+  }
+  if (dict.contain_any_word(word)) {
+    msg = new CustomMessageBox(
+        &main_window, CORRECT_DATA_TITLE,
+        WORD_CONTAIN_OTHER_WORD_TEXT.arg(content, language_name));
+  }
+  if (!msg) {
+    msg = new CustomMessageBox(&main_window, CORRECT_DATA_TITLE,
+                               CORRECT_DATA_TEXT.arg(content, language_name));
+  }
+  if (msg->run(CustomMessageBox::Type::No, {CustomMessageBox::Type::Yes}) ==
+      CustomMessageBox::Type::Yes) {
+    dict.add_word(word);
+    emit add_new_word_signal(dict);
+  }
+}
+
+void AddNewWord::adding_defined_main_language() {
+  auto entryline = language_panels.at(main_language)->get_entryline();
+  if (entryline->isEmpty()) {
+    change_color({entryline}, "red", 500);
+    auto *msg = new CustomMessageBox(&main_window, EMPTY_MAIN_LANGUAGE_TITLE,
+                                     EMPTY_MAIN_LANGUAGE_TEXT);
+    msg->run(CustomMessageBox::Type::Ok);
+  } else {
+    adding_undefined_main_language(main_language);
+  }
+}
 
 void AddNewWord::add_new_word() {
-  if (main_language != Word::Language::UNDEFINED) {
-    auto entryline = language_panels.at(main_language)->get_entryline();
-    if (entryline->isEmpty()) {
-      change_color({entryline}, "red", 500);
-      return;
-    }
-  }
-  qDebug("aaa");
-  Word word(get_defined_translations());
-  qDebug() << dict.get_number_of_words();
-  dict.add_word(word);
-  qDebug() << dict.get_number_of_words();
-  emit add_new_word_signal(dict);
-  //  emit exit_signal(&main_window);
+  main_language == Word::Language::UNDEFINED
+      ? adding_undefined_main_language(Word::Language::ENGLISH)
+      : adding_defined_main_language();
 }
 
 void AddNewWord::clear() {

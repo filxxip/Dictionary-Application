@@ -104,6 +104,7 @@ void MainClass::add_login_tabs() {
 void MainClass::remove_personal_tabs() {
   remove_every_dict_from_list();
   remove_every_dict_detail_tab_from_list();
+  remove_every_new_word_from_list();
 
   auto data_widget = data_window.get_widget();
   auto wordlist_widget = wordlist_window.get_widget();
@@ -112,18 +113,26 @@ void MainClass::remove_personal_tabs() {
 }
 
 void MainClass::remove_every_dict_from_list() {
-  //  for (auto &window : word_windows) {
-  //    auto widget = window->get_widget();
-  //    base.delete_widget(widget);
-  //  }
+  for (auto &window : word_windows) {
+    auto widget = window->get_widget();
+    base.delete_widget(widget);
+  }
   word_windows.clear();
 }
 void MainClass::remove_every_dict_detail_tab_from_list() {
-  //  for (auto &window : detail_tabs) {
-  //    auto widget = window->get_widget();
-  //    base.delete_widget(widget);
-  //  }
+  for (auto &window : detail_tabs) {
+    auto widget = window->get_widget();
+    base.delete_widget(widget);
+  }
   detail_tabs.clear();
+}
+
+void MainClass::remove_every_new_word_from_list() {
+  for (auto &window : add_new_word_tabs) {
+    auto widget = window->get_widget();
+    base.delete_widget(widget);
+  }
+  add_new_word_tabs.clear();
 }
 
 void MainClass::logout() {
@@ -245,11 +254,27 @@ void MainClass::update_every_tab(Dictionary &dict) {
 }
 
 void MainClass::update_new_word_windows(Dictionary &dict) {
-  for (auto &window : add_new_word_tabs) {
-    if (&window->get_dictionary() == &dict) {
-      remove_new_word_window(window->get_widget());
-    }
-  }
+  auto index =
+      std::remove_if(add_new_word_tabs.begin(), add_new_word_tabs.end(),
+                     [this, &dict](auto &tab) {
+                       auto condition = &tab->get_dictionary() == &dict;
+                       if (condition) {
+                         base.delete_widget(tab->get_widget());
+                       }
+                       return condition;
+                     });
+  add_new_word_tabs.erase(index, add_new_word_tabs.end());
+  //  for (auto &window : add_new_word_tabs) {
+  //    qDebug("asaxxa"); // iteruje po indeksach
+  //    qDebug() << &*window;
+  //    qDebug() << &dict;
+  //    qDebug("xxx");
+  //    if (&window->get_dictionary() == &dict) {
+  //      qDebug("asaxsssxa");
+  //      remove_new_word_window(window->get_widget());
+  //    }
+  //  }
+  //  qDebug("asaxxssssa");
 }
 
 void MainClass::add_new_detail_view(Dictionary &dict, Word &word,
@@ -315,5 +340,6 @@ void MainClass::remove_new_word_window(QWidget *widget) {
   auto index = std::remove_if(
       add_new_word_tabs.begin(), add_new_word_tabs.end(),
       [widget](auto &tab) { return tab->get_widget() == widget; });
-  add_new_word_tabs.erase(index);
+  add_new_word_tabs.erase(index); // usuwa dany index i przesuwa odpowiednio a
+                                  // tam probuje normalnie iterowac
 }

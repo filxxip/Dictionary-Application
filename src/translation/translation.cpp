@@ -92,7 +92,7 @@ Word &Word::operator=(const Word &word) {
 
 bool Word::is_defined(Word::Language language) const {
   is_language_valid(language);
-  return (*translations.find(language)).second != "";
+  return !((*translations.find(language)).second.isEmpty());
 }
 
 Word::Prioritity Word::get_prioritity() const { return prioritity; }
@@ -111,16 +111,9 @@ bool Word::contain(const Word &word) const {
 
   while (start1 != end1 ||
          start2 != end2) { // i ve decided to leave it despite all
-    qDebug() << start1->second << "  " << start2->second;
-    if (*start1 != *start2 && start2->second != "") {
+    if (*start1 != *start2 && !start2->second.isEmpty()) {
       return false;
     }
-    //    qDebug() << "etap1";
-    //    if (*start1 != *start2 && (start1->second != "" && start2->second !=
-    //    "")) {
-    //      return false;
-    //    }
-    //    qDebug() << "etap1";
     ++start1;
     ++start2;
   }
@@ -132,7 +125,7 @@ std::vector<Word::Language> Word::get_defined_languages() const {
   std::vector<Word::Language> languages;
   languages.reserve(static_cast<int>(Word::Language::ENGLISH) + 1);
   for (const auto &[language, translation] : translations) {
-    if (translation != "") {
+    if (!translation.isEmpty()) {
       languages.push_back(language);
     }
   }
