@@ -5,10 +5,12 @@
 #include "../image_button/image_button.h"
 #include "../index_boxes/double_index_box.h"
 #include "../index_boxes/index_box.h"
+#include "../swiper/direction_swiper.h"
+#include "../swiper/language_swiper.h"
+#include "../swiper/sort_swiper.h"
 #include "../swiper/swiper.h"
 #include "../text_label/text_label.h"
 #include "../vertical_label/vertical_label.h"
-#include "../word_pair/word_pair.h"
 
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -26,14 +28,17 @@ private:
   Dictionary &dictionary;   ///< pointer to dictionary which is on window
   ImageButton close_button; ///< close button which close given
   VerticalLabel title;      ///< vertical label with title of dictionary
-  Swiper from_language;     ///< swiper class intance which allows to choose
-                            ///< language of word
-  Swiper to_language; ///< swiper class intance which allows to choose language
-                      ///< of translation
+  LanguageSwiper from_language; ///< swiper class intance which allows to choose
+                                ///< language of word
+  LanguageSwiper to_language;   ///< swiper class intance which allows to choose
+  ///< language of translation
+  SortSwiper sort_swiper;
+  DirectionSwiper direction_swiper;
   QScrollArea scrollarea;
   QVBoxLayout mainlayout; ///< main layout on which everything will be placed
   QHBoxLayout high_bar_layout; ///< layout with language bar component
   QHBoxLayout down_bar_layout; ///< layout with words component
+  QHBoxLayout down_layout_swiper;
   std::unique_ptr<QGroupBox>
       groupbox; ///< unique pointer to groupbox with dicts
   std::unique_ptr<QVBoxLayout>
@@ -61,13 +66,16 @@ private:
    * @param position_x x position of swiper
    * @param position_y y position of swiper
    */
-  void configurate_swiper(Swiper *swiper, int position_x, int position_y);
+  void configurate_swiper(LanguageSwiper *swiper, int position_x,
+                          int position_y);
 
   /**
    * @brief configurate_swiper method which configurate swiper
    * @param swiper swiper to configure
    */
-  void configurate_swiper(Swiper *swiper);
+  void configurate_swiper(LanguageSwiper *swiper);
+  void configurate_swiper(SortSwiper *swiper);
+  void configurate_swiper(DirectionSwiper *swiper);
 
   /**
    * @brief create_word_layout method which creates word layout with two entries
@@ -82,6 +90,9 @@ private:
    * @param word_base_language language of word
    */
   void create_word_layout(Word::Language word_base_language);
+
+  void sort_layout(SortSwiper::SortOptions option,
+                   DirectionSwiper::DirectionsOptions direction);
 
 public:
   /**

@@ -27,10 +27,10 @@ MainClass::MainClass(QApplication &app)
   word_windows.reserve(MaxValues::MAX_OPENED_DICTS);
   auto login_widget = login_window.get_widget();
   auto register_widget = register_window.get_widget();
-  auto wordlist_widget = wordlist_window.get_widget();
+  //  auto wordlist_widget = wordlist_window.get_widget();
   base.add_widget(login_widget, Titles::LOGIN);
   base.add_widget(register_widget, Titles::REGISTER);
-  base.add_widget(wordlist_widget, Titles::WORDLIST);
+  //  base.add_widget(wordlist_widget, Titles::WORDLIST);
 
   QObject::connect(&login_window, &LoginView::data_window_create, this,
                    &MainClass::setting_new_person_data);
@@ -42,7 +42,7 @@ MainClass::MainClass(QApplication &app)
                    &MainClass::logout);
   QObject::connect(&wordlist_window, &WordlistWindow::new_dict_signal, this,
                    &MainClass::add_new_dictionary);
-  setting_new_person_data("f.pol2@gmail.com"); // toremove
+  //  setting_new_person_data("f.pol2@gmail.com"); // toremove
   QObject::connect(&list, &CustomList::adding_to_box, this,
                    [this](auto &dict) { wordlist_window.add_groupbox(dict); });
 
@@ -55,6 +55,9 @@ MainClass::MainClass(QApplication &app)
 
   QObject::connect(&wordlist_window, &WordlistWindow::setting_new_window, this,
                    &MainClass::add_new_dict_window);
+
+  QObject::connect(&register_window, &RegisterWindow::update_completer, this,
+                   [this]() { login_window.update_completer(); });
 }
 
 void MainClass::setting_new_person_data(const QString &email) {
@@ -248,7 +251,6 @@ void MainClass::update_dict_windows(Dictionary &dict) {
 }
 
 void MainClass::update_every_tab(Dictionary &dict) {
-  //  wordlist_window.update(dict);
   update_dict_windows(dict);
   update_word_windows(dict);
 }
@@ -264,17 +266,6 @@ void MainClass::update_new_word_windows(Dictionary &dict) {
                        return condition;
                      });
   add_new_word_tabs.erase(index, add_new_word_tabs.end());
-  //  for (auto &window : add_new_word_tabs) {
-  //    qDebug("asaxxa"); // iteruje po indeksach
-  //    qDebug() << &*window;
-  //    qDebug() << &dict;
-  //    qDebug("xxx");
-  //    if (&window->get_dictionary() == &dict) {
-  //      qDebug("asaxsssxa");
-  //      remove_new_word_window(window->get_widget());
-  //    }
-  //  }
-  //  qDebug("asaxxssssa");
 }
 
 void MainClass::add_new_detail_view(Dictionary &dict, Word &word,
@@ -340,6 +331,5 @@ void MainClass::remove_new_word_window(QWidget *widget) {
   auto index = std::remove_if(
       add_new_word_tabs.begin(), add_new_word_tabs.end(),
       [widget](auto &tab) { return tab->get_widget() == widget; });
-  add_new_word_tabs.erase(index); // usuwa dany index i przesuwa odpowiednio a
-                                  // tam probuje normalnie iterowac
+  add_new_word_tabs.erase(index);
 }

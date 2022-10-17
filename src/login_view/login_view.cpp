@@ -8,7 +8,6 @@
 
 #include <QAbstractItemView>
 #include <QCompleter>
-#include <QDebug>
 #include <QObject>
 #include <QStringList>
 #include <QStringListModel>
@@ -151,3 +150,9 @@ void LoginView::create_main_vboxlayout() {
 }
 
 const CustomCompleter &LoginView::get_completer() const { return completer; }
+
+void LoginView::update_completer() {
+  auto lista = completer.create_stringlist(user_list.get_emails_list());
+  auto model = new QStringListModel(std::move(lista), this);
+  completer.setModel(model);
+}

@@ -35,6 +35,9 @@ public:
            Word::Language l1);
 
   virtual void set_status(Status status) = 0;
+  virtual void set_visible(bool status) = 0;
+  int get_index() const { return index_label.text().toInt(); }
+  const Word &get_word() const { return word; }
 
   /**
    * @brief set_entry_basic_options method which sets some options to

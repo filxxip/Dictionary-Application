@@ -117,8 +117,7 @@ void AddNewWord::adding_undefined_main_language(
     msg = new CustomMessageBox(
         &main_window, CORRECT_DATA_TITLE,
         OTHER_WORD_CONTAIN_WORD_TEXT.arg(content, language_name));
-  }
-  if (dict.contain_any_word(word)) {
+  } else if (dict.contain_any_word(word)) {
     msg = new CustomMessageBox(
         &main_window, CORRECT_DATA_TITLE,
         WORD_CONTAIN_OTHER_WORD_TEXT.arg(content, language_name));
@@ -129,6 +128,7 @@ void AddNewWord::adding_undefined_main_language(
   }
   if (msg->run(CustomMessageBox::Type::No, {CustomMessageBox::Type::Yes}) ==
       CustomMessageBox::Type::Yes) {
+    delete msg;
     dict.add_word(word);
     emit add_new_word_signal(dict);
   }

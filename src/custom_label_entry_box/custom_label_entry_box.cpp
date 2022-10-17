@@ -1,5 +1,4 @@
 #include "custom_label_entry_box.h"
-#include <QDebug>
 #include <QStyle>
 
 LabelEntryBox::LabelEntryBox(QWidget *widget, const QString &label_text,

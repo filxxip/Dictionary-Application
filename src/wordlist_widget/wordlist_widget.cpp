@@ -60,9 +60,9 @@ void WordlistWindow::set_dict(const QString &person_mail,
   groupbox = std::make_unique<QGroupBox>();
 
   scrollarea.setWidget(groupbox.get());
-  auto dict_size = dictionary.size();
-  if (dict_size > 0) {
-    for (unsigned long i = 0; i <= dict_size; i++) {
+  int dict_size = static_cast<int>(dictionary.size());
+  if (dict_size >= 0) {
+    for (int i = 0; i <= dict_size; i++) {
       if (i < dict_size - 1) {
         auto grpbox = std::make_unique<DoubleGrpBox>(
             main_widget, *dictionary.at(i), *dictionary.at(i + 1));

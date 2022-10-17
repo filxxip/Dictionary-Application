@@ -34,7 +34,6 @@ public:
    */
   CustomMessageBox(QWidget *widget, const QString &content,
                    const QString &question);
-  ~CustomMessageBox() { qDebug("delete"); }
 
   /**
    * @brief run method which causes appearing msgbox on screen

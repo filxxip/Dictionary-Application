@@ -4,7 +4,6 @@
 #include "../data/config_file.h"
 #include "../text_label/text_label.h"
 
-#include <QDebug>
 #include <QHBoxLayout>
 
 #include <memory>

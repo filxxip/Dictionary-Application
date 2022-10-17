@@ -79,6 +79,14 @@
         "school": "LO2 Leszno",
         "surname": "Poltoraczyk"
     },
+    "f.poltoraczyk@gmail.com": {
+        "age": 19,
+        "country": "Poland",
+        "name": "Filip",
+        "password": "Makadi2003",
+        "school": "PWR",
+        "surname": "Poltoraczyk"
+    },
     "f@g.pl": {
         "age": 66,
         "country": "Aaaa",
@@ -126,6 +134,14 @@
         "password": "Aaaa",
         "school": "Aaaa",
         "surname": "Aaaa"
+    },
+    "fp@g.pl": {
+        "age": 11,
+        "country": "P",
+        "name": "Filip",
+        "password": "Aaa",
+        "school": "p",
+        "surname": "Pp"
     },
     "r@g.pl": {
         "age": 88,

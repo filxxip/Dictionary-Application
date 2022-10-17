@@ -3,8 +3,6 @@
 #include "../date/current_date.h"
 #include "../date/date.h"
 
-#include <QDebug>
-
 #include <map>
 #include <string>
 #include <unordered_map>
@@ -67,7 +65,6 @@ public:
    */
   Word();
   Word(const Word &word) {
-    //    qDebug() << "copy operator"; // cel edukacyjny
     prioritity = word.prioritity;
     translations = word.translations;
     translations_dates = word.translations_dates;

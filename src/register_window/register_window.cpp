@@ -171,6 +171,7 @@ void RegisterWindow::user_register() {
          Entries::COUNTRY, Entries::AGE});
     change_color(v, Colors::GREEN, 1000);
     CustomMessageBox msg(&main_widget, MSG_TITLE, MSG_INFO);
+    emit update_completer();
     msg.run(CustomMessageBox::Type::Great);
 
     clear_method();

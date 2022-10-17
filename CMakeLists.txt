@@ -41,7 +41,6 @@ add_executable(${PROJECT_NAME}
     src/newdict_layout/newdict_layout.cpp
     src/word_window/word_window.cpp
     src/swiper/swiper.cpp
-    src/word_pair/word_pair.cpp
     src/vertical_label/vertical_label.cpp
     src/index_boxes/index_box.cpp
     src/index_boxes/double_index_box.cpp
@@ -50,6 +49,9 @@ add_executable(${PROJECT_NAME}
     src/detail_view_one_language_layout/detail_view_one_language_layout.cpp
     src/config_detail_view_panel/config_detail_view_panel.cpp
     src/add_new_word/add_new_word.cpp
+    src/swiper/direction_swiper.cpp
+    src/swiper/sort_swiper.cpp
+    src/swiper/language_swiper.cpp
     main.cpp
 )
 

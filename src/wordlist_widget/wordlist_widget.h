@@ -80,13 +80,6 @@ public:
 
   void update(Dictionary &dictionary);
 
-public slots:
-
-  /**
-   * @brief method which runs after clicking set button
-   */
-  void method() { qDebug() << "kliknietp"; }
-
 signals:
   /**
    * @brief new_dict_signal signal which is emitted when user want to create new

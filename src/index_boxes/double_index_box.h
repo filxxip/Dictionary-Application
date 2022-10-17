@@ -37,6 +37,7 @@ private:
    * @param button qpushbutton pointer
    */
   void apply_button_configuration(QPushButton *button);
+  void set_visible(bool status) override;
 
 public:
   /**

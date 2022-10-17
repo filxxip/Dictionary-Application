@@ -101,6 +101,16 @@ void DoubleIndexBox::change_status_images(Status status) {
   //  }
 }
 
+void DoubleIndexBox::set_visible(bool status) {
+  index_label.setVisible(status);
+  from_word_entry.setVisible(status);
+  this->edit_button.setVisible(status);
+  confirm_button.setVisible(status);
+  this->cancel_button.setVisible(status);
+  delete_button.setVisible(status);
+  to_word_entry.setVisible(status);
+}
+
 void DoubleIndexBox::cancel_changes() {
   auto previous_translation = word.get_translation(translated_language);
   auto base = word.get_translation(base_language);

@@ -109,8 +109,7 @@ bool Word::contain(const Word &word) const {
   auto end1 = translations.end();
   auto end2 = word.translations.end();
 
-  while (start1 != end1 ||
-         start2 != end2) { // i ve decided to leave it despite all
+  while (start1 != end1 || start2 != end2) {
     if (*start1 != *start2 && !start2->second.isEmpty()) {
       return false;
     }

@@ -100,6 +100,7 @@ public slots:
   void set_to_hidden();
 
   void entry_changed();
+  void update_completer();
 signals:
 
   void data_window_create(const QString &text);
