@@ -13,7 +13,7 @@ Swiper::Swiper(QWidget *widget_, int label_width, int image_size)
                  Displays::DisplayStyle::SCALED_HEIGHT, image_size),
       right_arrow(widget, RIGHT_ARROW_IMAGE,
                   Displays::DisplayStyle::SCALED_HEIGHT, image_size),
-      main_label(widget, "NONE"), current_language(Word::Language::UNDEFINED) {
+      main_label(widget, "NONE") {
   main_label.setFixedWidth(label_width);
   main_label.setFixedHeight(left_arrow.height());
   left_arrow.setDisabled(true);
@@ -40,42 +40,23 @@ void Swiper::set_position(int position_x, int position_y) {
       position_x + (WidgetData::ARROW_SIZE + main_label.width()), position_y);
 }
 
-void Swiper::set_options(std::vector<Word::Language> options_) {
-  options = std::move(options_);
-  current_index = 0;
-  set_text(current_language);
-  left_arrow.setDisabled(true);
-  right_arrow.setDisabled(options.size() == 0);
-}
-
 void Swiper::set_font(int value) { main_label.set_font_size(value); }
-
-void Swiper::set_text(Word::Language language) {
-  auto content = Word::Language_names.at(language);
-  main_label.setText(content);
-  current_language = language;
-}
-Word::Language Swiper::get_text() const { return current_language; }
-
-Word::Language Swiper::get_option(int index) { return options.at(index); }
 
 void Swiper::swipe_right() {
   left_arrow.setDisabled(false);
   current_index++;
-  if (static_cast<unsigned long>(current_index) == options.size() - 1) {
+  if (current_index == get_options_size() - 1) {
     right_arrow.setDisabled(true);
   }
-  auto result = options.at(current_index);
-  set_text(result);
-  emit swipe_signal(result);
+  swipe_method();
 }
 
 void Swiper::swiper_left() {
   right_arrow.setDisabled(false);
-  if (static_cast<unsigned long>(--current_index) == 0) {
+  if (--current_index == 0) {
     left_arrow.setDisabled(true);
   }
-  auto result = options.at(current_index);
-  set_text(result);
-  emit swipe_signal(result);
+  swipe_method();
 }
+
+int Swiper::get_index() const { return current_index; }

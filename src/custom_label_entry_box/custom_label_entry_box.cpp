@@ -1,5 +1,4 @@
 #include "custom_label_entry_box.h"
-#include <QDebug>
 #include <QStyle>
 
 LabelEntryBox::LabelEntryBox(QWidget *widget, const QString &label_text,
@@ -33,11 +32,6 @@ void LabelEntryBox::set_entry_width(int width) { entry->setFixedWidth(width); }
 void LabelEntryBox::clear() { entry->clear(); }
 
 QString LabelEntryBox::get_style_sheet() { return entry->styleSheet(); }
-
-void LabelEntryBox::set_entry_style_sheet(const QString &stylesheet) {
-  entry->setStyleSheet(stylesheet);
-  entry->style()->polish(entry.get());
-}
 
 EntryLine *LabelEntryBox::get_entryline() { return entry.get(); }
 

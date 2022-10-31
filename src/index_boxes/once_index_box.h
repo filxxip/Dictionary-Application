@@ -15,4 +15,5 @@ public:
    * @param status status enum type, ReadOnly or Edit
    */
   void set_status(Status status);
+  void set_visible(bool status) override;
 };

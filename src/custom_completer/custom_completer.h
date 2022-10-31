@@ -10,7 +10,7 @@
 /** CustomCompleter class which creates list of strings fitted to some data*/
 class CustomCompleter : public QCompleter {
 
-private:
+public:
   /**
    * @brief create_stringlist method which create QStringList from vector
    * @param elements vector instance with strings to analyse
@@ -18,7 +18,6 @@ private:
    */
   QStringList create_stringlist(std::vector<QString> elements);
 
-public:
   enum class Status { HAS_RESULTS, NO_RESULTS };
 
   /**

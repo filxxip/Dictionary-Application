@@ -38,3 +38,5 @@ void EntryLine::set_object_name_stylesheet(const QString &object_name) {
   setObjectName(object_name);
   style()->polish(this);
 }
+
+bool EntryLine::isEmpty() const { return text() == ""; }

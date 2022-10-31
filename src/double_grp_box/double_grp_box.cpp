@@ -20,14 +20,14 @@ DoubleGrpBox::DoubleGrpBox(QWidget &widget_)
   create_pair();
 }
 
-DoubleGrpBox::DoubleGrpBox(QWidget &widget_, Dictionary *dict1,
-                           Dictionary *dict2)
+DoubleGrpBox::DoubleGrpBox(QWidget &widget_, Dictionary &dict1,
+                           Dictionary &dict2)
     : widget(widget_) {
   left_layout = std::make_unique<ContentLayout>(widget_, dict1);
   right_layout = std::make_unique<ContentLayout>(widget_, dict2);
   create_pair();
 }
-DoubleGrpBox::DoubleGrpBox(QWidget &widget_, Dictionary *dict1)
+DoubleGrpBox::DoubleGrpBox(QWidget &widget_, Dictionary &dict1)
     : widget(widget_) {
   left_layout = std::make_unique<ContentLayout>(widget_, dict1);
   right_layout = std::make_unique<NewDictLayout>(widget_, Qt::AlignRight);
@@ -35,6 +35,7 @@ DoubleGrpBox::DoubleGrpBox(QWidget &widget_, Dictionary *dict1)
 }
 
 void DoubleGrpBox::create_pair() {
+
   auto left_ptr = get_left_groupbox().get();
   addWidget(std::move(left_ptr));
   if (right_layout) {
@@ -59,14 +60,6 @@ const std::unique_ptr<QVBoxLayout> &DoubleGrpBox::get_right_layout() {
   return right_layout->get_layout();
 }
 
-Dictionary *DoubleGrpBox::get_left_dictionary() {
-  return left_layout->get_dictionary();
-}
-
-Dictionary *DoubleGrpBox::get_right_dictionary() {
-  return right_layout->get_dictionary();
-}
-
 NewDictLayout *DoubleGrpBox::get_dict_layout() {
   if (dynamic_cast<NewDictLayout *>(left_layout.get())) {
     return static_cast<NewDictLayout *>(left_layout.get());
@@ -84,16 +77,39 @@ const std::unique_ptr<CustomVBoxLayout> &DoubleGrpBox::get_right_item() {
   return right_layout;
 }
 
-bool DoubleGrpBox::has_dictionary(Dictionary *dict) {
-  return left_layout->get_dictionary() == dict ||
-         right_layout->get_dictionary() == dict;
+bool DoubleGrpBox::has_dictionary(Dictionary &dict) {
+  return right_layout_has_dictionary(dict) || left_layout_has_dictionary(dict);
 }
 
-void DoubleGrpBox::update_dictionary(Dictionary *dict) {
-  if (left_layout->get_dictionary() == dict) {
+void DoubleGrpBox::update_dictionary(Dictionary &dict) {
+  if (left_layout_has_dictionary(dict)) {
     left_layout->update();
   }
-  if (right_layout->get_dictionary() == dict) {
+  if (right_layout_has_dictionary(dict)) {
     right_layout->update();
   }
+}
+
+bool DoubleGrpBox::left_layout_has_dictionary(Dictionary &dict) {
+  if (left_layout) {
+    if (left_layout->has_dictionary()) {
+      auto layout = dynamic_cast<ContentLayout *>(left_layout.get());
+      if (&layout->get_dictionary() == &dict) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool DoubleGrpBox::right_layout_has_dictionary(Dictionary &dict) {
+  if (right_layout) {
+    if (right_layout->has_dictionary()) {
+      auto layout = dynamic_cast<ContentLayout *>(right_layout.get());
+      if (&layout->get_dictionary() == &dict) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

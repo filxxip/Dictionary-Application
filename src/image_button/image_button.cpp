@@ -1,6 +1,5 @@
 #include "image_button.h"
 
-#include <QDebug>
 #include <QIcon>
 #include <QPixmap>
 #include <QStyle>

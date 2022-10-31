@@ -72,7 +72,6 @@ public:
    * @param person_pointer pointer to person whose data should be set
    */
   void set_person(Person *person_pointer);
-
   /**
    * @brief get_exit_button method which provides button
    * @return reference to exit button

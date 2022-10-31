@@ -26,7 +26,7 @@ void Word::basic_translation() {
        value <= static_cast<int>(Language::GERMAN); value++) {
     auto language = static_cast<Language>(value);
     translations_dates.emplace(std::make_pair(language, get_current_date()));
-    translations.emplace(std::make_pair(language, "-"));
+    translations.emplace(std::make_pair(language, ""));
   }
 }
 
@@ -92,7 +92,7 @@ Word &Word::operator=(const Word &word) {
 
 bool Word::is_defined(Word::Language language) const {
   is_language_valid(language);
-  return (*translations.find(language)).second != "-";
+  return !((*translations.find(language)).second.isEmpty());
 }
 
 Word::Prioritity Word::get_prioritity() const { return prioritity; }
@@ -109,10 +109,8 @@ bool Word::contain(const Word &word) const {
   auto end1 = translations.end();
   auto end2 = word.translations.end();
 
-  while (start1 != end1 ||
-         start2 != end2) { // i ve decided to leave it despite all
-    if (*start1 != *start2 &&
-        (start1->second != "-" && start2->second != "-")) {
+  while (start1 != end1 || start2 != end2) {
+    if (*start1 != *start2 && !start2->second.isEmpty()) {
       return false;
     }
     ++start1;
@@ -126,7 +124,7 @@ std::vector<Word::Language> Word::get_defined_languages() const {
   std::vector<Word::Language> languages;
   languages.reserve(static_cast<int>(Word::Language::ENGLISH) + 1);
   for (const auto &[language, translation] : translations) {
-    if (translation != "-") {
+    if (!translation.isEmpty()) {
       languages.push_back(language);
     }
   }
@@ -134,5 +132,5 @@ std::vector<Word::Language> Word::get_defined_languages() const {
 }
 
 void Word::set_not_defined(Language language) {
-  change_translation(language, "-");
+  change_translation(language, "");
 }

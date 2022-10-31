@@ -4,7 +4,6 @@
 #include "../image_button/image_button.h"
 #include "../text_label/text_label.h"
 
-#include <QDebug>
 #include <QPixmap>
 
 #include <map>

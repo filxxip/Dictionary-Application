@@ -144,4 +144,7 @@ public:
   void set_name(const QString &name_);
 
   void delete_word(Word &word);
+
+  bool any_word_contain(Word &word);
+  bool contain_any_word(Word &word);
 };

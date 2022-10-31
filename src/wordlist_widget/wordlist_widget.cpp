@@ -55,18 +55,17 @@ ImageButton &WordlistWindow::get_exit_button() { return exit_button; }
 void WordlistWindow::set_dict(const QString &person_mail,
                               std::vector<Dictionary *> dictionary) {
   owner = person_mail;
-  dict = dictionary;
   groupbox_dict.clear();
   baselayout = std::make_unique<QVBoxLayout>();
   groupbox = std::make_unique<QGroupBox>();
 
   scrollarea.setWidget(groupbox.get());
-  auto dict_size = dict.size();
-  if (dict_size > 0) {
-    for (unsigned long i = 0; i <= dict_size; i++) {
+  int dict_size = static_cast<int>(dictionary.size());
+  if (dict_size >= 0) {
+    for (int i = 0; i <= dict_size; i++) {
       if (i < dict_size - 1) {
-        auto grpbox = std::make_unique<DoubleGrpBox>(main_widget, dict.at(i),
-                                                     dict.at(i + 1));
+        auto grpbox = std::make_unique<DoubleGrpBox>(
+            main_widget, *dictionary.at(i), *dictionary.at(i + 1));
         i++;
         baselayout->addLayout(grpbox.get());
         groupbox_dict.push_back(std::move(grpbox));
@@ -74,7 +73,8 @@ void WordlistWindow::set_dict(const QString &person_mail,
         continue;
       }
       if (i == dict_size - 1) {
-        auto grpbox = std::make_unique<DoubleGrpBox>(main_widget, dict.at(i));
+        auto grpbox =
+            std::make_unique<DoubleGrpBox>(main_widget, *dictionary.at(i));
         baselayout->addLayout(grpbox.get());
         groupbox_dict.push_back(std::move(grpbox));
         break;
@@ -99,7 +99,7 @@ void WordlistWindow::set_dict(const QString &person_mail,
   }
 }
 
-void WordlistWindow::add_groupbox(Dictionary *dict) {
+void WordlistWindow::add_groupbox(Dictionary &dict) {
   std::unique_ptr<DoubleGrpBox> ptr = nullptr;
   std::unique_ptr<DoubleGrpBox> ptr2 = nullptr;
   auto size = groupbox_dict.size();
@@ -109,7 +109,9 @@ void WordlistWindow::add_groupbox(Dictionary *dict) {
     if (last_pair->get_right_item() == nullptr) {
       ptr = std::make_unique<DoubleGrpBox>(main_widget, dict);
     } else {
-      auto dict1 = last_pair->get_left_dictionary();
+      auto dict11 =
+          dynamic_cast<ContentLayout *>(last_pair->get_left_item().get());
+      auto dict1 = dict11->get_dictionary();
       ptr2 = std::make_unique<DoubleGrpBox>(main_widget, dict1, dict);
       ptr = std::make_unique<DoubleGrpBox>(main_widget);
     }
@@ -136,10 +138,10 @@ void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
       auto item = static_cast<ContentLayout *>(box->get_left_item().get());
 
       QObject::connect(item, &ContentLayout::trash_dict, this,
-                       [this](auto dict) { emit removing_dict_signal(dict); });
+                       [this](auto &dict) { emit removing_dict_signal(dict); });
       QObject::connect(
           item, &ContentLayout::window_titles_changed_signal, this,
-          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
+          [this](auto &dict) { emit changing_name_dictionary_bar(dict); });
     }
   }
   if (box->get_right_item() != nullptr) {
@@ -147,10 +149,10 @@ void WordlistWindow::connect_doublebox(DoubleGrpBox *box) {
       auto item = static_cast<ContentLayout *>(box->get_right_item().get());
 
       QObject::connect(item, &ContentLayout::trash_dict, this,
-                       [this](auto dict) { emit removing_dict_signal(dict); });
+                       [this](auto &dict) { emit removing_dict_signal(dict); });
       QObject::connect(
           item, &ContentLayout::window_titles_changed_signal, this,
-          [this](auto dict) { emit changing_name_dictionary_bar(dict); });
+          [this](auto &dict) { emit changing_name_dictionary_bar(dict); });
     }
   }
 }
@@ -161,7 +163,7 @@ void WordlistWindow::connect_setting_doublebox(DoubleGrpBox *box) {
       auto item = static_cast<ContentLayout *>(box->get_left_item().get());
 
       QObject::connect(item, &ContentLayout::set_signal, this,
-                       [this](auto dict) { emit setting_new_window(dict); });
+                       [this](auto &dict) { emit setting_new_window(dict); });
     }
   }
   if (box->get_right_item() != nullptr) {
@@ -169,17 +171,17 @@ void WordlistWindow::connect_setting_doublebox(DoubleGrpBox *box) {
       auto item = static_cast<ContentLayout *>(box->get_right_item().get());
 
       QObject::connect(item, &ContentLayout::set_signal, this,
-                       [this](auto dict) { emit setting_new_window(dict); });
+                       [this](auto &dict) { emit setting_new_window(dict); });
     }
   }
 }
 
 void WordlistWindow::clear() {} //?
 
-void WordlistWindow::update(Dictionary *dictionary) {
+void WordlistWindow::update(Dictionary &dictionary) {
   clear();
   auto index = std::find_if(groupbox_dict.begin(), groupbox_dict.end(),
-                            [dictionary](auto &doublebox) {
+                            [&dictionary](auto &doublebox) {
                               return doublebox->has_dictionary(dictionary);
                             });
   index->get()->update_dictionary(dictionary);

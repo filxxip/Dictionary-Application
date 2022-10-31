@@ -31,3 +31,9 @@ void OnceIndexBox::set_status(Status status) {
   }
   }
 }
+
+void OnceIndexBox::set_visible(bool status) {
+  index_label.setVisible(status);
+  from_word_entry.setVisible(status);
+  details_button.setVisible(status);
+}

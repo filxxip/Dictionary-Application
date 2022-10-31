@@ -50,7 +50,7 @@
     "f.pol2@gmail.com": {
         "age": 33,
         "country": "Aaaa",
-        "name": "Aaaa",
+        "name": "Aaaaxxx",
         "password": "Aaaa",
         "school": "Aaaa",
         "surname": "Aaaa"
@@ -77,6 +77,14 @@
         "name": "Filip",
         "password": "Makadi200344422",
         "school": "LO2 Leszno",
+        "surname": "Poltoraczyk"
+    },
+    "f.poltoraczyk@gmail.com": {
+        "age": 19,
+        "country": "Poland",
+        "name": "Filip",
+        "password": "Makadi2003",
+        "school": "PWR",
         "surname": "Poltoraczyk"
     },
     "f@g.pl": {
@@ -126,6 +134,14 @@
         "password": "Aaaa",
         "school": "Aaaa",
         "surname": "Aaaa"
+    },
+    "fp@g.pl": {
+        "age": 11,
+        "country": "P",
+        "name": "Filip",
+        "password": "Aaa",
+        "school": "p",
+        "surname": "Pp"
     },
     "r@g.pl": {
         "age": 88,

@@ -41,21 +41,21 @@ public:
    * @param date date needed to compare
    * @return true if first date is earlier, otherwise false
    */
-  bool operator<(const Date &date);
+  bool operator<(const Date &date) const;
 
   /**
    * @brief operator == which compare two dates
    * @param date date needed to compare
    * @return true if dates are equal, otherwise false
    */
-  bool operator==(const Date &date);
+  bool operator==(const Date &date) const;
 
   /**
    * @brief operator > which compare two dates
    * @param date date needed to compare
    * @return true if first date is newer, otherwise false
    */
-  bool operator>(const Date &date);
+  bool operator>(const Date &date) const;
 
   /**
    * @brief to_string method which convert Date to string format type

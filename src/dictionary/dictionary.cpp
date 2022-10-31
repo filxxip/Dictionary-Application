@@ -35,10 +35,12 @@ const std::vector<Word> Dictionary::get_words(Word::Language language,
 }
 
 void Dictionary::add_word(Word &word) {
-  auto searched =
-      std::find_if(wordlist.begin(), wordlist.end(),
-                   [&word](const auto &value) { return word.contain(value); });
+  auto searched = std::find_if(
+      wordlist.begin(), wordlist.end(), [&word](const auto &value) {
+        return word.contain(value) or value.contain(word);
+      });
   if (searched != wordlist.end()) {
+    qDebug() << "zawiera sie";
     if (searched->get_defined_number() < word.get_defined_number()) {
       *searched = word;
     }
@@ -137,4 +139,22 @@ void Dictionary::delete_word(Word &word) {
       std::find_if(wordlist.begin(), wordlist.end(),
                    [&word](auto &word_itr) { return &word_itr == &word; });
   wordlist.erase(index);
+}
+
+bool Dictionary::any_word_contain(Word &word) {
+  for (auto &compared_word : wordlist) {
+    if (compared_word.contain(word)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Dictionary::contain_any_word(Word &word) {
+  for (auto &compared_word : wordlist) {
+    if (word.contain(compared_word)) {
+      return true;
+    }
+  }
+  return false;
 }

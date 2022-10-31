@@ -24,7 +24,7 @@ private:
   ImageButton cancel_button;  ///< cancel button used to removing changes
   TextButton
       set_button; ///< button used to open new window with dictionary data
-  Dictionary *dictionary; ///< dictionary from which data is taken
+  Dictionary &dictionary; ///< dictionary from which data is taken
   std::map<Word::Language, TextLabel *> text_labels_map;
 
   /**
@@ -78,13 +78,13 @@ public:
    * @param widget_ main widget where widget will be placed
    * @param dict dictionary with data needed to initialized widget
    */
-  ContentLayout(QWidget &widget_, Dictionary *dict);
+  ContentLayout(QWidget &widget_, Dictionary &dict);
 
   /**
    * @brief get_dictionary method which provides dictionary
    * @return pointer to dictionary
    */
-  virtual Dictionary *get_dictionary() final;
+  Dictionary &get_dictionary();
 
   /**
    * @brief set_confirm_cancel_panel method which sets confirm and cancel panel
@@ -102,6 +102,8 @@ public:
    * @return
    */
   ImageButton *get_trash_button();
+
+  bool has_dictionary() const final;
 public slots:
 
   /**
@@ -134,18 +136,18 @@ signals:
    * @brief trash_dict signal used to removing dictionary
    * @param dictionary pointer to dictionary which has to be removed
    */
-  void trash_dict(Dictionary *dictionary);
+  void trash_dict(Dictionary &dictionary);
 
   /**
    * @brief set_signal signal used to opening new window with dictionary
    * @param dictionary dictionary which data will be shown
    */
-  void set_signal(Dictionary *dictionary);
+  void set_signal(Dictionary &dictionary);
 
   /**
    * @brief window_titles_changed_signal signal used to changing titles of
    * dictionary opened tabs
    * @param pointer to changed dictionary
    */
-  void window_titles_changed_signal(Dictionary *dictionary);
+  void window_titles_changed_signal(Dictionary &dictionary);
 };

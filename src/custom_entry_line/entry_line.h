@@ -60,4 +60,6 @@ public:
    * @param object_name new object_name of entry
    */
   void set_object_name_stylesheet(const QString &object_name);
+
+  bool isEmpty() const;
 };

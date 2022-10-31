@@ -73,6 +73,21 @@ QLineEdit:focus#entryline{
     background-color:rgb(41, 105, 49);
 }
 
+QLineEdit#entryline_important {
+    background-color:green;
+    border-radius: 3px;
+    border: 2px solid rgb(161, 40, 40);
+    color: antiquewhite;
+}
+
+QLineEdit:hover#entryline_important{
+    background-color:rgb(41, 105, 49);
+}
+
+QLineEdit:focus#entryline_important{
+    background-color:rgb(41, 105, 49);
+}
+
 
 QLineEdit#entrytitle{
 background-color:rgb(18, 48, 22);

@@ -16,6 +16,7 @@
 #include <vector>
 
 class RegisterWindow : public QObject {
+  Q_OBJECT
 public:
   enum class Entries {
     NAME = 0,
@@ -120,4 +121,7 @@ public slots:
    * @brief user_register method which creates new user
    */
   void user_register();
+
+signals:
+  void update_completer();
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../add_new_word/add_new_word.h"
 #include "../base_tab_widget/base_tab_widget.h"
 #include "../custom_list/custom_list.h"
 #include "../custom_message_box/custom_message_box.h"
@@ -18,6 +19,7 @@
 class MainClass : public QObject {
   Q_OBJECT
 private:
+  int value = 10;
   BaseTabWidget base; ///< Base for whole app
   CustomList
       list; ///< Custom list with information about users and its dictionaries
@@ -27,6 +29,7 @@ private:
   WordlistWindow wordlist_window; ///< Personalize window with wordlist
   std::vector<std::unique_ptr<WordWindow>> word_windows;
   std::vector<std::unique_ptr<DetailView>> detail_tabs;
+  std::vector<std::unique_ptr<AddNewWord>> add_new_word_tabs;
 
 public:
   /**
@@ -40,7 +43,7 @@ public:
   void remove_personal_tabs();
   void remove_every_dict_from_list();
   void remove_every_dict_detail_tab_from_list();
-
+  void remove_every_new_word_from_list();
   /**
    * @brief widget_change_title method which changes title of widget
    * @param widget widget which title should be changed
@@ -54,14 +57,14 @@ public:
    * tabs
    * @param dict dictionary to remove
    */
-  void remove_every_dict_from_list(Dictionary *dict);
+  void remove_every_dict_from_list(Dictionary &dict);
 
   /**
    * @brief remove_every_dict_detail_tab_from_list method which removes every
    * detail tab with specified dictionary
    * @param dict dictionary which is removed
    */
-  void remove_every_dict_detail_tab_from_list(Dictionary *dict);
+  void remove_every_dict_detail_tab_from_list(Dictionary &dict);
 
   /**
    * @brief remove_every_dict_detail_tab_from_list method which removes every
@@ -81,13 +84,15 @@ public:
    * @brief update_word_windows method which updates data of every detail tab
    * @param dict dict for which word belongs
    */
-  void update_word_windows(Dictionary *dict);
+  void update_word_windows(Dictionary &dict);
 
   /**
    * @brief update_dict_windows method which updates every dictionary tab
    * @param dict dict which is updating
    */
-  void update_dict_windows(Dictionary *dict);
+  void update_dict_windows(Dictionary &dict);
+
+  void update_new_word_windows(Dictionary &dict);
 
   //  void update_base_window();
 
@@ -121,15 +126,17 @@ public slots:
    * @param dictionary dictionary which will be removed
    * @param person_mail mail of person whose dict will be removed
    */
-  void remove_dictionary(Dictionary *dictionary);
+  void remove_dictionary(Dictionary &dictionary);
 
-  void add_new_dict_window(Dictionary *dictionary);
+  void add_new_dict_window(Dictionary &dictionary);
 
   void close_widget_tab(QWidget *widget);
-  void remove_dictionary_from_list(Dictionary *dict);
-  void change_every_dict_bar_title(Dictionary *dict);
+  void remove_dictionary_from_list(Dictionary &dict);
+  void change_every_dict_bar_title(Dictionary &dict);
 
-  void update_every_tab(Dictionary *dict);
-  void add_new_detail_view(Dictionary *dict, Word &word,
+  void update_every_tab(Dictionary &dict);
+  void add_new_detail_view(Dictionary &dict, Word &word,
                            Word::Language language);
+  void add_new_new_word_window(Word::Language language, Dictionary &dictionary);
+  void remove_new_word_window(QWidget *widget);
 };

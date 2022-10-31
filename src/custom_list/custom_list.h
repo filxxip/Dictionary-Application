@@ -110,8 +110,9 @@ public:
    * @param email unique email of person
    * @return vector instance with pointers to dicts
    */
-  std::vector<Dictionary *> get_dictionary_list(const QString &email);
+  //  std::vector<Dictionary *> get_dictionary_list(const QString &email);
 
+  std::vector<Dictionary> &get_dictionary_list();
   void remove_dictionary(Dictionary &dictionary);
   bool dictionary_exists(Dictionary &dictionary);
   void add_last_dictionary_to_box();
@@ -124,5 +125,5 @@ signals:
    * it in layout
    * @param dict pointer to dict
    */
-  void adding_to_box(Dictionary *dict);
+  void adding_to_box(Dictionary &dict);
 };

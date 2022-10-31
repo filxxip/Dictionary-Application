@@ -56,6 +56,9 @@ constexpr char DARK_RED[] = "rgb(51, 18, 18)";
 } // namespace Colors
 
 namespace WidgetData {
+constexpr int NEW_WORD_X = 20;
+constexpr int NEW_WORD_Y = 550;
+constexpr int NEW_WORD_HEIGHT = 60;
 const QString IMAGE_FILE_LITERAL QStringLiteral("images/%1");
 constexpr int IMAGE_HEIGHT_OF_DETAIL_PANEL = 40;
 constexpr int ELEMENT_DETAIL_HEIGHT = 40;

@@ -49,14 +49,14 @@ public:
    * @param dict1 pointer to dictionary of first element
    * @param dict2 pointer to dictionary of second element
    */
-  DoubleGrpBox(QWidget &widget_, Dictionary *dict1, Dictionary *dict2);
+  DoubleGrpBox(QWidget &widget_, Dictionary &dict1, Dictionary &dict2);
 
   /**
    * @brief DoubleGrpBox constructor method
    * @param widget_ widget on which widget will be placed
    * @param dict1 pointer to dictionary of first element
    */
-  DoubleGrpBox(QWidget &widget_, Dictionary *dict1);
+  DoubleGrpBox(QWidget &widget_, Dictionary &dict1);
 
   /**
    * @brief get_dict_layout method which provides last layout of vboxlayout
@@ -93,17 +93,19 @@ public:
    */
   const std::unique_ptr<QVBoxLayout> &get_right_layout();
 
-  /**
-   * @brief get_left_groupbox method which provides dictionary of left groupbox
-   * @return pointer to dictionary of left groupbox
-   */
-  Dictionary *get_left_dictionary();
+  //  /**
+  //   * @brief get_left_groupbox method which provides dictionary of left
+  //   groupbox
+  //   * @return pointer to dictionary of left groupbox
+  //   */
+  //  Dictionary *get_left_dictionary();
 
-  /**
-   * @brief get_left_groupbox method which provides dictionary of right groupbox
-   * @return pointer to dictionary of right groupbox
-   */
-  Dictionary *get_right_dictionary();
+  //  /**
+  //   * @brief get_left_groupbox method which provides dictionary of right
+  //   groupbox
+  //   * @return pointer to dictionary of right groupbox
+  //   */
+  //  Dictionary *get_right_dictionary();
 
   /**
    * @brief get_left_item method which provides unique pointer of left box
@@ -122,14 +124,17 @@ public:
    * @param dict dictionary
    * @return true if doublebox contain dict, otherwise false
    */
-  bool has_dictionary(Dictionary *dict);
+  bool has_dictionary(Dictionary &dict);
 
   /**
    * @brief update_dictionary method which updates data on widget
    * @param dict dict which specifies which box, left or right contain
    * dictionary
    */
-  void update_dictionary(Dictionary *dict);
+  void update_dictionary(Dictionary &dict);
+
+  bool left_layout_has_dictionary(Dictionary &dict);
+  bool right_layout_has_dictionary(Dictionary &dict);
 
 signals:
 

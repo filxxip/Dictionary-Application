@@ -1,7 +1,6 @@
 #include "base_tab_widget.h"
 #include "../data/config_file.h"
 
-#include <QDebug>
 #include <QFile>
 
 BaseTabWidget::BaseTabWidget(QApplication *app, const QString &style_name)

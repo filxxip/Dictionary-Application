@@ -68,7 +68,7 @@ void CustomList::add_dictionary(const Dictionary &dictionary) {
 
 void CustomList::add_last_dictionary_to_box() {
   auto size = dictionary_list.size();
-  emit adding_to_box(&dictionary_list.at(size - 1));
+  emit adding_to_box(dictionary_list.at(size - 1));
 }
 
 void CustomList::update_json() {
@@ -103,17 +103,21 @@ const std::vector<QString> CustomList::get_emails_list() const {
   return list;
 }
 
-std::vector<Dictionary *>
-CustomList::get_dictionary_list(const QString &email) {
-  std::vector<Dictionary *> dictionary_list_result;
-  for (auto &dict : dictionary_list) {
-    auto dict_email = dict.get_person()->get_email();
-    if (dict_email == email) {
-      dictionary_list_result.push_back(&dict);
-    }
-  }
-  return dictionary_list_result;
+std::vector<Dictionary> &CustomList::get_dictionary_list() {
+  return dictionary_list;
 }
+
+// std::vector<Dictionary *>
+// CustomList::get_dictionary_list(const QString &email) {
+//  std::vector<Dictionary *> dictionary_list_result;
+//  for (auto &dict : dictionary_list) {
+//    auto dict_email = dict.get_person()->get_email();
+//    if (dict_email == email) {
+//      dictionary_list_result.push_back(&dict);
+//    }
+//  }
+//  return dictionary_list_result;
+//}
 auto CustomList::get_iterator(Dictionary &dictionary) {
   auto dict = std::find_if(dictionary_list.begin(), dictionary_list.end(),
                            [&dictionary](auto &iter_dictionary) {

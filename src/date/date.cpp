@@ -64,15 +64,15 @@ TimeDelta Date::get_difference(const Date &date2) const {
                    std::abs(years_result));
 }
 
-bool Date::operator<(const Date &date) {
+bool Date::operator<(const Date &date) const {
   return get_difference(date).sign == DateConfig::Sign::MINUS;
 }
 
-bool Date::operator==(const Date &date) {
+bool Date::operator==(const Date &date) const {
   return get_difference(date).sign == DateConfig::Sign::NONE;
 }
 
-bool Date::operator>(const Date &date) {
+bool Date::operator>(const Date &date) const {
   return get_difference(date).sign == DateConfig::Sign::PLUS;
 }
 
